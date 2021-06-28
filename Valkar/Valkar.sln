@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valkar.Domain", "Valkar.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valkar.Infrastructure", "Valkar.Infrastructure\Valkar.Infrastructure.csproj", "{E4F8E432-AB28-4205-9795-6D8C0ABFB48C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Valkar.ClientApp", "Valkar.ClientApp\Valkar.ClientApp.csproj", "{517C902A-6B65-4EE7-857B-BDF41DF82D5F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{E4F8E432-AB28-4205-9795-6D8C0ABFB48C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4F8E432-AB28-4205-9795-6D8C0ABFB48C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4F8E432-AB28-4205-9795-6D8C0ABFB48C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{517C902A-6B65-4EE7-857B-BDF41DF82D5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{517C902A-6B65-4EE7-857B-BDF41DF82D5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{517C902A-6B65-4EE7-857B-BDF41DF82D5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{517C902A-6B65-4EE7-857B-BDF41DF82D5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

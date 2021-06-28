@@ -13,4 +13,9 @@
 		<Folder Include="Controllers\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Valkar.Application\Valkar.Application.csproj" />
+	  <ProjectReference Include="..\Valkar.Infrastructure\Valkar.Infrastructure.csproj" />
+	</ItemGroup>
+
 </Project>
