@@ -2,10 +2,14 @@ namespace Valkar.API
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.OpenApi.Models;
+    using Valkar.Domain.Models;
+    using Valkar.Infrastructure.Persistence;
 
     public class Startup
     {
@@ -17,10 +21,23 @@ namespace Valkar.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            // Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Valkar.API", Version = "v1" });
             });
+
+            // DbContext
+            services.AddDbContext<ValkarDbContext>(opt => 
+            {
+                opt.UseSqlServer(this._configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            // Identity
+            services
+                .AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ValkarDbContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
