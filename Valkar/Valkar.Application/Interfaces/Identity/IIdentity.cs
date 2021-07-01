@@ -10,6 +10,8 @@
 
         Task<bool> Login(LoginViewModel model);
 
+        Task<bool> Logout();
+
         IEnumerable<IUser> GetUsers();
     }
 }

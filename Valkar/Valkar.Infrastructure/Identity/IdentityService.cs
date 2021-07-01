@@ -1,5 +1,6 @@
 ﻿namespace Valkar.Infrastructure.Identity
 {
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Logging;
     using System;
@@ -14,17 +15,21 @@
         private readonly ILogger<IdentityService> _logger;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public IdentityService(
             ILogger<IdentityService> logger,
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            IHttpContextAccessor httpContextAccessor)
         {
             this._logger = logger;
             this._userManager = userManager;
             this._signInManager = signInManager;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
+        // Register
         public async Task<bool> Register(RegisterViewModel model)
         {
             var user = new User
@@ -52,6 +57,7 @@
             }
         }
 
+        // Login
         public async Task<bool> Login(LoginViewModel model)
         {
             // User validation
@@ -93,7 +99,37 @@
             return false;
         }
 
+        // Logout
+        public async Task<bool> Logout()
+        {
+            var currentUser = await GetUser();
+            
+            // Logout authenticated user
+            await this._signInManager.SignOutAsync();
+
+            // Log that user was logged out
+            this._logger.LogInformation($"User: {currentUser.Email} logged out.");
+
+            return true;
+        }
+
+        // Get users
         public IEnumerable<IUser> GetUsers()
-            => this._userManager.Users.ToList();
+           => this._userManager.Users.ToList();
+
+        // Get authenticated user
+        private async Task<User> GetUser()
+        {
+            // Get authenticated user
+            var user = await this._userManager
+                .GetUserAsync(this._httpContextAccessor.HttpContext.User);
+
+            // throw exception if there is no one
+            if (user is null)
+            {
+                throw new InvalidOperationException("This request does not have an authenticated user.");
+            }
+            return user;
+        }
     }
 }
