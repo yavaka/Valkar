@@ -4,7 +4,6 @@
     {
         public static class User
         {
-            public const int MAX_NAME_LENGTH = 15;
         }
     }
 }

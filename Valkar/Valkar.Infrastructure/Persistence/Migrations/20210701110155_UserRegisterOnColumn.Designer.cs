@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Valkar.Infrastructure.Persistence;
 
 namespace Valkar.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ValkarDbContext))]
-    partial class ValkarDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210701110155_UserRegisterOnColumn")]
+    partial class UserRegisterOnColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

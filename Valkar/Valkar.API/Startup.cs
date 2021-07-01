@@ -2,26 +2,27 @@ namespace Valkar.API
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.OpenApi.Models;
-    using Valkar.Domain.Models;
+    using Valkar.Infrastructure;
     using Valkar.Infrastructure.Persistence;
 
     public class Startup
     {
-        private readonly IConfiguration _configuration;
-
         public Startup(IConfiguration configuration)
-            => _configuration = configuration;
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
+
             // Swagger
             services.AddSwaggerGen(c =>
             {
@@ -29,15 +30,13 @@ namespace Valkar.API
             });
 
             // DbContext
-            services.AddDbContext<ValkarDbContext>(opt => 
+            services.AddDbContext<ValkarDbContext>(opt =>
             {
-                opt.UseSqlServer(this._configuration.GetConnectionString("DefaultConnection"));
+                opt.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
             // Identity
-            services
-                .AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ValkarDbContext>();
+            services.AddInfrastructure();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,10 +48,16 @@ namespace Valkar.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Valkar.API v1"));
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
+            app.UseCors(opt =>
+            {
+                opt.AllowAnyOrigin();
+                opt.AllowAnyMethod();
+                opt.AllowAnyHeader();
+            });
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Valkar.Domain\Valkar.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Identity\" />
+  </ItemGroup>
+
 </Project>
