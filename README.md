@@ -14,6 +14,7 @@ Built with:
 * ASP.NET Identity
 * Entity Framework Core
 * SQL Server
+* React
 
 ## Features
 * User account
