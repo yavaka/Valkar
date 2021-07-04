@@ -15,7 +15,6 @@ Built with:
 * Entity Framework Core
 * SQL Server
 * React
-* TypeScript
 
 ## Features
 * User account
