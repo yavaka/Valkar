@@ -8,13 +8,11 @@ Valkar is my first professional project on a freelance basis. Valkar owners, a d
 
 ## Technologies/Frameworks
 Built with:
-* Clean Architecture 
 * C# & .NET
-* ASP.NET Web API
+* ASP.NET Core MVC
 * ASP.NET Identity
 * Entity Framework Core
 * SQL Server
-* React
 
 ## Features
 * User account
