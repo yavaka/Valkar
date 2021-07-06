@@ -1,11 +1,11 @@
 ﻿namespace Web.Controllers
 {
+    using System;
+    using System.Threading.Tasks;
     using ApplicationCore.ServiceModels.Identity;
     using ApplicationCore.Services.Identity;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Threading.Tasks;
 
     public class IdentityController : Controller
     {
@@ -65,7 +65,7 @@
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> LogoutAsync() 
+        public async Task<IActionResult> Logout() 
         {
             await this._identityService.Logout();
 

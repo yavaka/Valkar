@@ -4,30 +4,19 @@
     using Infrastructure;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using System;
 
     public static class ApplicationCoreConfiguration
     {
         public static IServiceCollection AddApplicationCore(
-            this IServiceCollection services)
+            this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddIdentityService();
-            services.AddAuthAndCookies();
-
+            services.AddApplicationCookie(configuration);
             return services;
         }
-
-        private static IServiceCollection AddAuthAndCookies(
-            this IServiceCollection services)
-            => services
-                .AddAuthentication()
-                .AddCookie(opt => 
-                {
-                    opt.LoginPath = "/Identity/Login";
-                    opt.AccessDeniedPath = "/Identity/Login";
-                    opt.ExpireTimeSpan = new TimeSpan(0, 10, 0);
-                }).Services;
 
         private static IServiceCollection AddIdentityService(
             this IServiceCollection services)
@@ -46,5 +35,13 @@
 
             return services;
         }
+
+        private static IServiceCollection AddApplicationCookie(
+            this IServiceCollection services,
+            IConfiguration configuration)
+            => services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = configuration["ApplicationSettings:LoginPath"];
+            });
     }
 }
