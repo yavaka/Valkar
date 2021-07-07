@@ -1,7 +1,9 @@
 ﻿namespace Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using ApplicationCore.Helpers;
     using ApplicationCore.ServiceModels.Identity;
     using ApplicationCore.Services.Identity;
     using Microsoft.AspNetCore.Authorization;
@@ -24,17 +26,23 @@
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    await this._identityService.Register(model);
+                // Register - identity serivce
+                await this._identityService.Register(model);
 
+                // Success
+                if (ModelErrorHelper.ModelErrors.Count is 0)
+                {
                     return RedirectToAction("Login");
                 }
-                catch (Exception e)
+
+                // Errors
+                foreach (var error in ModelErrorHelper.ModelErrors)
                 {
-                    // Inner exception message is the type name
-                    ModelState.AddModelError(e.InnerException.Message, e.Message);
+                    ModelState.AddModelError(error.Split(' ')[0], error);
                 }
+                ModelErrorHelper.ModelErrors = new List<string>();
+
+                return View(model);
             }
             return View(model);
         }
@@ -45,7 +53,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginServiceModel model) 
+        public async Task<IActionResult> Login(LoginServiceModel model)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +73,7 @@
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Logout() 
+        public async Task<IActionResult> Logout()
         {
             await this._identityService.Logout();
 

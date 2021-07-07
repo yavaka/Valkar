@@ -26,8 +26,9 @@
                     opt.Password.RequiredLength = 6;
                     opt.Password.RequireDigit = true;
                     opt.Password.RequireLowercase = true;
-                    opt.Password.RequireUppercase = true;
+                    opt.Password.RequireUppercase = true;   
                     opt.Password.RequireNonAlphanumeric = false;
+                    opt.User.RequireUniqueEmail = true;
                 })
                 .AddEntityFrameworkStores<ValkarDbContext>();
 
