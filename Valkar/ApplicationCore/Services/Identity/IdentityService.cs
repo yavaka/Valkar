@@ -1,16 +1,16 @@
 ﻿namespace ApplicationCore
 {
+    using System;
+    using System.Threading.Tasks;
     using ApplicationCore.Helpers;
     using ApplicationCore.ServiceModels.Identity;
     using ApplicationCore.Services.Identity;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Identity;
-    using System;
-    using System.Threading.Tasks;
 
     public class IdentityService : IIdentityService
     {
-        private const string INVALID_LOGIN = "Invalid email or password.";
+        private const string INVALID_LOGIN_ERROR = "Invalid email or password.";
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
@@ -48,14 +48,14 @@
             var user = await GetUser(model.Email);
             if (user is null)
             {
-                ModelErrorHelper.ModelErrors.Add(INVALID_LOGIN);
+                ModelErrorHelper.ModelErrors.Add(INVALID_LOGIN_ERROR);
             }
 
             var passwordValid = await this._userManager
                 .CheckPasswordAsync(user, model.Password);
             if (!passwordValid)
             {
-                ModelErrorHelper.ModelErrors.Add(INVALID_LOGIN);
+                ModelErrorHelper.ModelErrors.Add(INVALID_LOGIN_ERROR);
             }
 
             // Sign in user credentials
@@ -69,13 +69,7 @@
         public async Task Logout()
             => await this._signInManager.SignOutAsync();
 
-        private async Task<User> GetUser(string email = default)
-        {
-            if (email != default)
-            {
-                return await this._userManager.FindByEmailAsync(email);
-            }
-            return null;
-        }
+        private async Task<User> GetUser(string email)
+            => await this._userManager.FindByEmailAsync(email);
     }
 }
