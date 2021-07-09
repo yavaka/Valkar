@@ -8,6 +8,7 @@ namespace Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using System.Reflection;
 
     public class Startup
     {
@@ -23,6 +24,11 @@ namespace Web
             services
                 .AddApplicationCore(this.Configuration)
                 .AddInfrastructure(this.Configuration);
+
+            services.AddAutoMapper(
+                typeof(Startup),
+                typeof(ApplicationCoreConfiguration),
+                typeof(InfrastructureConfiguration));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
