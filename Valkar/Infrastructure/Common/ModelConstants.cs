@@ -3,6 +3,7 @@
     public static class ModelConstants
     {
         public const int MAX_NAME_LENGTH = 30;
+        public const int MIN_NAME_LENGTH = 3;
 
         public const int MAX_ADDRESS_LENGTH = 200;
         

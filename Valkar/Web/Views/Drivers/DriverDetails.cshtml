@@ -1,0 +1,158 @@
+﻿@using Infrastructure.Common.Enums;
+
+@model ApplicationCore.ServiceModels.Driver.DriverDetailsServiceModel
+
+@{
+
+}
+
+<div class="container-fluid h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-xs-1 col-sm-6 col-md-6 col-xl-4 col-xxl-4" id="register-form">
+            <div class="shadow p-3 mb-5 bg-body rounded">
+
+                <form asp-controller="Drivers" asp-action="DriverDetails" method="post">
+                    <div class="d-flex justify-content-center">
+                        <h1>Personal details</h1>
+                        <br />
+                    </div>
+                    <hr />
+
+                    @*--Driver personal details section--*@
+                    <section>
+                        <div class="form-group">
+                            <label asp-for="Title"></label>
+                            <select asp-for="Title" asp-items="Html.GetEnumSelectList<Titles>()" class="form-control">
+                                <option selected="selected" value="">Please select</option>
+                            </select>
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="FirstNames"></label>
+                            <input asp-for="FirstNames" type="text" class="form-control">
+                            <span asp-validation-for="FirstNames" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Surname"></label>
+                            <input asp-for="Surname" type="text" class="form-control">
+                            <span asp-validation-for="Surname" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Address"></label>
+                            <input asp-for="Address" type="text" class="form-control">
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Postcode"></label>
+                            <input asp-for="Postcode" type="text" class="form-control">
+                            <span asp-validation-for="Postcode" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber"></label>
+                            <input asp-for="PhoneNumber" type="text" class="form-control">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="NationalInsuranceNumber"></label>
+                            <input asp-for="NationalInsuranceNumber" type="text" class="form-control">
+                            <span asp-validation-for="NationalInsuranceNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                    </section>
+
+                    @*--Emergency contact section--*@
+                <section>
+                    <div class="d-flex justify-content-center">
+                        <h1>Emergency contact</h1>
+                        <br />
+                    </div>
+                    <hr />
+
+                    <div class="form-group">
+                        <label asp-for="EmergencyContact.Title"></label>
+                        <select asp-for="EmergencyContact.Title" asp-items="Html.GetEnumSelectList<Titles>()" class="form-control">
+                            <option selected="selected" value="">Please select</option>
+                        </select>
+                        <span asp-validation-for="EmergencyContact.Title" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="EmergencyContact.FirstNames"></label>
+                        <input asp-for="EmergencyContact.FirstNames" type="text" class="form-control">
+                        <span asp-validation-for="EmergencyContact.FirstNames" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="EmergencyContact.Surname"></label>
+                        <input asp-for="EmergencyContact.Surname" type="text" class="form-control">
+                        <span asp-validation-for="EmergencyContact.Surname" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="EmergencyContact.Address"></label>
+                        <input asp-for="EmergencyContact.Address" type="text" class="form-control">
+                        <span asp-validation-for="EmergencyContact.Address" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="EmergencyContact.Postcode"></label>
+                        <input asp-for="EmergencyContact.Postcode" type="text" class="form-control">
+                        <span asp-validation-for="EmergencyContact.Postcode" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="EmergencyContact.PhoneNumber"></label>
+                        <input asp-for="EmergencyContact.PhoneNumber" type="text" class="form-control">
+                        <span asp-validation-for="EmergencyContact.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="EmergencyContact.Email"></label>
+                        <input asp-for="EmergencyContact.Email" type="email" class="form-control">
+                        <span asp-validation-for="EmergencyContact.Email" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label asp-for="EmergencyContact.Relationship"></label>
+                        <input asp-for="EmergencyContact.Relationship" type="text" class="form-control">
+                        <span asp-validation-for="EmergencyContact.Relationship" class="text-danger"></span>
+                    </div>
+                    <br />
+                </section>
+
+                    @*--Limited company--*@
+                    <section>
+                        <div class="d-flex justify-content-center">
+                            <h1>Limited company</h1>
+                            <br />
+                        </div>
+                        <hr />
+                        <div class="form-check">
+                            <h5>If you do not have a limited company leave blank.</h5>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LimitedCompany.CompanyName"></label>
+                            <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
+                            <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
+                            <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
+                            <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                    </section>
+
+                    <button type="submit" class="btn btn-primary">Onboard</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -50,8 +50,7 @@
             // User one to one
             builder.HasOne(u => u.User)
                 .WithOne(d => d.Driver)
-                .HasForeignKey<Driver>(u => u.UserId)
-                .IsRequired();
+                .HasForeignKey<Driver>(u => u.UserId);
         }
     }
 }

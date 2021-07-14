@@ -5,10 +5,9 @@ namespace Web
     using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using System.Reflection;
 
     public class Startup
     {
@@ -22,13 +21,9 @@ namespace Web
             services.AddControllersWithViews();
 
             services
+                .AddWeb()
                 .AddApplicationCore(this.Configuration)
                 .AddInfrastructure(this.Configuration);
-
-            services.AddAutoMapper(
-                typeof(Startup),
-                typeof(ApplicationCoreConfiguration),
-                typeof(InfrastructureConfiguration));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

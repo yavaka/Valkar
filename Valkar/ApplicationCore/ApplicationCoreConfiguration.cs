@@ -1,11 +1,14 @@
 ﻿namespace ApplicationCore
 {
+    using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
+    using ApplicationCore.Services.Mapper;
     using Infrastructure;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using System;
 
     public static class ApplicationCoreConfiguration
     {
@@ -15,6 +18,11 @@
         {
             services.AddIdentityService();
             services.AddApplicationCookie(configuration);
+
+            services.AddTransient<IMapperService, MapperService>();
+
+            services.AddTransient<IDriverService, DriverService>();
+
             return services;
         }
 
@@ -43,6 +51,7 @@
             => services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = configuration["ApplicationSettings:LoginPath"];
+                config.ExpireTimeSpan = TimeSpan.FromMinutes(10);
             });
     }
 }

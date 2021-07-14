@@ -13,6 +13,7 @@
         public string Postcode { get; set; }
         public string PhoneNumber { get; set; }
         public string Relationship { get; set; }
+
         public Guid DriverId { get; set; }
         public Driver Driver{ get; set; }
     }

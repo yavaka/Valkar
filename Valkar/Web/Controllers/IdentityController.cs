@@ -38,7 +38,7 @@
                 // Errors
                 foreach (var error in ModelErrorHelper.ModelErrors)
                 {
-                    ModelState.AddModelError(error.Split(' ')[0], error);
+                    ModelState.AddModelError(string.Empty, error);
                 }
                 ModelErrorHelper.ModelErrors = new List<string>();
 
@@ -59,13 +59,33 @@
             {
                 try
                 {
-                    await this._identityService.Login(model);
+                    // Whether or not the driver details completed
+                    var isCompleted = await this._identityService.Login(model);
 
-                    return RedirectToAction("Privacy", "Home");
+                    // Redirect to driver profile
+                    if (isCompleted)
+                    {
+                        return RedirectToAction("Profile", "Drivers");
+                    }
+                    // Redirect to driver details form
+                    return RedirectToAction("DriverDetails", "Drivers");
                 }
                 catch (Exception e)
                 {
-                    ModelState.AddModelError("Login", e.Message);
+                    // Add model error from sign in manager
+                    if (ModelErrorHelper.ModelErrors.Count is 0)
+                    {
+                        ModelState.AddModelError("Login", e.Message);
+                    }
+                    // Add model error from identity service login method
+                    else
+                    {
+                        foreach (var error in ModelErrorHelper.ModelErrors)
+                        {
+                            ModelState.AddModelError(string.Empty, error);
+                        }
+                        ModelErrorHelper.ModelErrors = new List<string>();
+                    }
                 }
             }
             return View(model);
