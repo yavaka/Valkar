@@ -59,6 +59,12 @@
                         </div>
                         <br />
                         <div class="form-group">
+                            <label asp-for="PhoneNumber"></label>
+                            <input asp-for="PhoneNumber" type="text" class="form-control">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
                             <label asp-for="NationalInsuranceNumber"></label>
                             <input asp-for="NationalInsuranceNumber" type="text" class="form-control">
                             <span asp-validation-for="NationalInsuranceNumber" class="text-danger"></span>
@@ -67,64 +73,64 @@
                     </section>
 
                     @*--Emergency contact section--*@
-                <section>
-                    <div class="d-flex justify-content-center">
-                        <h1>Emergency contact</h1>
-                        <br />
-                    </div>
-                    <hr />
+                    <section>
+                        <div class="d-flex justify-content-center">
+                            <h1>Emergency contact</h1>
+                            <br />
+                        </div>
+                        <hr />
 
-                    <div class="form-group">
-                        <label asp-for="EmergencyContact.Title"></label>
-                        <select asp-for="EmergencyContact.Title" asp-items="Html.GetEnumSelectList<Titles>()" class="form-control">
-                            <option selected="selected" value="">Please select</option>
-                        </select>
-                        <span asp-validation-for="EmergencyContact.Title" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="EmergencyContact.FirstNames"></label>
-                        <input asp-for="EmergencyContact.FirstNames" type="text" class="form-control">
-                        <span asp-validation-for="EmergencyContact.FirstNames" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="EmergencyContact.Surname"></label>
-                        <input asp-for="EmergencyContact.Surname" type="text" class="form-control">
-                        <span asp-validation-for="EmergencyContact.Surname" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="EmergencyContact.Address"></label>
-                        <input asp-for="EmergencyContact.Address" type="text" class="form-control">
-                        <span asp-validation-for="EmergencyContact.Address" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="EmergencyContact.Postcode"></label>
-                        <input asp-for="EmergencyContact.Postcode" type="text" class="form-control">
-                        <span asp-validation-for="EmergencyContact.Postcode" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="EmergencyContact.PhoneNumber"></label>
-                        <input asp-for="EmergencyContact.PhoneNumber" type="text" class="form-control">
-                        <span asp-validation-for="EmergencyContact.PhoneNumber" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="EmergencyContact.Email"></label>
-                        <input asp-for="EmergencyContact.Email" type="email" class="form-control">
-                        <span asp-validation-for="EmergencyContact.Email" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="EmergencyContact.Relationship"></label>
-                        <input asp-for="EmergencyContact.Relationship" type="text" class="form-control">
-                        <span asp-validation-for="EmergencyContact.Relationship" class="text-danger"></span>
-                    </div>
-                    <br />
-                </section>
+                        <div class="form-group">
+                            <label asp-for="EmergencyContact.Title"></label>
+                            <select asp-for="EmergencyContact.Title" asp-items="Html.GetEnumSelectList<Titles>()" class="form-control">
+                                <option selected="selected" value="">Please select</option>
+                            </select>
+                            <span asp-validation-for="EmergencyContact.Title" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="EmergencyContact.FirstNames"></label>
+                            <input asp-for="EmergencyContact.FirstNames" type="text" class="form-control">
+                            <span asp-validation-for="EmergencyContact.FirstNames" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="EmergencyContact.Surname"></label>
+                            <input asp-for="EmergencyContact.Surname" type="text" class="form-control">
+                            <span asp-validation-for="EmergencyContact.Surname" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="EmergencyContact.Address"></label>
+                            <input asp-for="EmergencyContact.Address" type="text" class="form-control">
+                            <span asp-validation-for="EmergencyContact.Address" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="EmergencyContact.Postcode"></label>
+                            <input asp-for="EmergencyContact.Postcode" type="text" class="form-control">
+                            <span asp-validation-for="EmergencyContact.Postcode" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="EmergencyContact.PhoneNumber"></label>
+                            <input asp-for="EmergencyContact.PhoneNumber" type="text" class="form-control">
+                            <span asp-validation-for="EmergencyContact.PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="EmergencyContact.Email"></label>
+                            <input asp-for="EmergencyContact.Email" type="email" class="form-control">
+                            <span asp-validation-for="EmergencyContact.Email" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="EmergencyContact.Relationship"></label>
+                            <input asp-for="EmergencyContact.Relationship" type="text" class="form-control">
+                            <span asp-validation-for="EmergencyContact.Relationship" class="text-danger"></span>
+                        </div>
+                        <br />
+                    </section>
 
                     @*--Limited company--*@
                     <section>
@@ -133,21 +139,36 @@
                             <br />
                         </div>
                         <hr />
-                        <div class="form-check">
-                            <h5>If you do not have a limited company leave blank.</h5>
-                        </div>
                         <div class="form-group">
-                            <label asp-for="LimitedCompany.CompanyName"></label>
-                            <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
-                            <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger"></span>
+                            <label>Do you have Limited Company(LTD)</label><br />
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radio-button" value="Yes" id="flexRadioDefault1">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radio-button" value="No" id="flexRadioDefault2">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    No
+                                </label>
+                            </div>
                         </div>
                         <br />
-                        <div class="form-group">
-                            <label asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
-                            <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
-                            <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger"></span>
+                        <div class="limited-company">
+                            <div class="form-group">
+                                <label asp-for="LimitedCompany.CompanyName"></label>
+                                <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
+                                <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger"></span>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
+                                <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
+                                <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger"></span>
+                            </div>
+                            <br />
                         </div>
-                        <br />
                     </section>
 
                     <button type="submit" class="btn btn-primary">Onboard</button>
@@ -156,3 +177,24 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        const YES = 'Yes';
+        const NO = 'No';
+
+        $(document).ready(function () {
+            $('.limited-company').hide();
+
+            $('input[type="radio"]').click(function () {
+                var inputValue = $("input[type='radio']:checked").val();
+                if (inputValue === YES) {
+                    $('.limited-company').show();
+                }
+                else if (inputValue === NO) {
+                    $('.limited-company').hide();
+                }
+            });
+        });
+    </script>
+}
