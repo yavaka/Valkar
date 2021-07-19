@@ -2,6 +2,7 @@
 {
     using ApplicationCore.Helpers;
     using ApplicationCore.Helpers.CheckBox;
+    using ApplicationCore.ServiceModels.Document;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
@@ -42,7 +43,8 @@
         {
             return View(new DriverDetailsServiceModel()
             {
-                DrivingLicenceCategories = GetDrivingLicenceCategoriesAsCheckBoxModels().ToArray()
+                DrivingLicenceCategories = GetDrivingLicenceCategoriesAsCheckBoxModels().ToArray(),
+                Documents = new DocumentsServiceModel()
             });
         }
 
@@ -72,7 +74,6 @@
             }
             else
             {
-                var error = ModelState.Values;
                 return View(model);
             }
         }
@@ -96,7 +97,7 @@
 
         private void ValidateDrivingLicenceCategories(CheckBoxModel[] drivingLicenceCategories)
         {
-            if (!drivingLicenceCategories.Any(c =>c.IsChecked))
+            if (!drivingLicenceCategories.Any(c => c.IsChecked))
             {
                 ModelState.AddModelError(
                     "DrivingLicenceCategories",
@@ -106,19 +107,19 @@
 
         private void ValidateLimitedCompanyFields(LimitedCompanyServiceModel limitedCompany)
         {
-            if (string.IsNullOrEmpty(limitedCompany.CompanyName) || 
+            if (string.IsNullOrEmpty(limitedCompany.CompanyName) ||
                 string.IsNullOrWhiteSpace(limitedCompany.CompanyName))
             {
                 ModelState.AddModelError(
-                    "LimitedCompany.CompanyName", 
+                    "LimitedCompany.CompanyName",
                     "Company name cannot be empty.");
             }
 
-            if (string.IsNullOrEmpty(limitedCompany.CompanyRegistrationNumber) || 
+            if (string.IsNullOrEmpty(limitedCompany.CompanyRegistrationNumber) ||
                 string.IsNullOrWhiteSpace(limitedCompany.CompanyRegistrationNumber))
             {
                 ModelState.AddModelError(
-                    "LimitedCompany.CompanyRegistrationNumber", 
+                    "LimitedCompany.CompanyRegistrationNumber",
                     "Company registration number cannot be empty.");
             }
         }
