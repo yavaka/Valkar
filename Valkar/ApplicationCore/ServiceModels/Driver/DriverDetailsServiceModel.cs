@@ -1,6 +1,8 @@
 ﻿namespace ApplicationCore.ServiceModels.Driver
 {
+    using ApplicationCore.Helpers.CheckBox;
     using Infrastructure.Common.Enums;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using static Infrastructure.Common.ModelConstants;
@@ -26,6 +28,9 @@
         [DisplayName("Phone number")]
         public string PhoneNumber { get; set; }
         [Required]
+        [DisplayName("Driving licence categories")]
+        public CheckBoxModel[] DrivingLicenceCategories { get; set; }
+        [Required]
         [StringLength(FIXED_NINO_LENGTH, ErrorMessage = "The {0} is {2} characters long.", MinimumLength = FIXED_NINO_LENGTH)]
         [DisplayName("National insurance number")]
         public string NationalInsuranceNumber { get; set; }
@@ -34,6 +39,6 @@
         /// <summary>
         /// Radio button value for limited company
         /// </summary>
-        public string IsLimitedCompany{ get; set; }
+        public string IsLimitedCompany { get; set; }
     }
 }

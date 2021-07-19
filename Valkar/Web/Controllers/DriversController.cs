@@ -1,13 +1,19 @@
 ﻿namespace Web.Controllers
 {
     using ApplicationCore.Helpers;
+    using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
+    using Infrastructure.Common.Enums;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Web.ViewModels;
 
     [Authorize]
     public class DriversController : Controller
@@ -34,13 +40,17 @@
         [HttpGet]
         public IActionResult DriverDetails()
         {
-            return View(new DriverDetailsServiceModel());
+            return View(new DriverDetailsServiceModel()
+            {
+                DrivingLicenceCategories = GetDrivingLicenceCategoriesAsCheckBoxModels().ToArray()
+            });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DriverDetailsAsync(DriverDetailsServiceModel model)
         {
+            ValidateDrivingLicenceCategories(model.DrivingLicenceCategories);
             if (model.IsLimitedCompany is YES)
             {
                 ValidateLimitedCompanyFields(model.LimitedCompany);
@@ -64,6 +74,33 @@
             {
                 var error = ModelState.Values;
                 return View(model);
+            }
+        }
+
+        private List<CheckBoxModel> GetDrivingLicenceCategoriesAsCheckBoxModels()
+        {
+            var drivingLicenseCategories = new List<CheckBoxModel>();
+
+            var categoryValue = 0;
+            foreach (var categoryName in Enum.GetNames(typeof(DrivingLicenceCategories)))
+            {
+                drivingLicenseCategories.Add(new CheckBoxModel
+                {
+                    Text = categoryName,
+                    Value = categoryValue
+                });
+                categoryValue++;
+            }
+            return drivingLicenseCategories;
+        }
+
+        private void ValidateDrivingLicenceCategories(CheckBoxModel[] drivingLicenceCategories)
+        {
+            if (!drivingLicenceCategories.Any(c =>c.IsChecked))
+            {
+                ModelState.AddModelError(
+                    "DrivingLicenceCategories",
+                    "You should select your driving licence categories");
             }
         }
 

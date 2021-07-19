@@ -2,10 +2,6 @@
 
 @model ApplicationCore.ServiceModels.Driver.DriverDetailsServiceModel
 
-@{
-
-}
-
 <div class="container-fluid h-100">
     <div class="row h-100 justify-content-center align-items-center">
         <div class="col-xs-1 col-sm-6 col-md-6 col-xl-4 col-xxl-4" id="register-form">
@@ -62,6 +58,26 @@
                             <label asp-for="PhoneNumber"></label>
                             <input asp-for="PhoneNumber" type="text" class="form-control">
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="DrivingLicenceCategories"></label>
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <ul class="list-group" style="max-height: 200px; overflow: scroll; -webkit-overflow-scrolling: touch;">
+                                        @for (int i = 0; i < Model.DrivingLicenceCategories.Length; i++)
+                                        {
+                                            <li class="list-group-item form-control">
+                                                <input asp-for="@Model.DrivingLicenceCategories[i].IsChecked" type="checkbox" />
+                                                <label asp-for="@Model.DrivingLicenceCategories[i].IsChecked"> @Model.DrivingLicenceCategories[i].Text</label>
+                                                <input asp-for="@Model.DrivingLicenceCategories[i].Text" type="hidden" />
+                                                <input asp-for="@Model.DrivingLicenceCategories[i].Value" type="hidden" />
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <span asp-validation-for="DrivingLicenceCategories" class="text-danger"></span>
                         </div>
                         <br />
                         <div class="form-group">
@@ -133,86 +149,18 @@
                     </section>
 
                     @*--Limited company--*@
-                <section>
-                    <div class="d-flex justify-content-center">
-                        <h1>Limited company</h1>
-                        <br />
-                    </div>
-                    <hr />
-                    @if (Model.IsLimitedCompany == null)
-                    {
-                        <div class="form-group">
-                            <label>Do you have Limited Company(LTD)</label><br />
-                            <div class="form-check">
-                                <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1">
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                    Yes
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="No" id="flexRadioDefault2">
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="limited-company">
-                            <div class="form-group">
-                                <label asp-for="LimitedCompany.CompanyName"></label>
-                                <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
-                                <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger"></span>
-                            </div>
-                            <br />
-                            <div class="form-group">
-                                <label asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
-                                <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
-                                <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger"></span>
-                            </div>
+                    <section>
+                        <div class="d-flex justify-content-center">
+                            <h1>Limited company</h1>
                             <br />
                         </div>
-                    }
-                    else
-                    {
-                        @if (Model.IsLimitedCompany is "No")
+                        <hr />
+                        @if (Model.IsLimitedCompany == null)
                         {
                             <div class="form-group">
                                 <label>Do you have Limited Company(LTD)</label><br />
                                 <div class="form-check">
                                     <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1">
-                                    <label class="form-check-label" for="flexRadioDefault1">
-                                        Yes
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="No" id="flexRadioDefault2" checked>
-                                    <label class="form-check-label" for="flexRadioDefault2">
-                                        No
-                                    </label>
-                                </div>
-                            </div>
-                            <br />
-                            <div class="limited-company" hidden>
-                                <div class="form-group">
-                                    <label asp-for="LimitedCompany.CompanyName"></label>
-                                    <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
-                                    <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger"></span>
-                                </div>
-                                <br />
-                                <div class="form-group">
-                                    <label asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
-                                    <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
-                                    <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger"></span>
-                                </div>
-                                <br />
-                            </div>
-                        }
-                        @if (Model.IsLimitedCompany is "Yes")
-                        {
-                            <div class="form-group">
-                                <label>Do you have Limited Company(LTD)</label><br />
-                                <div class="form-check">
-                                    <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1" checked>
                                     <label class="form-check-label" for="flexRadioDefault1">
                                         Yes
                                     </label>
@@ -240,8 +188,76 @@
                                 <br />
                             </div>
                         }
-                    }
-                </section>
+                        else
+                        {
+                            @if (Model.IsLimitedCompany is "No")
+                            {
+                                <div class="form-group">
+                                    <label>Do you have Limited Company(LTD)</label><br />
+                                    <div class="form-check">
+                                        <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="No" id="flexRadioDefault2" checked>
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="limited-company" hidden>
+                                    <div class="form-group">
+                                        <label asp-for="LimitedCompany.CompanyName"></label>
+                                        <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
+                                        <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                    <div class="form-group">
+                                        <label asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
+                                        <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
+                                        <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                </div>
+                            }
+                            @if (Model.IsLimitedCompany is "Yes")
+                            {
+                                <div class="form-group">
+                                    <label>Do you have Limited Company(LTD)</label><br />
+                                    <div class="form-check">
+                                        <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Yes
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="No" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="limited-company">
+                                    <div class="form-group">
+                                        <label asp-for="LimitedCompany.CompanyName"></label>
+                                        <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
+                                        <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                    <div class="form-group">
+                                        <label asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
+                                        <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
+                                        <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger"></span>
+                                    </div>
+                                    <br />
+                                </div>
+                            }
+                        }
+                    </section>
 
                     <button type="submit" class="btn btn-primary">Onboard</button>
                 </form>
