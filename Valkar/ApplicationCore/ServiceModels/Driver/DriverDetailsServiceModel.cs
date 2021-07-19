@@ -31,5 +31,9 @@
         public string NationalInsuranceNumber { get; set; }
         public EmergencyContactServiceModel EmergencyContact { get; set; }
         public LimitedCompanyServiceModel LimitedCompany { get; set; }
+        /// <summary>
+        /// Radio button value for limited company
+        /// </summary>
+        public string IsLimitedCompany{ get; set; }
     }
 }

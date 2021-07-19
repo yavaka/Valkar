@@ -12,6 +12,8 @@
     [Authorize]
     public class DriversController : Controller
     {
+        private const string YES = "Yes";
+
         private readonly IDriverService _driverService;
         private readonly IIdentityService _identityService;
 
@@ -32,13 +34,18 @@
         [HttpGet]
         public IActionResult DriverDetails()
         {
-            return View();
+            return View(new DriverDetailsServiceModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DriverDetailsAsync(DriverDetailsServiceModel model)
         {
+            if (model.IsLimitedCompany is YES)
+            {
+                ValidateLimitedCompanyFields(model.LimitedCompany);
+            }
+
             if (ModelState.IsValid)
             {
                 // Get current user id
@@ -57,6 +64,25 @@
             {
                 var error = ModelState.Values;
                 return View(model);
+            }
+        }
+
+        private void ValidateLimitedCompanyFields(LimitedCompanyServiceModel limitedCompany)
+        {
+            if (string.IsNullOrEmpty(limitedCompany.CompanyName) || 
+                string.IsNullOrWhiteSpace(limitedCompany.CompanyName))
+            {
+                ModelState.AddModelError(
+                    "LimitedCompany.CompanyName", 
+                    "Company name cannot be empty.");
+            }
+
+            if (string.IsNullOrEmpty(limitedCompany.CompanyRegistrationNumber) || 
+                string.IsNullOrWhiteSpace(limitedCompany.CompanyRegistrationNumber))
+            {
+                ModelState.AddModelError(
+                    "LimitedCompany.CompanyRegistrationNumber", 
+                    "Company registration number cannot be empty.");
             }
         }
     }
