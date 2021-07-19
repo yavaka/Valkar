@@ -15,6 +15,7 @@
         public DbSet<Driver> Drivers{ get; set; }
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
         public DbSet<LimitedCompany> LimitedCompanies { get; set; }
+        public DbSet<LicenceCategory> DriversLicenceCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -1,6 +1,7 @@
 ﻿namespace Infrastructure.Models
 {
     using System;
+    using System.Collections.Generic;
     using Infrastructure.Common.Enums;
 
     public class Driver
@@ -12,6 +13,7 @@
         public string Address { get; set; }
         public string Postcode { get; set; }
         public string PhoneNumber { get; set; }
+        public ICollection<LicenceCategory> LicenceCategories{ get; set; }
         public string NationalInsuranceNumber { get; set; }
         /// <summary>
         /// Shows whether or not the driver filled in all personal details
