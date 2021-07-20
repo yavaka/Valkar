@@ -1,6 +1,5 @@
 ﻿namespace Web.Controllers
 {
-    using ApplicationCore.Helpers;
     using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Document;
     using ApplicationCore.ServiceModels.Driver;
@@ -8,18 +7,18 @@
     using ApplicationCore.Services.Identity;
     using Infrastructure.Common.Enums;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Web.ViewModels;
 
     [Authorize]
     public class DriversController : Controller
     {
         private const string YES = "Yes";
+        private const long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
         private readonly IDriverService _driverService;
         private readonly IIdentityService _identityService;
@@ -52,12 +51,12 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DriverDetailsAsync(DriverDetailsServiceModel model)
         {
+            // TODO: Define Validation method and bring all validation logic there
             ValidateDrivingLicenceCategories(model.DrivingLicenceCategories);
             if (model.IsLimitedCompany is YES)
             {
                 ValidateLimitedCompanyFields(model.LimitedCompany);
             }
-
             if (ModelState.IsValid)
             {
                 // Get current user id

@@ -1,6 +1,7 @@
 ﻿namespace ApplicationCore
 {
     using ApplicationCore.Services.Driver;
+    using ApplicationCore.Services.File;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
     using Infrastructure;
@@ -22,6 +23,8 @@
             services.AddTransient<IMapperService, MapperService>();
 
             services.AddTransient<IDriverService, DriverService>();
+
+            services.AddTransient<IFileService, FileService>();
 
             return services;
         }

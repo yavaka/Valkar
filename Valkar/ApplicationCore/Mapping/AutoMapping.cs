@@ -10,7 +10,8 @@
         public AutoMapping()
         {
             CreateMap<RegisterServiceModel, User>();
-            CreateMap<DriverDetailsServiceModel, Driver>();
+            CreateMap<DriverDetailsServiceModel, Driver>()
+                .ForMember(d =>d.Documents, opt =>opt.Ignore());
             CreateMap<EmergencyContactServiceModel, EmergencyContact>();
             CreateMap<LimitedCompanyServiceModel, LimitedCompany>();
         }

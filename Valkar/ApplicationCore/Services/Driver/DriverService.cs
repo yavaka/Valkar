@@ -3,6 +3,7 @@
     using ApplicationCore.Helpers;
     using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Driver;
+    using ApplicationCore.Services.File;
     using ApplicationCore.Services.Mapper;
     using Infrastructure;
     using Infrastructure.Common.Enums;
@@ -16,13 +17,16 @@
     {
         private readonly ValkarDbContext _data;
         private readonly IMapperService _mapper;
+        private readonly IFileService _fileService;
 
         public DriverService(
             ValkarDbContext data,
-            IMapperService mapper)
+            IMapperService mapper,
+            IFileService fileService)
         {
             this._data = data;
             this._mapper = mapper;
+            this._fileService = fileService;
         }
 
         public async Task AddDriver(DriverDetailsServiceModel model, string userId)
@@ -30,8 +34,12 @@
             // Map driver service model to driver
             var driver = this._mapper.Map<DriverDetailsServiceModel, Driver>(model);
 
-            // Convert DL Categories to enums and LicenceCategory models
+            // Convert DL Categories to LicenceCategory models
             driver.LicenceCategories = ConvertToLicenceCategories(model.DrivingLicenceCategories);
+
+            // Convert uploaded documents to File models
+            driver.Documents = await this._fileService
+                .ProcessUploadedDocuments(model.Documents);
 
             // set user id to this driver
             driver.UserId = userId;

@@ -15,103 +15,103 @@
                     <hr />
 
                     @*--Driver personal details section--*@
-                <section>
-                    <div class="form-group">
-                        <label asp-for="Title"></label>
-                        <select asp-for="Title" asp-items="Html.GetEnumSelectList<Titles>()" class="form-control">
-                            <option selected="selected" value="">Please select</option>
-                        </select>
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="FirstNames"></label>
-                        <input asp-for="FirstNames" type="text" class="form-control">
-                        <span asp-validation-for="FirstNames" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Surname"></label>
-                        <input asp-for="Surname" type="text" class="form-control">
-                        <span asp-validation-for="Surname" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Address"></label>
-                        <input asp-for="Address" type="text" class="form-control">
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Postcode"></label>
-                        <input asp-for="Postcode" type="text" class="form-control">
-                        <span asp-validation-for="Postcode" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="PhoneNumber"></label>
-                        <input asp-for="PhoneNumber" type="text" class="form-control">
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="DrivingLicenceCategories"></label>
-                        <span>Please, select all drivinig licence categories.</span>
-                        <div class="panel panel-primary">
-                            <div class="panel-body">
-                                <ul class="list-group" style="max-height: 200px; overflow: scroll; -webkit-overflow-scrolling: touch;">
-                                    @for (int i = 0; i < Model.DrivingLicenceCategories.Length; i++)
-                                    {
-                                        <li class="list-group-item form-control">
-                                            <input asp-for="@Model.DrivingLicenceCategories[i].IsChecked" type="checkbox" />
-                                            <label asp-for="@Model.DrivingLicenceCategories[i].IsChecked"> @Model.DrivingLicenceCategories[i].Text</label>
-                                            <input asp-for="@Model.DrivingLicenceCategories[i].Text" type="hidden" />
-                                            <input asp-for="@Model.DrivingLicenceCategories[i].Value" type="hidden" />
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
+                    <section>
+                        <div class="form-group">
+                            <label asp-for="Title"></label>
+                            <select asp-for="Title" asp-items="Html.GetEnumSelectList<Titles>()" class="form-control">
+                                <option selected="selected" value="">Please select</option>
+                            </select>
+                            <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="DrivingLicenceCategories" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Documents.DrivingLicenceFront"></label>
-                        <input asp-for="Documents.DrivingLicenceFront" type="file" class="form-control">
-                        <span asp-validation-for="Documents.DrivingLicenceFront" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Documents.DrivingLicenceBack"></label>
-                        <input asp-for="Documents.DrivingLicenceBack" type="file" class="form-control">
-                        <span asp-validation-for="Documents.DrivingLicenceBack" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Documents.IdentityDocumentFront"></label>
-                        <input asp-for="Documents.IdentityDocumentFront" type="file" class="form-control">
-                        <span asp-validation-for="Documents.IdentityDocumentFront" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Documents.IdentityDocumentBack"></label>
-                        <input asp-for="Documents.IdentityDocumentBack" type="file" class="form-control">
-                        <span asp-validation-for="Documents.IdentityDocumentBack" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="NationalInsuranceNumber"></label>
-                        <input asp-for="NationalInsuranceNumber" type="text" class="form-control">
-                        <span asp-validation-for="NationalInsuranceNumber" class="text-danger"></span>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Documents.NationalInsuranceNumber"></label>
-                        <input asp-for="Documents.NationalInsuranceNumber" type="file" class="form-control">
-                        <span asp-validation-for="Documents.NationalInsuranceNumber" class="text-danger"></span>
-                    </div>
-                    <br />
-                </section>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="FirstNames"></label>
+                            <input asp-for="FirstNames" type="text" class="form-control">
+                            <span asp-validation-for="FirstNames" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Surname"></label>
+                            <input asp-for="Surname" type="text" class="form-control">
+                            <span asp-validation-for="Surname" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Address"></label>
+                            <input asp-for="Address" type="text" class="form-control">
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Postcode"></label>
+                            <input asp-for="Postcode" type="text" class="form-control">
+                            <span asp-validation-for="Postcode" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber"></label>
+                            <input asp-for="PhoneNumber" type="text" class="form-control">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="DrivingLicenceCategories"></label>
+                            <span>Please, select all drivinig licence categories.</span>
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <ul class="list-group" style="max-height: 200px; overflow: scroll; -webkit-overflow-scrolling: touch;">
+                                        @for (int i = 0; i < Model.DrivingLicenceCategories.Length; i++)
+                                        {
+                                            <li class="list-group-item form-control">
+                                                <input asp-for="@Model.DrivingLicenceCategories[i].IsChecked" type="checkbox" />
+                                                <label asp-for="@Model.DrivingLicenceCategories[i].IsChecked"> @Model.DrivingLicenceCategories[i].Text</label>
+                                                <input asp-for="@Model.DrivingLicenceCategories[i].Text" type="hidden" />
+                                                <input asp-for="@Model.DrivingLicenceCategories[i].Value" type="hidden" />
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <span asp-validation-for="DrivingLicenceCategories" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Documents.DrivingLicenceFront"></label>
+                            <input asp-for="Documents.DrivingLicenceFront" type="file" class="form-control">
+                            <span asp-validation-for="Documents.DrivingLicenceFront" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Documents.DrivingLicenceBack"></label>
+                            <input asp-for="Documents.DrivingLicenceBack" type="file" class="form-control">
+                            <span asp-validation-for="Documents.DrivingLicenceBack" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Documents.IdentityDocumentFront"></label>
+                            <input asp-for="Documents.IdentityDocumentFront" type="file" class="form-control">
+                            <span asp-validation-for="Documents.IdentityDocumentFront" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Documents.IdentityDocumentBack"></label>
+                            <input asp-for="Documents.IdentityDocumentBack" type="file" class="form-control">
+                            <span asp-validation-for="Documents.IdentityDocumentBack" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="NationalInsuranceNumber"></label>
+                            <input asp-for="NationalInsuranceNumber" type="text" class="form-control">
+                            <span asp-validation-for="NationalInsuranceNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label asp-for="Documents.NationalInsuranceNumber"></label>
+                            <input asp-for="Documents.NationalInsuranceNumber" type="file" class="form-control">
+                            <span asp-validation-for="Documents.NationalInsuranceNumber" class="text-danger"></span>
+                        </div>
+                        <br />
+                    </section>
 
                     @*--Emergency contact section--*@
                     <section>
