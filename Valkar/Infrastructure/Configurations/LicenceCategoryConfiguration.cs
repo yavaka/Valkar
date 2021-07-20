@@ -4,7 +4,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class LicenceCategoryConfiguration : IEntityTypeConfiguration<LicenceCategory>
+    internal class LicenceCategoryConfiguration : IEntityTypeConfiguration<LicenceCategory>
     {
         public void Configure(EntityTypeBuilder<LicenceCategory> builder)
         {
