@@ -1,6 +1,7 @@
 ﻿namespace ApplicationCore
 {
     using ApplicationCore.Services.Driver;
+    using ApplicationCore.Services.Email;
     using ApplicationCore.Services.File;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
@@ -25,6 +26,8 @@
             services.AddTransient<IDriverService, DriverService>();
 
             services.AddTransient<IFileService, FileService>();
+
+            services.AddEmailSender(configuration);
 
             return services;
         }
@@ -56,5 +59,20 @@
                 config.LoginPath = configuration["ApplicationSettings:LoginPath"];
                 config.ExpireTimeSpan = TimeSpan.FromMinutes(10);
             });
+
+        private static IServiceCollection AddEmailSender(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            // Fetch EmailConfiguration section from appsettings.json
+            var emailConfig = configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailService, EmailService>();
+
+            return services;
+        }
     }
 }
