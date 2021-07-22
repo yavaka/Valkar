@@ -49,6 +49,8 @@ namespace Web
             app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
 
             app.ApplyMigrations();
+
+            app.AddRolesAndAdminAsync().Wait();
         }
     }
 }
