@@ -42,6 +42,10 @@
                     ModelErrorHelper.ModelErrors.Add(error.Description);
                 }
             }
+            else
+            {
+                // Add role here
+            }
         }
 
         /// <summary>
@@ -51,7 +55,7 @@
         public async Task<bool> Login(LoginServiceModel model)
         {
             // Check is user exist
-            var user = await GetUser(model.Email);
+            var user = await GetUserByEmail(model.Email);
             if (user is null)
             {
                 ModelErrorHelper.ModelErrors.Add(INVALID_LOGIN_ERROR);
@@ -101,7 +105,13 @@
             }
         }
 
-        private async Task<User> GetUser(string email)
+        public async Task<User> GetUserByEmail(string email)
             => await this._userManager.FindByEmailAsync(email);
+
+        public async Task<string> GeneratePasswordResetToken(User user)
+            => await this._userManager.GeneratePasswordResetTokenAsync(user);
+
+        public async Task<IdentityResult> ResetPassword(User user, string token, string newPassword)
+            => await this._userManager.ResetPasswordAsync(user, token, newPassword);
     }
 }

@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using ApplicationCore.Helpers;
     using ApplicationCore.ServiceModels.Identity;
+    using ApplicationCore.Services.Email;
     using ApplicationCore.Services.Identity;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,15 @@
     public class IdentityController : Controller
     {
         private readonly IIdentityService _identityService;
+        private readonly IEmailService _emailService;
 
-        public IdentityController(IIdentityService identityService)
-            => this._identityService = identityService;
+        public IdentityController(
+            IIdentityService identityService,
+            IEmailService emailService)
+        {
+            this._identityService = identityService;
+            this._emailService = emailService;
+        }
 
         [HttpGet]
         public IActionResult Register()
@@ -98,6 +105,90 @@
             await this._identityService.Logout();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordServiceModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await this._identityService
+                    .GetUserByEmail(model.Email);
+                if (user is null)
+                {
+                    TempData["invalidUser"] = $"Account with email {model.Email} cannot be found.";
+                    return View(model);
+                }
+
+                // Generate password reset token
+                var token = await this._identityService
+                    .GeneratePasswordResetToken(user);
+
+                // Compose callback url
+                var callback = Url.Action(
+                    action: nameof(ResetPassword),
+                    controller: "Identity",
+                    values: new
+                    {
+                        token,
+                        Email = user.Email
+                    },
+                    protocol: Request.Scheme);
+
+                // Send email
+                await this._emailService.SendEmail(new Message(
+                    to: new string[] { user.Email },
+                    subject: "Valkar account reset password",
+                    content: $"Reset password link: \n\r{callback}"));
+
+                TempData["sentEmail"] = "We have sent an email with password reset link. Please check your mailbox.";
+                return View();
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            var model = new ResetPasswordServiceModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordServiceModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await this._identityService.GetUserByEmail(model.Email);
+                if (user == null)
+                {
+                    TempData["invalidUser"] = $"Account with email {model.Email} cannot be found.";
+                    return RedirectToAction(nameof(ForgotPassword));
+                }
+
+                var resetPassResult = await this._identityService
+                    .ResetPassword(user, model.Token, model.Password);
+                if (!resetPassResult.Succeeded)
+                {
+                    foreach (var error in resetPassResult.Errors)
+                    {
+                        ModelState.TryAddModelError(nameof(ResetPasswordServiceModel.Password), error.Description);
+                    }
+
+                    return View();
+                }
+
+                TempData["passwordChanged"] = "Your password was changed successfully. Now you can login with your new password.";
+                return RedirectToAction(nameof(Login));
+            }
+            return View(model);
         }
     }
 }

@@ -10,6 +10,18 @@
             <div class="shadow p-3 mb-5 bg-body rounded">
                 <h1>Login</h1>
                 <hr />
+                @if (TempData["passwordChanged"] is not null)
+                {
+                    <div class="alert alert-success" role="alert">
+                        @TempData["passwordChanged"].ToString()
+                    </div>
+                }
+                @if (TempData["invalidUser"] is not null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["invalidUser"].ToString()
+                    </div>
+                }
                 <form asp-controller="Identity" asp-action="Login" method="post">
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <br />
@@ -21,6 +33,10 @@
                     <div class="form-group">
                         <label asp-for="Password"></label>
                         <input asp-for="Password" type="password" class="form-control">
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <a asp-action="ForgotPassword">Forgot Password</a>
                     </div>
                     <br />
                     <button type="submit" class="btn btn-primary">Login</button>
