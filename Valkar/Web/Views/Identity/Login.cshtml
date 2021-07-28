@@ -4,44 +4,74 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="container">
-    <div class="row h-100 justify-content-center align-items-center">
-        <div class="col-xs-1 col-sm-6 col-md-5 col-lg-4 col-xl-4 col-xxl-4" id="login-form">
-            <div class="shadow p-3 mb-5 bg-body rounded">
-                <h1>Login</h1>
-                <hr />
-                @if (TempData["passwordChanged"] is not null)
-                {
-                    <div class="alert alert-success" role="alert">
-                        @TempData["passwordChanged"].ToString()
+@if (TempData["passwordChanged"] is not null)
+{
+    <div class="alert alert-success border-2 d-flex align-items-center" role="alert">
+        <div class="bg-success me-3 icon-item"><span class="fas fa-check-circle text-white fs-3"></span></div>
+        <p class="mb-0 flex-1">@TempData["passwordChanged"].ToString()</p>
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["invalidUser"] is not null)
+{
+    <div class="alert alert-warning border-2 d-flex align-items-center" role="alert">
+        <div class="bg-warning me-3 icon-item"><span class="fas fa-exclamation-circle text-white fs-3"></span></div>
+        <p class="mb-0 flex-1">@TempData["invalidUser"].ToString()</p>
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<main class="main" id="top">
+    <div class="container-fluid">
+        <script>
+            var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+            if (isFluid) {
+                var container = document.querySelector('[data-layout]');
+                container.classList.remove('container');
+                container.classList.add('container-fluid');
+            }
+        </script>
+        <div class="row min-vh-100 bg-100">
+            <div class="col-6 d-none d-lg-block position-relative">
+                <div class="bg-holder" style="background-image:url(../../img/map.svg);background-position: 50% 20%;">
+                </div>
+                <!--/.bg-holder-->
+
+            </div>
+            <div class="col-sm-10 col-md-6 px-sm-0 align-self-center mx-auto py-5">
+                <div class="row justify-content-center g-0">
+                    <div class="col-lg-9 col-xl-8 col-xxl-6">
+                        <div class="card">
+                            <div class="card-header bg-circle-shape bg-shape text-center p-2"><a class="font-sans-serif fw-bolder fs-4 z-index-1 position-relative link-light light" style="pointer-events: none;">Valkar</a></div>
+                            <div class="card-body p-4">
+                                <div class="row flex-between-center">
+                                    <div class="col-auto">
+                                        <h3>Login</h3>
+                                    </div>
+                                </div>
+                                <form asp-controller="Identity" asp-action="Login" method="post">
+                                    <div class="mb-3">
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="Email"></label>
+                                        <input class="form-control" asp-for="Email" id="split-login-email" type="email" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="form-label" asp-for="Password"></label><a class="fs--1" asp-action="ForgotPassword">Forgot Password?</a>
+                                        </div>
+                                        <input class="form-control" asp-for="Password" id="split-login-password" type="password" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Log in</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                }
-                @if (TempData["invalidUser"] is not null)
-                {
-                    <div class="alert alert-danger" role="alert">
-                        @TempData["invalidUser"].ToString()
-                    </div>
-                }
-                <form asp-controller="Identity" asp-action="Login" method="post">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Email"></label>
-                        <input asp-for="Email" type="email" class="form-control">
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label asp-for="Password"></label>
-                        <input asp-for="Password" type="password" class="form-control">
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <a asp-action="ForgotPassword">Forgot Password</a>
-                    </div>
-                    <br />
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</main>

@@ -6,15 +6,15 @@
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
     using Infrastructure.Common.Enums;
+    using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
-    [Authorize]
+    [Authorize(Roles = Role.Driver)]
     public class DriversController : Controller
     {
         private const string YES = "Yes";
@@ -52,6 +52,7 @@
         public async Task<IActionResult> DriverDetailsAsync(DriverDetailsServiceModel model)
         {
             // TODO: Define Validation method and bring all validation logic there
+            ValidateUploadedFiles(model.Documents);
             ValidateDrivingLicenceCategories(model.DrivingLicenceCategories);
             if (model.IsLimitedCompany is YES)
             {
@@ -74,6 +75,30 @@
             else
             {
                 return View(model);
+            }
+        }
+
+        private void ValidateUploadedFiles(DocumentsServiceModel documents)
+        {
+            if (documents.DrivingLicenceFront.Length > MAX_FILE_SIZE)
+            {
+                ModelState.AddModelError("Documents.DrivingLicenceFront", $"File cannot be more than 10MB.");
+            }
+            if (documents.DrivingLicenceBack.Length > MAX_FILE_SIZE)
+            {
+                ModelState.AddModelError("Documents.DrivingLicenceBack", $"File cannot be more than 10MB.");
+            }
+            if (documents.IdentityDocumentFront.Length > MAX_FILE_SIZE)
+            {
+                ModelState.AddModelError("Documents.IdentityDocumentFront", $"File cannot be more than 10MB.");
+            }
+            if (documents.IdentityDocumentBack is not null && documents.IdentityDocumentBack.Length > MAX_FILE_SIZE)
+            {
+                ModelState.AddModelError("Documents.IdentityDocumentBack", $"File cannot be more than 10MB.");
+            }
+            if (documents.NationalInsuranceNumber.Length > MAX_FILE_SIZE)
+            {
+                ModelState.AddModelError("Documents.NationalInsuranceNumber", $"File cannot be more than 10MB.");
             }
         }
 

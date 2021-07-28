@@ -1,12 +1,14 @@
 ﻿namespace ApplicationCore
 {
     using System;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using ApplicationCore.Helpers;
     using ApplicationCore.ServiceModels.Identity;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
+    using Infrastructure.Common.Global;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Identity;
 
@@ -44,7 +46,7 @@
             }
             else
             {
-                // Add role here
+                await this._userManager.AddToRoleAsync(user, Role.Driver);
             }
         }
 
@@ -113,5 +115,17 @@
 
         public async Task<IdentityResult> ResetPassword(User user, string token, string newPassword)
             => await this._userManager.ResetPasswordAsync(user, token, newPassword);
+
+        public async Task<bool> IsAdminLoggedIn(string email) 
+        {
+            var user = await GetUserByEmail(email);
+            var usersInRole = await this._userManager.GetUsersInRoleAsync(Role.Admin);
+
+            if (usersInRole.Any(i =>i.Id == user.Id))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

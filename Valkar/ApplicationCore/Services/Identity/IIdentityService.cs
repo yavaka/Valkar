@@ -23,5 +23,7 @@
         Task<string> GeneratePasswordResetToken(User user);
 
         Task<IdentityResult> ResetPassword(User user, string token, string newPassword);
+        
+        Task<bool> IsAdminLoggedIn(string email);
     }
 }

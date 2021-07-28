@@ -62,6 +62,7 @@
             {
                 config.LoginPath = configuration["ApplicationSettings:LoginPath"];
                 config.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                config.AccessDeniedPath = configuration["ApplicationSettings:AccessDenied"];
             });
 
         private static IServiceCollection AddEmailSender(

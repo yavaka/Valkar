@@ -69,6 +69,12 @@
                     // Whether or not the driver details completed
                     var isCompleted = await this._identityService.Login(model);
 
+                    // Check is the admin logged in
+                    if (await this._identityService.IsAdminLoggedIn(model.Email))
+                    {
+                        return RedirectToAction("Dashboard", "Admin");
+                    }
+
                     // Redirect to driver profile
                     if (isCompleted)
                     {

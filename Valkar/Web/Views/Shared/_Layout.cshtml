@@ -2,25 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - Valkar</title>
 
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta name="theme-color" content="#ffffff">
+    <script src="~/js/config.js"></script>
+    <script src="~/vendors/overlayscrollbars/OverlayScrollbars.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+    <link href="~/vendors/overlayscrollbars/OverlayScrollbars.min.css" rel="stylesheet">
+    <link href="~/css/theme-rtl.min.css" rel="stylesheet" id="style-rtl">
+    <link href="~/css/theme.min.css" rel="stylesheet" id="style-default">
+    <link href="~/css/user-rtl.min.css" rel="stylesheet" id="user-style-rtl">
+    <link href="~/css/user.min.css" rel="stylesheet" id="user-style-default">
 </head>
 <body>
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
+    @RenderBody()
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; @DateTime.Now.Year - Valkar
-        </div>
-    </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/vendors/popper/popper.min.js"></script>
+    <script src="~/vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="~/vendors/anchorjs/anchor.min.js"></script>
+    <script src="~/vendors/is/is.min.js"></script>
+    <script src="~/js/flatpickr.js"></script>
+    <script src="~/vendors/dropzone/dropzone.min.js"></script>
+    <script src="~/vendors/lottie/lottie.min.js"></script>
+    <script src="~/vendors/validator/validator.min.js"></script>
+    <script src="~/vendors/prism/prism.js"></script>
+    <script src="~/vendors/fontawesome/all.min.js"></script>
+    <script src="~/vendors/lodash/lodash.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="~/vendors/list.js/list.min.js"></script>
+    <script src="~/js/theme.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
