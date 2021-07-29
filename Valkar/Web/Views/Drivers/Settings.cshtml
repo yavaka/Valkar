@@ -1,12 +1,36 @@
-﻿@model ApplicationCore.ServiceModels.Driver.SettingsServiceModel
+﻿@using Web.Extensions;
+@using ApplicationCore.ServiceModels.Driver
+
+@model ApplicationCore.ServiceModels.Driver.SettingsServiceModel
 
 @{
     ViewData["Title"] = "Settings";
+    
+    if (TempData["driverDetails"] is null)
+    {
+        TempData.Set<UpdateDriverDetailsServiceModel>("driverDetails", Model.DriverDetails);
+    }
+    if (TempData["limitedCompany"] is null)
+    {
+        TempData.Set<LimitedCompanyServiceModel>("limitedCompany", Model.LimitedCompany);
+    }
 }
 
 <div class="container" data-layout="container">
     <partial name="_NavbarPartial" />
     <div class="content" style="margin-top: 1%">
+        @if (TempData["updatedDriverDetails"] is not null)
+        {
+            <div class="row g-0">
+                <div class="col-lg-12">
+                    <div class="alert alert-success border-2 d-flex align-items-center" role="alert">
+                        <div class="bg-success me-3 icon-item"><span class="fas fa-check-circle text-white fs-3"></span></div>
+                        <p class="mb-0 flex-1">@TempData["updatedDriverDetails"].ToString()</p>
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        }
         <div class="row g-0">
             <!-- #region Profile settings -->
             <div class="col-lg-8 pe-lg-2">
@@ -15,55 +39,7 @@
                         <h5 class="mb-0">Profile Settings</h5>
                     </div>
                     <div class="card-body bg-light">
-                        <form class="row g-3" asp-action="Settings" method="post">
-                            <div class="col-lg-6">
-                                <label class="form-label" asp-for="FirstNames"></label>
-                                <input class="form-control" asp-for="FirstNames" type="text" value="@Model.FirstNames" />
-                                <span asp-validation-for="FirstNames" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label" asp-for="Surname"></label>
-                                <input class="form-control" asp-for="Surname" type="text" value="@Model.Surname" />
-                                <span asp-validation-for="Surname" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="form-label" asp-for="Address"></label>
-                                <input class="form-control" asp-for="Address" type="text" value="@Model.Address" />
-                                <span asp-validation-for="Address" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label" asp-for="Postcode"></label>
-                                <input class="form-control" asp-for="Postcode" type="text" value="@Model.Postcode" />
-                                <span asp-validation-for="Postcode" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label" asp-for="PhoneNumber"></label>
-                                <input class="form-control" asp-for="PhoneNumber" type="text" value="@Model.PhoneNumber" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="col-lg-12">
-                                <label class="form-label" asp-for="DrivingLicenceCategories"></label>
-                                <div class="panel panel-primary">
-                                    <div class="panel-body">
-                                        <ul class="list-group" style="max-height: 300px; overflow: scroll; -webkit-overflow-scrolling: touch;">
-                                            @for (int i = 0; i < Model.DrivingLicenceCategories.Length; i++)
-                                            {
-                                                <li class="list-group-item form-control">
-                                                    <input asp-for="@Model.DrivingLicenceCategories[i].IsChecked" type="checkbox" />
-                                                    <label asp-for="@Model.DrivingLicenceCategories[i].IsChecked"> @Model.DrivingLicenceCategories[i].Text</label>
-                                                    <input asp-for="@Model.DrivingLicenceCategories[i].Text" type="hidden" />
-                                                    <input asp-for="@Model.DrivingLicenceCategories[i].Value" type="hidden" />
-                                                </li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
-                                <span asp-validation-for="DrivingLicenceCategories" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="col-12 d-flex justify-content-end">
-                                <button class="btn btn-primary" type="submit">Update</button>
-                            </div>
-                        </form>
+                        <partial name="_UpdateDriverDetailsForm" model="@Model.DriverDetails" />
                     </div>
                 </div>
             </div>

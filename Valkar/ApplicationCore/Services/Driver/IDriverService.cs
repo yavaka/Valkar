@@ -7,6 +7,8 @@
     {
         Task AddDriver(DriverDetailsServiceModel model, string userId);
 
+        Task UpdateDriverDetails(UpdateDriverDetailsServiceModel model, string userId);
+
         Task<SettingsServiceModel> GetDriverSettingsByUserId(string userId);
     }
 }

@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using System.Threading.Tasks;
+    using Web.Extensions;
 
     [Authorize(Roles = Role.Driver)]
     public class DriversController : Controller
@@ -52,11 +53,39 @@
                 return RedirectToAction(nameof(DriverDetails));
             }
 
+            // Get driver details and limited company 
             var driverSettings = await this._driverService
                 .GetDriverSettingsByUserId(
                     this._identityService.GetUserId(User));
 
             return View(driverSettings);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateDriverSettings(UpdateDriverDetailsServiceModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get current user id
+                var userId = this._identityService.GetUserId(User);
+
+                // Update driver details only without any other entities
+                await this._driverService.UpdateDriverDetails(model, userId);
+
+                TempData["updatedDriverDetails"] = "Your details was updated successfully.";
+
+                return RedirectToAction(nameof(Settings));
+            }
+            // Get the limited company service model set in Settings view 
+            var limitedCompany = TempData.Get<LimitedCompanyServiceModel>("limitedCompany");
+            TempData.Remove("limitedCompany");
+
+            return View(nameof(Settings), new SettingsServiceModel 
+            {
+                DriverDetails = model,
+                LimitedCompany = limitedCompany
+            });
         }
 
         [HttpGet]
