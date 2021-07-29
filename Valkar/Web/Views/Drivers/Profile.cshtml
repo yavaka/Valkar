@@ -1,8 +1,204 @@
-﻿
-@{
+﻿@model ApplicationCore.ServiceModels.Driver.DriverDetailsServiceModel
 
+@{
+    TempData["Title"] = "Profile";
 }
 
-This is the driver`s profile
+<div class="container" data-layout="container">
+    <partial name="_NavbarPartial" />
+    <div class="content">
+        <div class="row g-3 mb-3">
+            <!-- #region Driver greeting -->
+            <div class="col-lg-12">
+                <div class="card bg-transparent-50 overflow-hidden">
+                    <div class="card-body position-relative">
+                        <div class="bg-holder d-none d-md-block bg-card z-index-1" style="background-image:url(../../img/icons/corner-3.png);background-size:230px;background-position:right bottom;z-index:-1;"></div>
+                        <!--/.bg-holder-->
 
-<a asp-controller="Identity" asp-action="Logout" class="btn btn-primary">Logout</a>
+                        <div class="position-relative z-index-2">
+                            <div>
+                                <h3 class="text-primary mb-1">
+                                    @{
+                                        if (DateTime.Now.Hour <= 12)
+                                        {
+                                            @:Good Morning
+                                        }
+                                        else if (DateTime.Now.Hour <= 16)
+                                        {
+                                            @:Good Afternoon
+                                        }
+                                        else if (DateTime.Now.Hour <= 20)
+                                        {
+                                            @:Good Evening
+                                        }
+                                        else
+                                        {
+                                            @:Good Night
+                                        }
+                                    }, @Model.FirstNames!
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #endregion -->
+            <!-- #region Deliveries -->
+            <div class="col-lg-12">
+                <div class="card mb-3 mb-lg-0">
+                    <div class="card-header bg-light d-flex justify-content-between">
+                        <h5 class="mb-0">Deliveries</h5>
+                    </div>
+                    <div class="card-body fs--1">
+                        <div class="row">
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Mar</span><span class="calendar-day">26</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Crain's New York Business <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">AID MIT</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>The Liberty Warehouse, New Yourk
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Mar</span><span class="calendar-day">26</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Crain's New York Business <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">AID MIT</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>The Liberty Warehouse, New Yourk
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Mar</span><span class="calendar-day">26</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Crain's New York Business <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">AID MIT</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>The Liberty Warehouse, New Yourk
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Mar</span><span class="calendar-day">26</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Crain's New York Business <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">AID MIT</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>The Liberty Warehouse, New Yourk
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Mar</span><span class="calendar-day">26</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Crain's New York Business <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">AID MIT</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>The Liberty Warehouse, New Yourk
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Mar</span><span class="calendar-day">26</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Crain's New York Business <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">AID MIT</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>The Liberty Warehouse, New Yourk
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Mar</span><span class="calendar-day">26</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Crain's New York Business <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">AID MIT</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>The Liberty Warehouse, New Yourk
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Mar</span><span class="calendar-day">26</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Crain's New York Business <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">AID MIT</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>The Liberty Warehouse, New Yourk
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Feb</span><span class="calendar-day">29</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Film Festival</a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">American Nuclear Society</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: Feb 29 - Mar 2</p>Place: Workbar - Central Square, Cambridge
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Feb</span><span class="calendar-day">21</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Newmarket Nights</a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">University of Oxford</a></p>
+                                        <p class="text-1000 mb-0">Time: 6:00AM</p>
+                                        <p class="text-1000 mb-0">Duration: 6:00AM - 5:00PM</p>Place: Cambridge Boat Club, Cambridge
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Dec</span><span class="calendar-day">31</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">31st Night Celebration</a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">Chamber Music Society</a></p>
+                                        <p class="text-1000 mb-0">Time: 11:00PM</p>
+                                        <p class="text-1000 mb-0">280 people interested</p>Place: Tavern on the Greend, New York
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 h-100">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar"><span class="calendar-month">Dec</span><span class="calendar-day">16</span></div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">Folk Festival</a></h6>
+                                        <p class="mb-1">Organized by <a href="#!" class="text-700">Harvard University</a></p>
+                                        <p class="text-1000 mb-0">Time: 9:00AM</p>
+                                        <p class="text-1000 mb-0">Location: Cambridge Masonic Hall Association</p>Place: Porter Square, North Cambridge
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #endregion -->
+        </div>
+    </div>
+</div>

@@ -32,14 +32,28 @@
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            return View();
+            // Redirect to onboarding view if not completed
+            var userId = this._identityService.GetUserId(User);
+            if (!await this._identityService.IsOnboardingCompleted(userId))
+            {
+                return RedirectToAction(nameof(DriverDetails));
+            }
+
+            return View(new DriverDetailsServiceModel { FirstNames = "TestUser"});
         }
 
         [HttpGet]
-        public IActionResult DriverDetails()
+        public async Task<IActionResult> DriverDetails()
         {
+            // Redirect to driver profile if onboarding completed
+            var userId = this._identityService.GetUserId(User);
+            if (await this._identityService.IsOnboardingCompleted(userId))
+            {
+                return RedirectToAction(nameof(Profile));
+            }
+
             return View(new DriverDetailsServiceModel()
             {
                 DrivingLicenceCategories = GetDrivingLicenceCategoriesAsCheckBoxModels().ToArray(),
@@ -49,7 +63,7 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DriverDetailsAsync(DriverDetailsServiceModel model)
+        public async Task<IActionResult> DriverDetails(DriverDetailsServiceModel model)
         {
             // TODO: Define Validation method and bring all validation logic there
             ValidateUploadedFiles(model.Documents);
@@ -78,6 +92,23 @@
             }
         }
 
+        private List<CheckBoxModel> GetDrivingLicenceCategoriesAsCheckBoxModels()
+        {
+            var drivingLicenseCategories = new List<CheckBoxModel>();
+
+            var categoryValue = 0;
+            foreach (var categoryName in Enum.GetNames(typeof(DrivingLicenceCategories)))
+            {
+                drivingLicenseCategories.Add(new CheckBoxModel
+                {
+                    Text = categoryName,
+                    Value = categoryValue
+                });
+                categoryValue++;
+            }
+            return drivingLicenseCategories;
+        }
+        
         private void ValidateUploadedFiles(DocumentsServiceModel documents)
         {
             if (documents.DrivingLicenceFront.Length > MAX_FILE_SIZE)
@@ -100,23 +131,6 @@
             {
                 ModelState.AddModelError("Documents.NationalInsuranceNumber", $"File cannot be more than 10MB.");
             }
-        }
-
-        private List<CheckBoxModel> GetDrivingLicenceCategoriesAsCheckBoxModels()
-        {
-            var drivingLicenseCategories = new List<CheckBoxModel>();
-
-            var categoryValue = 0;
-            foreach (var categoryName in Enum.GetNames(typeof(DrivingLicenceCategories)))
-            {
-                drivingLicenseCategories.Add(new CheckBoxModel
-                {
-                    Text = categoryName,
-                    Value = categoryValue
-                });
-                categoryValue++;
-            }
-            return drivingLicenseCategories;
         }
 
         private void ValidateDrivingLicenceCategories(CheckBoxModel[] drivingLicenceCategories)

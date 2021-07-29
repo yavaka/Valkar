@@ -89,6 +89,15 @@
         public string GetUserId(ClaimsPrincipal claimsPrincipal)
             => this._userManager.GetUserId(claimsPrincipal);
 
+        public async Task<User> GetUserByEmail(string email)
+            => await this._userManager.FindByEmailAsync(email);
+
+        public async Task<string> GeneratePasswordResetToken(User user)
+            => await this._userManager.GeneratePasswordResetTokenAsync(user);
+
+        public async Task<IdentityResult> ResetPassword(User user, string token, string newPassword)
+            => await this._userManager.ResetPasswordAsync(user, token, newPassword);
+        
         public async Task CompleteOnboarding(string userId)
         {
             var user = await this._userManager
@@ -107,14 +116,17 @@
             }
         }
 
-        public async Task<User> GetUserByEmail(string email)
-            => await this._userManager.FindByEmailAsync(email);
+        public async Task<bool> IsOnboardingCompleted(string userId)
+        {
+            var user = await this._userManager
+                .FindByIdAsync(userId);
 
-        public async Task<string> GeneratePasswordResetToken(User user)
-            => await this._userManager.GeneratePasswordResetTokenAsync(user);
-
-        public async Task<IdentityResult> ResetPassword(User user, string token, string newPassword)
-            => await this._userManager.ResetPasswordAsync(user, token, newPassword);
+            if (user.IsCompleted)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public async Task<bool> IsAdminLoggedIn(string email) 
         {

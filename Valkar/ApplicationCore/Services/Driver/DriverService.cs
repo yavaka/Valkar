@@ -1,6 +1,5 @@
 ﻿namespace ApplicationCore.Services.Driver
 {
-    using ApplicationCore.Helpers;
     using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.Services.File;
@@ -8,7 +7,6 @@
     using Infrastructure;
     using Infrastructure.Common.Enums;
     using Infrastructure.Models;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -60,7 +58,7 @@
             // Make new LicenceCategories and populate licenceCategories collection
             foreach (var category in drivingLicenceCategories)
             {
-                licenceCategories.Add(new LicenceCategory 
+                licenceCategories.Add(new LicenceCategory
                 {
                     Category = (DrivingLicenceCategories)category.Value
                 });
