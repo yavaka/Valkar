@@ -14,6 +14,9 @@
                 .ForMember(d =>d.Documents, opt =>opt.Ignore());
             CreateMap<EmergencyContactServiceModel, EmergencyContact>();
             CreateMap<LimitedCompanyServiceModel, LimitedCompany>();
+            CreateMap<Driver, SettingsServiceModel>()
+                .ForMember(c => c.ChangePassword, opt => opt.Ignore());
+            CreateMap<LimitedCompany, LimitedCompanyServiceModel>();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿namespace Web.Controllers
 {
+    using ApplicationCore.ServiceModels.Driver;
+    using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
@@ -12,7 +14,18 @@
             return View();
         }
 
-        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(DriverDetailsServiceModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // some code
+            }
+            return View(model);
+        }
+
+        [Authorize(Roles = Role.Admin)]
         public IActionResult Privacy()
         {
             return View();

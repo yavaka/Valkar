@@ -6,6 +6,12 @@
 
     public class LimitedCompanyServiceModel
     {
+        public LimitedCompanyServiceModel()
+        {
+            this.CompanyName = "";
+            this.CompanyRegistrationNumber = "";
+        }
+
         public string CompanyName { get; set; }
         [StringLength(FIXED_NINO_LENGTH, ErrorMessage = "The {0} is {2} digits.", MinimumLength = FIXED_NINO_LENGTH)]
         [DisplayName("Company registration number")]

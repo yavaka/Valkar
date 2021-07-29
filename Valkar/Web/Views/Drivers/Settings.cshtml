@@ -1,0 +1,138 @@
+﻿@model ApplicationCore.ServiceModels.Driver.SettingsServiceModel
+
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div class="container" data-layout="container">
+    <partial name="_NavbarPartial" />
+    <div class="content" style="margin-top: 1%">
+        <div class="row g-0">
+            <!-- #region Profile settings -->
+            <div class="col-lg-8 pe-lg-2">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">Profile Settings</h5>
+                    </div>
+                    <div class="card-body bg-light">
+                        <form class="row g-3" asp-action="Settings" method="post">
+                            <div class="col-lg-6">
+                                <label class="form-label" asp-for="FirstNames"></label>
+                                <input class="form-control" asp-for="FirstNames" type="text" value="@Model.FirstNames" />
+                                <span asp-validation-for="FirstNames" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label" asp-for="Surname"></label>
+                                <input class="form-control" asp-for="Surname" type="text" value="@Model.Surname" />
+                                <span asp-validation-for="Surname" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="form-label" asp-for="Address"></label>
+                                <input class="form-control" asp-for="Address" type="text" value="@Model.Address" />
+                                <span asp-validation-for="Address" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label" asp-for="Postcode"></label>
+                                <input class="form-control" asp-for="Postcode" type="text" value="@Model.Postcode" />
+                                <span asp-validation-for="Postcode" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label" asp-for="PhoneNumber"></label>
+                                <input class="form-control" asp-for="PhoneNumber" type="text" value="@Model.PhoneNumber" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="form-label" asp-for="DrivingLicenceCategories"></label>
+                                <div class="panel panel-primary">
+                                    <div class="panel-body">
+                                        <ul class="list-group" style="max-height: 300px; overflow: scroll; -webkit-overflow-scrolling: touch;">
+                                            @for (int i = 0; i < Model.DrivingLicenceCategories.Length; i++)
+                                            {
+                                                <li class="list-group-item form-control">
+                                                    <input asp-for="@Model.DrivingLicenceCategories[i].IsChecked" type="checkbox" />
+                                                    <label asp-for="@Model.DrivingLicenceCategories[i].IsChecked"> @Model.DrivingLicenceCategories[i].Text</label>
+                                                    <input asp-for="@Model.DrivingLicenceCategories[i].Text" type="hidden" />
+                                                    <input asp-for="@Model.DrivingLicenceCategories[i].Value" type="hidden" />
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                                <span asp-validation-for="DrivingLicenceCategories" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="col-12 d-flex justify-content-end">
+                                <button class="btn btn-primary" type="submit">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- #endregion -->
+            <div class="col-lg-4 ps-lg-2">
+                <!-- #region Account settings -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">Change Password</h5>
+                    </div>
+                    <div class="card-body bg-light">
+                        <form asp-controller="Identity" asp-action="ChangePassword" method="post">
+                            <div class="mb-3">
+                                <label class="form-label" asp-for="ChangePassword.OldPassword"></label>
+                                <input class="form-control" asp-for="ChangePassword.OldPassword" type="password" />
+                                <span asp-validation-for="ChangePassword.OldPassword" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" asp-for="ChangePassword.NewPassword"></label>
+                                <input class="form-control" asp-for="ChangePassword.NewPassword" type="password" />
+                                <span asp-validation-for="ChangePassword.NewPassword" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" asp-for="ChangePassword.ConfirmPassword"></label>
+                                <input class="form-control" asp-for="ChangePassword.ConfirmPassword" type="password" />
+                                <span asp-validation-for="ChangePassword.ConfirmPassword" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <button class="btn btn-primary d-block w-100" type="submit">Update Password </button>
+                        </form>
+                    </div>
+                </div>
+                <!-- #endregion -->
+                <!-- #region Limited Company settings -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">Limited Company Settings</h5>
+                    </div>
+                    <div class="card-body bg-light">
+                        <form asp-controller="Driver" asp-action="UpdateLimitedCompany" method="post">
+                            <div class="mb-3">
+                                <label class="form-label" asp-for="LimitedCompany.CompanyName"></label>
+                                @if (Model.LimitedCompany.CompanyName is null)
+                                {
+                                    <input class="form-control" asp-for="LimitedCompany.CompanyName" type="text" />
+                                }
+                                else
+                                {
+                                    <input class="form-control" asp-for="LimitedCompany.CompanyName" type="text" value="@Model.LimitedCompany.CompanyName" />
+                                }
+                                <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
+                                @if (Model.LimitedCompany.CompanyRegistrationNumber is null)
+                                {
+                                    <input class="form-control" asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" />
+                                }
+                                else
+                                {
+                                    <input class="form-control" asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" value="@Model.LimitedCompany.CompanyRegistrationNumber" />
+                                }
+                                <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger" style="font-size: smaller"></span>
+                            </div>
+                            <button class="btn btn-primary d-block w-100" type="submit">Update </button>
+                        </form>
+                    </div>
+                </div>
+                <!-- #endregion -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,5 +6,7 @@
     public interface IDriverService
     {
         Task AddDriver(DriverDetailsServiceModel model, string userId);
+
+        Task<SettingsServiceModel> GetDriverSettingsByUserId(string userId);
     }
 }

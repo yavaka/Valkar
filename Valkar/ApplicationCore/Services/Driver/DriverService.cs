@@ -7,6 +7,7 @@
     using Infrastructure;
     using Infrastructure.Common.Enums;
     using Infrastructure.Models;
+    using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -33,7 +34,7 @@
             var driver = this._mapper.Map<DriverDetailsServiceModel, Driver>(model);
 
             // Convert DL Categories to LicenceCategory models
-            driver.LicenceCategories = ConvertToLicenceCategories(model.DrivingLicenceCategories);
+            driver.LicenceCategories = ConvertToDLCategories(model.DrivingLicenceCategories);
 
             // Convert uploaded documents to File models
             driver.Documents = await this._fileService
@@ -46,7 +47,26 @@
             await this._data.SaveChangesAsync();
         }
 
-        private ICollection<LicenceCategory> ConvertToLicenceCategories(CheckBoxModel[] drivingLicenceCategories)
+        public async Task<SettingsServiceModel> GetDriverSettingsByUserId(string userId)
+        {
+            var driver = await this._data.Drivers
+                .Include(l => l.LicenceCategories)
+                .Include(lc => lc.LimitedCompany)
+                .FirstOrDefaultAsync(i => i.UserId == userId);
+
+            var driverSettings = this._mapper
+                .Map<Driver, SettingsServiceModel>(driver);
+
+            driverSettings.LimitedCompany = this._mapper
+                .Map<LimitedCompany, LimitedCompanyServiceModel>(driver.LimitedCompany);
+
+            driverSettings.DrivingLicenceCategories = Converter
+                .GetDrivingLicenceCategoriesAsCheckBoxModels(driver.LicenceCategories.ToList());
+
+            return driverSettings;
+        }
+
+        private ICollection<LicenceCategory> ConvertToDLCategories(CheckBoxModel[] drivingLicenceCategories)
         {
             var licenceCategories = new List<LicenceCategory>();
 

@@ -110,7 +110,7 @@
         {
             await this._identityService.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Login));
         }
 
         [HttpGet]

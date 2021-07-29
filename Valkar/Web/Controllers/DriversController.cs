@@ -3,14 +3,12 @@
     using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Document;
     using ApplicationCore.ServiceModels.Driver;
+    using ApplicationCore.ServiceModels.Identity;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
-    using Infrastructure.Common.Enums;
     using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -41,7 +39,24 @@
                 return RedirectToAction(nameof(DriverDetails));
             }
 
-            return View(new DriverDetailsServiceModel { FirstNames = "TestUser"});
+            return View(new DriverDetailsServiceModel { FirstNames = "TestUser" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Settings()
+        {
+            // Redirect to onboarding view if not completed
+            var userId = this._identityService.GetUserId(User);
+            if (!await this._identityService.IsOnboardingCompleted(userId))
+            {
+                return RedirectToAction(nameof(DriverDetails));
+            }
+
+            var driverSettings = await this._driverService
+                .GetDriverSettingsByUserId(
+                    this._identityService.GetUserId(User));
+
+            return View(driverSettings);
         }
 
         [HttpGet]
@@ -56,8 +71,7 @@
 
             return View(new DriverDetailsServiceModel()
             {
-                DrivingLicenceCategories = GetDrivingLicenceCategoriesAsCheckBoxModels().ToArray(),
-                Documents = new DocumentsServiceModel()
+                DrivingLicenceCategories = Converter.GetDrivingLicenceCategoriesAsCheckBoxModels(),
             });
         }
 
@@ -92,23 +106,6 @@
             }
         }
 
-        private List<CheckBoxModel> GetDrivingLicenceCategoriesAsCheckBoxModels()
-        {
-            var drivingLicenseCategories = new List<CheckBoxModel>();
-
-            var categoryValue = 0;
-            foreach (var categoryName in Enum.GetNames(typeof(DrivingLicenceCategories)))
-            {
-                drivingLicenseCategories.Add(new CheckBoxModel
-                {
-                    Text = categoryName,
-                    Value = categoryValue
-                });
-                categoryValue++;
-            }
-            return drivingLicenseCategories;
-        }
-        
         private void ValidateUploadedFiles(DocumentsServiceModel documents)
         {
             if (documents.DrivingLicenceFront.Length > MAX_FILE_SIZE)

@@ -1,8 +1,38 @@
-﻿@{
+﻿@model ApplicationCore.ServiceModels.Driver.DriverDetailsServiceModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="nav">
+    <div class="nav-item">
+        <a asp-action="Register" asp-controller="Identity" class="nav-link">Register</a>
+    </div>
+    <div class="nav-item">
+        <a asp-action="Login" asp-controller="Identity" class="nav-link">Login</a>
+    </div>
+</div>
+
+
+<div class="container-fluid h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-xs-1 col-sm-6 col-md-6 col-xl-4 col-xxl-4" id="register-form">
+            <div class="shadow p-3 mb-5 bg-body rounded">
+                <form asp-controller="Home" asp-action="Index" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label asp-for="Documents.DrivingLicenceFront"></label>
+                        <input asp-for="Documents.DrivingLicenceFront" type="file" class="form-control">
+                        <span asp-validation-for="Documents" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <br />
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

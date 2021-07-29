@@ -1,21 +1,18 @@
 ﻿namespace ApplicationCore.ServiceModels.Driver
 {
     using ApplicationCore.Helpers.CheckBox;
-    using ApplicationCore.ServiceModels.Document;
-    using Infrastructure.Common.Enums;
+    using ApplicationCore.ServiceModels.Identity;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using static Infrastructure.Common.ModelConstants;
 
-    public class DriverDetailsServiceModel
+    public class SettingsServiceModel
     {
-        public DriverDetailsServiceModel()
+        public SettingsServiceModel()
         {
-            this.Documents = new DocumentsServiceModel();
+            this.ChangePassword = new ChangePasswordServiceModel();
+            this.LimitedCompany = new LimitedCompanyServiceModel();
         }
-
-        [Required(ErrorMessage = "Title is required.")]
-        public Titles Title { get; set; }
 
         [Required]
         [StringLength(MAX_NAME_LENGTH, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = MIN_NAME_LENGTH)]
@@ -42,20 +39,8 @@
         [DisplayName("Driving licence categories")]
         public CheckBoxModel[] DrivingLicenceCategories { get; set; }
 
-        [Required]
-        [StringLength(FIXED_NINO_LENGTH, ErrorMessage = "The {0} is {2} characters long.", MinimumLength = FIXED_NINO_LENGTH)]
-        [DisplayName("National insurance number")]
-        public string NationalInsuranceNumber { get; set; }
-
-        public DocumentsServiceModel Documents { get; set; }
-
-        public EmergencyContactServiceModel EmergencyContact { get; set; }
+        public ChangePasswordServiceModel ChangePassword { get; set; }
 
         public LimitedCompanyServiceModel LimitedCompany { get; set; }
-
-        /// <summary>
-        /// Radio button value for limited company
-        /// </summary>
-        public string IsLimitedCompany { get; set; }
     }
 }
