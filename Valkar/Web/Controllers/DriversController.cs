@@ -44,7 +44,7 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> Settings()
+        public async Task<IActionResult> Settings(SettingsServiceModel model = null)
         {
             // Redirect to onboarding view if not completed
             var userId = this._identityService.GetUserId(User);
@@ -55,8 +55,7 @@
 
             // Get driver details and limited company 
             var driverSettings = await this._driverService
-                .GetDriverSettingsByUserId(
-                    this._identityService.GetUserId(User));
+                .GetDriverSettingsByUserId(userId);
 
             return View(driverSettings);
         }
@@ -65,11 +64,11 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateDriverSettings(UpdateDriverDetailsServiceModel model)
         {
+            // Get current user id
+            var userId = this._identityService.GetUserId(User);
+
             if (ModelState.IsValid)
             {
-                // Get current user id
-                var userId = this._identityService.GetUserId(User);
-
                 // Update driver details without any other entities
                 await this._driverService.UpdateDriverDetails(model, userId);
 
@@ -77,28 +76,25 @@
 
                 return RedirectToAction(nameof(Settings));
             }
-            // Get the limited company service model set in Settings view 
-            var limitedCompany = TempData.Get<LimitedCompanyServiceModel>("limitedCompany");
-            TempData.Remove("limitedCompany");
-
-            return View(nameof(Settings), new SettingsServiceModel
-            {
-                DriverDetails = model,
-                LimitedCompany = limitedCompany
-            });
+            return View(nameof(Settings),
+                new SettingsServiceModel
+                { // Return driver details model errors and ltd fields
+                    DriverDetails = model,
+                    LimitedCompany = await this._driverService.GetLimitedCompanyByUserId(userId)
+                });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateLimitedCompany(LimitedCompanyServiceModel model)
         {
+            // Get the current user id
+            var userId = this._identityService.GetUserId(User);
+
             ValidateUpdatedLimitedCompanyFields(model);
 
             if (ModelState.IsValid)
             {
-                // Get the current user
-                var userId = this._identityService.GetUserId(User);
-
                 // Update driver`s limited company
                 await this._driverService.UpdateLimitedCompany(model, userId);
 
@@ -106,15 +102,12 @@
 
                 return RedirectToAction(nameof(Settings));
             }
-            // Get the update driver details service model set in Settings view 
-            var driverDetails = TempData.Get<UpdateDriverDetailsServiceModel>("driverDetails");
-            TempData.Remove("driverDetails");
-
-            return View(nameof(Settings), new SettingsServiceModel
-            {
-                LimitedCompany = model,
-                DriverDetails = driverDetails
-            });
+            return View(nameof(Settings),
+                new SettingsServiceModel
+                { // Return ltd model errors and driver details fields
+                    LimitedCompany = model,
+                    DriverDetails = await this._driverService.GetDriverDetailsByUserId(userId)
+                });
         }
 
         [HttpGet]

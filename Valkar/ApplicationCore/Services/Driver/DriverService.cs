@@ -11,6 +11,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     public class DriverService : IDriverService
@@ -148,6 +149,35 @@
                 });
             }
             return licenceCategories;
+        }
+
+        public async Task<UpdateDriverDetailsServiceModel> GetDriverDetailsByUserId(string userId)
+        {
+            // Get driver with its DL categories and limited company
+            var driver = await this._data.Drivers
+                .Include(l =>l.LicenceCategories)
+                .FirstOrDefaultAsync(i => i.UserId == userId);
+
+            var driverDetails = this._mapper.Map<Driver, UpdateDriverDetailsServiceModel>(driver);
+            
+            // Add licence categories
+            driverDetails.DrivingLicenceCategories = Converter
+                .GetDrivingLicenceCategoriesAsCheckBoxModels(driver.LicenceCategories.ToList());
+
+            return driverDetails;
+        }
+
+        public async Task<LimitedCompanyServiceModel> GetLimitedCompanyByUserId(string userId)
+        {
+            // Get limited company
+            var limitedCompany = await this._data.Drivers
+                .Include(lc => lc.LimitedCompany)
+                .Where(i => i.UserId == userId)
+                .Select(lc => lc.LimitedCompany)
+                .FirstAsync();
+
+            // Map driver details
+            return this._mapper.Map<LimitedCompany, LimitedCompanyServiceModel>(limitedCompany);
         }
     }
 }

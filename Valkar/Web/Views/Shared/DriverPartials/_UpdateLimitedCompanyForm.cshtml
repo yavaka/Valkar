@@ -1,6 +1,6 @@
 ﻿@model ApplicationCore.ServiceModels.Driver.LimitedCompanyServiceModel
 
-<form asp-action="UpdateLimitedCompany" method="post">
+<form asp-controller="Drivers" asp-action="UpdateLimitedCompany" method="post">
     <div class="mb-3">
         <label class="form-label" asp-for="CompanyName"></label>
         @if (Model.CompanyName is null)

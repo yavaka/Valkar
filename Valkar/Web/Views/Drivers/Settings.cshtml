@@ -5,15 +5,6 @@
 
 @{
     ViewData["Title"] = "Settings";
-    
-    if (TempData["driverDetails"] is null)
-    {
-        TempData.Set<UpdateDriverDetailsServiceModel>("driverDetails", Model.DriverDetails);
-    }
-    if (TempData["limitedCompany"] is null)
-    {
-        TempData.Set<LimitedCompanyServiceModel>("limitedCompany", Model.LimitedCompany);
-    }
 }
 
 <div class="container" data-layout="container">
@@ -51,7 +42,7 @@
                         <h5 class="mb-0">Profile Settings</h5>
                     </div>
                     <div class="card-body bg-light">
-                        @await Html.PartialAsync("~/Views/Drivers/_UpdateDriverDetailsForm.cshtml", Model.DriverDetails)
+                        <partial name="DriverPartials/_UpdateDriverDetailsForm" model="Model.DriverDetails" />
                     </div>
                 </div>
             </div>
@@ -63,7 +54,7 @@
                         <h5 class="mb-0">Change Password</h5>
                     </div>
                     <div class="card-body bg-light">
-                        @await Html.PartialAsync("~/Views/Drivers/_ChangePasswordForm.cshtml", Model.ChangePassword)
+                        <partial name="DriverPartials/_ChangePasswordForm" model="Model.ChangePassword" />
                     </div>
                 </div>
                 <!-- #endregion -->
@@ -73,7 +64,7 @@
                         <h5 class="mb-0">Limited Company Settings</h5>
                     </div>
                     <div class="card-body bg-light">
-                        @await Html.PartialAsync("~/Views/Drivers/_UpdateLimitedCompanyForm.cshtml", Model.LimitedCompany)
+                        <partial name="DriverPartials/_UpdateLimitedCompanyForm" model="Model.LimitedCompany"/>
                     </div>
                 </div>
                 <!-- #endregion -->

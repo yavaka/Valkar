@@ -4,12 +4,6 @@
 
     public class SettingsServiceModel
     {
-        public SettingsServiceModel()
-        {
-            this.ChangePassword = new ChangePasswordServiceModel();
-            this.LimitedCompany = new LimitedCompanyServiceModel();
-        }
-
         public UpdateDriverDetailsServiceModel DriverDetails { get; set; }
 
         public ChangePasswordServiceModel ChangePassword { get; set; }
