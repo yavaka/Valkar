@@ -98,6 +98,16 @@
         public async Task<IdentityResult> ResetPassword(User user, string token, string newPassword)
             => await this._userManager.ResetPasswordAsync(user, token, newPassword);
         
+        public async Task<IdentityResult> ChangePassword(string newPassword, ClaimsPrincipal claimsPrincipal)
+        {
+            // Get the current user
+            var user = await this._userManager.GetUserAsync(claimsPrincipal);
+            // Generate password reset token
+            var passResetToken = await GeneratePasswordResetToken(user);
+
+            return await ResetPassword(user, passResetToken, newPassword);
+        }
+
         public async Task CompleteOnboarding(string userId)
         {
             var user = await this._userManager
@@ -128,16 +138,34 @@
             return false;
         }
 
-        public async Task<bool> IsAdminLoggedIn(string email) 
+        public async Task<bool> IsAdminLoggedIn(string email)
         {
             var user = await GetUserByEmail(email);
             var usersInRole = await this._userManager.GetUsersInRoleAsync(Role.Admin);
 
-            if (usersInRole.Any(i =>i.Id == user.Id))
+            if (usersInRole.Any(i => i.Id == user.Id))
             {
                 return true;
             }
             return false;
         }
+
+        public async Task<bool> IsOldPasswordValid(string oldPassword, ClaimsPrincipal claimsPrincipal)
+        {
+            // Get current user 
+            var user = await this._userManager
+                .GetUserAsync(claimsPrincipal);
+
+            // Attempt to login the current user with the old password 
+            var result = await this._signInManager
+                .CheckPasswordSignInAsync(user, oldPassword, false);
+
+            if (result.Succeeded)
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }

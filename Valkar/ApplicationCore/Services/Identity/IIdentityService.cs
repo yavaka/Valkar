@@ -22,10 +22,15 @@
 
         Task<IdentityResult> ResetPassword(User user, string token, string newPassword);
         
+        Task<IdentityResult> ChangePassword(string newPassword, ClaimsPrincipal claimsPrincipal);
+        
         Task CompleteOnboarding(string userId);
 
         Task<bool> IsOnboardingCompleted(string userId);
 
         Task<bool> IsAdminLoggedIn(string email);
+
+        Task<bool> IsOldPasswordValid(string oldPassword, ClaimsPrincipal claimsPrincipal);
+
     }
 }

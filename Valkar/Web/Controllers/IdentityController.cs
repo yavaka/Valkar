@@ -4,11 +4,13 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using ApplicationCore.Helpers;
+    using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.ServiceModels.Identity;
     using ApplicationCore.Services.Email;
     using ApplicationCore.Services.Identity;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Web.Extensions;
 
     public class IdentityController : Controller
     {
@@ -120,6 +122,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordServiceModel model)
         {
             if (ModelState.IsValid)
@@ -195,6 +198,51 @@
                 return RedirectToAction(nameof(Login));
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordServiceModel model) 
+        {
+            if (ModelState.IsValid)
+            {
+                // Check whether or not the old password valid
+                if (await this._identityService.IsOldPasswordValid(model.OldPassword, User))
+                {
+                    // Change password with the new one
+                    var result = await this._identityService.ChangePassword(model.NewPassword, User);
+
+                    if (!result.Succeeded)
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.TryAddModelError(nameof(ChangePasswordServiceModel.NewPassword), error.Description);
+                        }
+                    }
+                    else
+                    {
+                        TempData["changedPasswordAlert"] = "Password changed successfully.";
+                        return RedirectToAction(nameof(DriversController.Settings),"Drivers");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(nameof(ChangePasswordServiceModel.OldPassword), "Old password is not valid!");
+                }
+            }
+            // Get the update driver details service model set in Settings view 
+            var driverDetailsBackup = TempData.Get<UpdateDriverDetailsServiceModel>("driverDetails");
+            TempData.Remove("driverDetails");
+            // Get the limited company service model set in Settings view 
+            var limitedCompanyBackup = TempData.Get<LimitedCompanyServiceModel>("limitedCompany");
+            TempData.Remove("limitedCompany");
+
+            return View("../Drivers/Settings", new SettingsServiceModel
+            {
+                ChangePassword = model,
+                DriverDetails = driverDetailsBackup,
+                LimitedCompany = limitedCompanyBackup
+            });
         }
     }
 }
