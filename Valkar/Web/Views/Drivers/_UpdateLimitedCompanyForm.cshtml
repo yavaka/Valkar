@@ -1,0 +1,29 @@
+﻿@model ApplicationCore.ServiceModels.Driver.LimitedCompanyServiceModel
+
+<form asp-action="UpdateLimitedCompany" method="post">
+    <div class="mb-3">
+        <label class="form-label" asp-for="CompanyName"></label>
+        @if (Model.CompanyName is null)
+        {
+            <input class="form-control" asp-for="CompanyName" type="text" />
+        }
+        else
+        {
+            <input class="form-control" asp-for="CompanyName" type="text" value="@Model.CompanyName" />
+        }
+        <span asp-validation-for="CompanyName" class="text-danger" style="font-size: smaller"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="CompanyRegistrationNumber"></label>
+        @if (Model.CompanyRegistrationNumber is null)
+        {
+            <input class="form-control" asp-for="CompanyRegistrationNumber" type="text" />
+        }
+        else
+        {
+            <input class="form-control" asp-for="CompanyRegistrationNumber" type="text" value="@Model.CompanyRegistrationNumber" />
+        }
+        <span asp-validation-for="CompanyRegistrationNumber" class="text-danger" style="font-size: smaller"></span>
+    </div>
+    <button class="btn btn-primary d-block w-100" type="submit">Update </button>
+</form>

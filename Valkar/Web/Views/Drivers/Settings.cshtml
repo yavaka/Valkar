@@ -19,13 +19,13 @@
 <div class="container" data-layout="container">
     <partial name="_NavbarPartial" />
     <div class="content" style="margin-top: 1%">
-        @if (TempData["updatedDriverDetails"] is not null)
+        @if (TempData["updatedDriverDetailsAlert"] is not null)
         {
             <div class="row g-0">
                 <div class="col-lg-12">
                     <div class="alert alert-success border-2 d-flex align-items-center" role="alert">
                         <div class="bg-success me-3 icon-item"><span class="fas fa-check-circle text-white fs-3"></span></div>
-                        <p class="mb-0 flex-1">@TempData["updatedDriverDetails"].ToString()</p>
+                        <p class="mb-0 flex-1">@TempData["updatedDriverDetailsAlert"].ToString()</p>
                         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
@@ -51,24 +51,7 @@
                         <h5 class="mb-0">Change Password</h5>
                     </div>
                     <div class="card-body bg-light">
-                        <form asp-controller="Identity" asp-action="ChangePassword" method="post">
-                            <div class="mb-3">
-                                <label class="form-label" asp-for="ChangePassword.OldPassword"></label>
-                                <input class="form-control" asp-for="ChangePassword.OldPassword" type="password" />
-                                <span asp-validation-for="ChangePassword.OldPassword" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" asp-for="ChangePassword.NewPassword"></label>
-                                <input class="form-control" asp-for="ChangePassword.NewPassword" type="password" />
-                                <span asp-validation-for="ChangePassword.NewPassword" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" asp-for="ChangePassword.ConfirmPassword"></label>
-                                <input class="form-control" asp-for="ChangePassword.ConfirmPassword" type="password" />
-                                <span asp-validation-for="ChangePassword.ConfirmPassword" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <button class="btn btn-primary d-block w-100" type="submit">Update Password </button>
-                        </form>
+                        <partial name="_ChangePasswordForm" model="@Model.ChangePassword"/>
                     </div>
                 </div>
                 <!-- #endregion -->
@@ -78,33 +61,7 @@
                         <h5 class="mb-0">Limited Company Settings</h5>
                     </div>
                     <div class="card-body bg-light">
-                        <form asp-controller="Driver" asp-action="UpdateLimitedCompany" method="post">
-                            <div class="mb-3">
-                                <label class="form-label" asp-for="LimitedCompany.CompanyName"></label>
-                                @if (Model.LimitedCompany.CompanyName is null)
-                                {
-                                    <input class="form-control" asp-for="LimitedCompany.CompanyName" type="text" />
-                                }
-                                else
-                                {
-                                    <input class="form-control" asp-for="LimitedCompany.CompanyName" type="text" value="@Model.LimitedCompany.CompanyName" />
-                                }
-                                <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
-                                @if (Model.LimitedCompany.CompanyRegistrationNumber is null)
-                                {
-                                    <input class="form-control" asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" />
-                                }
-                                else
-                                {
-                                    <input class="form-control" asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" value="@Model.LimitedCompany.CompanyRegistrationNumber" />
-                                }
-                                <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger" style="font-size: smaller"></span>
-                            </div>
-                            <button class="btn btn-primary d-block w-100" type="submit">Update </button>
-                        </form>
+                        <partial name="_UpdateLimitedCompanyForm" model="@Model.LimitedCompany" />
                     </div>
                 </div>
                 <!-- #endregion -->

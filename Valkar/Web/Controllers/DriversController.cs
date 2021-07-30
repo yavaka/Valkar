@@ -3,7 +3,6 @@
     using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Document;
     using ApplicationCore.ServiceModels.Driver;
-    using ApplicationCore.ServiceModels.Identity;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
     using Infrastructure.Common.Global;
@@ -18,6 +17,7 @@
     {
         private const string YES = "Yes";
         private const long MAX_FILE_SIZE = 10 * 1024 * 1024;
+        private const string SUCCESSFUL_UPDATE_MSG = "Your details was updated successfully.";
 
         private readonly IDriverService _driverService;
         private readonly IIdentityService _identityService;
@@ -70,10 +70,10 @@
                 // Get current user id
                 var userId = this._identityService.GetUserId(User);
 
-                // Update driver details only without any other entities
+                // Update driver details without any other entities
                 await this._driverService.UpdateDriverDetails(model, userId);
 
-                TempData["updatedDriverDetails"] = "Your details was updated successfully.";
+                TempData["updatedDriverDetailsAlert"] = SUCCESSFUL_UPDATE_MSG;
 
                 return RedirectToAction(nameof(Settings));
             }
@@ -81,10 +81,39 @@
             var limitedCompany = TempData.Get<LimitedCompanyServiceModel>("limitedCompany");
             TempData.Remove("limitedCompany");
 
-            return View(nameof(Settings), new SettingsServiceModel 
+            return View(nameof(Settings), new SettingsServiceModel
             {
                 DriverDetails = model,
                 LimitedCompany = limitedCompany
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateLimitedCompany(LimitedCompanyServiceModel model)
+        {
+            ValidateUpdatedLimitedCompanyFields(model);
+
+            if (ModelState.IsValid)
+            {
+                // Get the current user
+                var userId = this._identityService.GetUserId(User);
+
+                // Update driver`s limited company
+                await this._driverService.UpdateLimitedCompany(model, userId);
+
+                TempData["updatedDriverDetailsAlert"] = SUCCESSFUL_UPDATE_MSG;
+
+                return RedirectToAction(nameof(Settings));
+            }
+            // Get the update driver details service model set in Settings view 
+            var driverDetails = TempData.Get<UpdateDriverDetailsServiceModel>("driverDetails");
+            TempData.Remove("driverDetails");
+
+            return View(nameof(Settings), new SettingsServiceModel
+            {
+                LimitedCompany = model,
+                DriverDetails = driverDetails
             });
         }
 
@@ -132,6 +161,23 @@
             else
             {
                 return View(model);
+            }
+        }
+
+        /// <summary>
+        /// Validate the ltd fields from settings page
+        /// </summary>
+        private void ValidateUpdatedLimitedCompanyFields(LimitedCompanyServiceModel model)
+        {
+            if (!string.IsNullOrEmpty(model.CompanyName) &&
+                string.IsNullOrEmpty(model.CompanyRegistrationNumber))
+            {
+                ModelState.AddModelError("CompanyRegistrationNumber", "Company registration number required.");
+            }
+            if (string.IsNullOrEmpty(model.CompanyName) &&
+                !string.IsNullOrEmpty(model.CompanyRegistrationNumber))
+            {
+                ModelState.AddModelError("CompanyName", "Company name required.");
             }
         }
 

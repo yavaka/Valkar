@@ -50,7 +50,7 @@
 
         public async Task UpdateDriverDetails(UpdateDriverDetailsServiceModel model, string userId)
         {
-            // Get the driver entity by current user id
+            // Get the driver entity and its DL categories by current user id
             var driver = await this._data.Drivers
                 .Include(lc => lc.LicenceCategories)
                 .FirstOrDefaultAsync(i => i.UserId == userId);
@@ -66,30 +66,17 @@
             await this._data.SaveChangesAsync();
         }
 
-        private List<LicenceCategory> UpdateDLCategories(CheckBoxModel[] dLCategoriesCheckBoxes, List<LicenceCategory> driverCategories)
+        public async Task UpdateLimitedCompany(LimitedCompanyServiceModel model, string userId)
         {
-            var newDLCategories = ConvertToDLCategories(dLCategoriesCheckBoxes);
+            var limitedCompany = await this._data.Drivers
+                .Include(l => l.LimitedCompany)
+                .Where(uId => uId.UserId == userId)
+                .Select(l => l.LimitedCompany)
+                .FirstOrDefaultAsync();
 
-            var result = driverCategories.ToList();
-            foreach (var category in driverCategories)
-            {
-                // If the category removed
-                if (!newDLCategories.Any(c =>c.Category == category.Category))
-                {
-                    result.Remove(category);
-                }
-            }
+            this._data.Entry(limitedCompany).CurrentValues.SetValues(model);
 
-            foreach (var category in newDLCategories)
-            {
-                // If the category is new
-                if (!driverCategories.Any(i =>i.Category == category.Category))
-                {
-                    result.Add(category);
-                }
-            }
-
-            return result;
+            await this._data.SaveChangesAsync();
         }
 
         public async Task<SettingsServiceModel> GetDriverSettingsByUserId(string userId)
@@ -112,6 +99,35 @@
                 .GetDrivingLicenceCategoriesAsCheckBoxModels(driver.LicenceCategories.ToList());
 
             return settingsModel;
+        }
+
+        private List<LicenceCategory> UpdateDLCategories(CheckBoxModel[] dLCategoriesCheckBoxes, List<LicenceCategory> driverCategories)
+        {
+            // Get the new driving licence categories
+            var newDLCategories = ConvertToDLCategories(dLCategoriesCheckBoxes);
+
+            // Backup collection which is not tracked by the EF Core
+            var result = driverCategories.ToList();
+
+            foreach (var category in driverCategories)
+            {
+                // If the category is removed
+                if (!newDLCategories.Any(c =>c.Category == category.Category))
+                {
+                    result.Remove(category);
+                }
+            }
+
+            foreach (var category in newDLCategories)
+            {
+                // If the category is new
+                if (!driverCategories.Any(i =>i.Category == category.Category))
+                {
+                    result.Add(category);
+                }
+            }
+
+            return result;
         }
 
         private List<LicenceCategory> ConvertToDLCategories(CheckBoxModel[] drivingLicenceCategories)

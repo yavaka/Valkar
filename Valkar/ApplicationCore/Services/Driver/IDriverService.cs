@@ -9,6 +9,8 @@
 
         Task UpdateDriverDetails(UpdateDriverDetailsServiceModel model, string userId);
 
+        Task UpdateLimitedCompany(LimitedCompanyServiceModel model, string userId);
+
         Task<SettingsServiceModel> GetDriverSettingsByUserId(string userId);
     }
 }

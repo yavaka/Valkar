@@ -11,7 +11,8 @@
         
         public const int MAX_RELATIONSHIP_LENGTH = 20;
         
-        public const int MAX_COMPANY_NAME_LENGTH = 20;
+        public const int MAX_COMPANY_NAME_LENGTH = 30;
+        public const int MIN_COMPANY_NAME_LENGTH = 3;
 
         public const int FIXED_COMPANY_REGISTRATION_NUMBER = 8;
     }

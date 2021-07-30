@@ -12,8 +12,10 @@
             this.CompanyRegistrationNumber = "";
         }
 
+        [StringLength(MAX_COMPANY_NAME_LENGTH, ErrorMessage = "The {0} is {2} digits.", MinimumLength = MIN_COMPANY_NAME_LENGTH)]
+        [DisplayName("Company name")]
         public string CompanyName { get; set; }
-        [StringLength(FIXED_NINO_LENGTH, ErrorMessage = "The {0} is {2} digits.", MinimumLength = FIXED_NINO_LENGTH)]
+        [StringLength(FIXED_COMPANY_REGISTRATION_NUMBER, ErrorMessage = "The {0} is {2} digits.", MinimumLength = FIXED_COMPANY_REGISTRATION_NUMBER)]
         [DisplayName("Company registration number")]
         public string CompanyRegistrationNumber { get; set; }
     }
