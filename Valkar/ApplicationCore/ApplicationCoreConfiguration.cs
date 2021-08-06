@@ -1,5 +1,6 @@
 ﻿namespace ApplicationCore
 {
+    using ApplicationCore.Services.Admin;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Email;
     using ApplicationCore.Services.File;
@@ -28,6 +29,8 @@
             services.AddTransient<IFileService, FileService>();
 
             services.AddEmailSender(configuration);
+
+            services.AddTransient<IAdminService, AdminService>();
 
             return services;
         }

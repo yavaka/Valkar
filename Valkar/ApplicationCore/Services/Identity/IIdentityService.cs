@@ -3,6 +3,7 @@
     using ApplicationCore.ServiceModels.Identity;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Identity;
+    using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -13,6 +14,8 @@
         Task<bool> Login(LoginServiceModel model);
 
         Task Logout();
+
+        IEnumerable<User> GetAllUsers(); 
 
         string GetUserId(ClaimsPrincipal claimsPrincipal);
 

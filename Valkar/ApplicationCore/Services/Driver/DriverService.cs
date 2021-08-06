@@ -1,6 +1,7 @@
 ﻿namespace ApplicationCore.Services.Driver
 {
     using ApplicationCore.Helpers.CheckBox;
+    using ApplicationCore.ServiceModels.Admin;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.Services.File;
     using ApplicationCore.Services.Mapper;
@@ -11,7 +12,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     public class DriverService : IDriverService
@@ -61,7 +61,7 @@
 
             // Update driving licence categories
             driver.LicenceCategories = UpdateDLCategories(
-                model.DrivingLicenceCategories, 
+                model.DrivingLicenceCategories,
                 driver.LicenceCategories.ToList());
 
             await this._data.SaveChangesAsync();
@@ -113,7 +113,7 @@
             foreach (var category in driverCategories)
             {
                 // If the category is removed
-                if (!newDLCategories.Any(c =>c.Category == category.Category))
+                if (!newDLCategories.Any(c => c.Category == category.Category))
                 {
                     result.Remove(category);
                 }
@@ -122,7 +122,7 @@
             foreach (var category in newDLCategories)
             {
                 // If the category is new
-                if (!driverCategories.Any(i =>i.Category == category.Category))
+                if (!driverCategories.Any(i => i.Category == category.Category))
                 {
                     result.Add(category);
                 }
@@ -155,11 +155,11 @@
         {
             // Get driver with its DL categories and limited company
             var driver = await this._data.Drivers
-                .Include(l =>l.LicenceCategories)
+                .Include(l => l.LicenceCategories)
                 .FirstOrDefaultAsync(i => i.UserId == userId);
 
             var driverDetails = this._mapper.Map<Driver, UpdateDriverDetailsServiceModel>(driver);
-            
+
             // Add licence categories
             driverDetails.DrivingLicenceCategories = Converter
                 .GetDrivingLicenceCategoriesAsCheckBoxModels(driver.LicenceCategories.ToList());
@@ -178,6 +178,21 @@
 
             // Map driver details
             return this._mapper.Map<LimitedCompany, LimitedCompanyServiceModel>(limitedCompany);
+        }
+
+        // TODO: Move to admin service
+        public async Task<IEnumerable<DriverServiceModel>> GetAllDrivers()
+        {
+            // Get all drivers
+            var drivers = await this._data.Drivers.ToListAsync();
+            if (drivers != null)
+            {
+                // Map all drivers to driver service models 
+                var result = this._mapper
+                    .Map<Driver, DriverServiceModel>(drivers.ToArray());
+                return result;
+            }
+            return null;
         }
     }
 }

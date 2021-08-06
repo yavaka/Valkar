@@ -10,7 +10,6 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
     using System.Threading.Tasks;
-    using Web.Extensions;
 
     [Authorize(Roles = Role.Driver)]
     public class DriversController : Controller

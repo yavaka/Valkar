@@ -1,6 +1,7 @@
 ﻿namespace ApplicationCore
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -11,6 +12,7 @@
     using Infrastructure.Common.Global;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
 
     public class IdentityService : IIdentityService
     {
@@ -92,6 +94,16 @@
         public async Task<User> GetUserByEmail(string email)
             => await this._userManager.FindByEmailAsync(email);
 
+        /// <summary>
+        /// Get all users which are not admins and onboarded only
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<User> GetAllUsers()
+            => this._userManager.Users
+            .Include(d => d.Driver)
+            .Where(u => u.UserName != "Valkar-Admin" && u.IsCompleted)
+            .ToList();
+
         public async Task<string> GeneratePasswordResetToken(User user)
             => await this._userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -166,6 +178,5 @@
             }
             return false;
         }
-
     }
 }

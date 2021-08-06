@@ -1,6 +1,8 @@
 ﻿namespace ApplicationCore.Services.Driver
 {
+    using ApplicationCore.ServiceModels.Admin;
     using ApplicationCore.ServiceModels.Driver;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IDriverService
@@ -16,5 +18,11 @@
         Task<UpdateDriverDetailsServiceModel> GetDriverDetailsByUserId(string userId);
 
         Task<LimitedCompanyServiceModel> GetLimitedCompanyByUserId(string userId);
+
+        /// <summary>
+        /// This method is used only for admin purposes
+        /// </summary>
+        // TODO: Move to admin service
+        Task<IEnumerable<DriverServiceModel>> GetAllDrivers();
     }
 }
