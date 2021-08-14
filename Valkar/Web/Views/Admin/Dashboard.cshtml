@@ -6,25 +6,23 @@
 <div class="container" data-layout="container">
     <partial name="_NavbarPartial" />
     <div class="content" style="margin-top: 1%">
-        <div class="card mb-3" id="customersTable" data-list='{"valueNames":["name","email","phone","joined"],"page":10,"pagination":true}' style="padding-left: 2%;">
+        <div class="card mb-3" style="padding-left: 1%; padding-right: 1%;">
 
             @*-- Table header --*@
             <div class="card-header">
-                <div class="row flex-between-center">
-                    <div class="col-4 col-sm-auto d-flex align-items-center pe-0">
-                        <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Drivers</h5>
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5 class="mb-0">Drivers</h5>
                     </div>
-                    <div class="col-8 col-sm-auto text-end ps-2">
-                        <div id="table-customers-replace-element">
-                            <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Invite Driver</span></button>
-                            <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
-                        </div>
+                    <div class="col-auto">
+                        <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Invite Driver</span></button>
+                        <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
                     </div>
                 </div>
             </div>
 
             @*-- Driver rows --*@
-            <div class="card-body p-0">
+            <div class="card-body p-0 border-top">
                 <div class="table-responsive scrollbar">
                     <table class="table table-hover table-striped overflow-hidden">
                         <thead>
@@ -38,26 +36,38 @@
                         <tbody>
                             @foreach (var driver in Model.Drivers)
                             {
-                                    <tr class="align-middle">
-                                        <td class="text-nowrap">
-                                            <div class="d-flex align-items-center">
-                                                <div class="ms-2">@driver.FullName</div>
-                                            </div>
-                                        </td>
-                                        <td class="text-nowrap">@driver.Email</td>
-                                        <td class="text-nowrap">@driver.PhoneNumber</td>
-                                        <td class="align-middle white-space-nowrap py-2 text-end">
-                                            <div class="dropdown font-sans-serif position-static">
-                                                <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="customer-dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
-                                                <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="customer-dropdown-0">
-                                                    <div class="bg-white py-2">
-                                                        <a class="dropdown-item"  asp-action="DriverProfile" asp-route-userId="@driver.UserId">View</a>
-                                                        <a class="dropdown-item text-danger" href="#!">Delete</a>
-                                                    </div>
+                                <tr class="align-middle">
+                                    <td class="text-nowrap">
+                                        <div class="d-flex align-items-center">
+                                            <div class="ms-2">@driver.FullName</div>
+                                        </div>
+                                    </td>
+                                    <td class="text-nowrap">@driver.Email</td>
+                                    <td class="text-nowrap">@driver.PhoneNumber</td>
+                                    <td class="align-middle white-space-nowrap py-2 text-end">
+                                        <div class="dropdown font-sans-serif position-static">
+                                            <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="customer-dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                                            <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="customer-dropdown-0">
+                                                <div class="bg-white py-2">
+                                                    <a class="dropdown-item" asp-action="DriverProfile" asp-route-userId="@driver.UserId">View</a>
+                                                    <a class="dropdown-item text-danger" href="#!">Delete</a>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                            @if (Model.Drivers.Count() < 10)
+                            {
+                                for (int i = 0; i < (10 - Model.Drivers.Count()); i++)
+                                {
+                                    <tr class="align-middle">
+                                        <td><br /></td>
+                                        <td><br /></td>
+                                        <td><br /></td>
+                                        <td><br /></td>
                                     </tr>
+                                }
                             }
                         </tbody>
                     </table>

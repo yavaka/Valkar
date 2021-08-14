@@ -26,6 +26,8 @@
         [StringLength(MAX_NAME_LENGTH, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = MIN_NAME_LENGTH)]
         public string Surname { get; set; }
 
+        // TODO: Date of birth prop
+
         [Required]
         [StringLength(MAX_ADDRESS_LENGTH, ErrorMessage = "The {0} must be at least {2} characters long.")]
         public string Address { get; set; }

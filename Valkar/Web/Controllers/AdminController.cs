@@ -6,6 +6,7 @@
     using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [Authorize(Roles = Role.Admin)]
@@ -22,7 +23,9 @@
         {
             return View(new DashboardServiceModel
             {
-                Drivers = this._adminService.GetAllDrivers()
+                Drivers = this._adminService
+                    .GetAllDrivers()
+                    .OrderBy(f => f.FirstNames)
             });
         }
 

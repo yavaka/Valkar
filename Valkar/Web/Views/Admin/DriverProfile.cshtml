@@ -3,7 +3,136 @@
     ViewData["Title"] = "DriverProfile";
 }
 
-<h1>DriverProfile</h1>
-<hr />
-@Model.FullName
+<div class="container" data-layout="container">
+    <partial name="_NavbarPartial" />
+    <div class="content" style="margin-top: 1%">
+        @*-- Driver profile top card --*@
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="mb-2">@Model.FullName (<a href="mailto:@Model.Email">@Model.Email</a>)</h5>
+                    </div>
+                    <div class="col-auto d-none d-sm-block">
+                        <h6 class="text-uppercase text-600">Driver<span class="fas fa-user ms-2"></span></h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-top">
+                <div class="d-flex">
+                    <span class="fas fa-user text-success me-2" data-fa-transform="down-5"></span>
+                    <div class="flex-1">
+                        <p class="mb-0">Driver was created</p>
+                        <p class="fs--1 mb-0 text-600">@Model.CreatedOn.ToString("dd MMM yyyy hh:mm:ss tt")</p>
+                    </div>
+                    <div class="col-auto d-none d-sm-block">
+                        <button class="btn btn-falcon-default btn-sm dropdown-toggle ms-2 dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item text-danger" href="#">Delete driver</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*-- Driver details --*@
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5 class="mb-0">Details</h5>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-falcon-default btn-sm dropdown-toggle ms-2 dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documents</button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Driving licence</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Identity document</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">NiNo letter</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body bg-light border-top">
+                <div class="row">
+                    <div class="col-lg col-xxl-5">
+                        <h6 class="fw-semi-bold ls mb-3 text-uppercase">Personal details</h6>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Name</p>
+                            </div>
+                            <div class="col">@Model.FirstNames @Model.Surname</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Date of birth</p>
+                            </div>
+                            <div class="col">2019/01/12 23:13</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Email</p>
+                            </div>
+                            <div class="col"><a href="mailto:@Model.Email">@Model.Email</a></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Phone number</p>
+                            </div>
+                            <div class="col">
+                                <p class="fst-italic text-400 mb-1"><a href="tel:@Model.PhoneNumber">@Model.PhoneNumber</a></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-0">Address</p>
+                            </div>
+                            <div class="col">
+                                <p class="fst-italic text-400 mb-0"><a href="http://maps.google.com/?q=@Model.Address,@Model.Postcode" target="_blank" rel="noopener noreferrer">@Model.Address, @Model.Postcode</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg col-xxl-5 mt-4 mt-lg-0 offset-xxl-1">
+                        <h6 class="fw-semi-bold ls mb-3 text-uppercase">Additional information</h6>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Driving licence</p>
+                            </div>
+                            <div class="col">@string.Join(", ", Model.DrivingLicenceCategories)</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">NiNo</p>
+                            </div>
+                            <div class="col">
+                                <p class="mb-1">@Model.NiNo</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">LTD</p>
+                            </div>
+                            <div class="col">@Model.LimitedCompany</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-0">Registration number</p>
+                            </div>
+                            <div class="col">
+                                <p class="fw-semi-bold mb-0">@Model.CompanyRegistrationNumber</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer border-top text-end">
+                <a class="btn btn-falcon-default btn-sm" asp-controller="EmergencyContact" asp-route-driverId="@Model.DriverId">Emergency contact</a>
+            </div>
+        </div>
+        @*-- Deliveries --*@
+        <div class="card mb-3">
+
+        </div>
+    </div>
+</div>
 

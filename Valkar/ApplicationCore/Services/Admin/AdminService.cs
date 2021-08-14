@@ -27,12 +27,12 @@
         {
             // Get all users including drivers 
             var users = this._identityService.GetAllUsers();
-            
+
             var results = new List<DriverAdminServiceModel>();
             foreach (var user in users)
             {
                 //TODO: Enhance with AutoMapper
-                results.Add(new DriverAdminServiceModel 
+                results.Add(new DriverAdminServiceModel
                 {
                     UserId = user.Id,
                     DriverId = user.Driver.Id.ToString(),
@@ -49,16 +49,23 @@
         {
             // Get the user including the driver entity
             var user = this._identityService.GetUserById(userId);
-
-            return new DriverAdminServiceModel
+            var driver = new DriverAdminServiceModel
             {
                 UserId = user.Id,
                 Email = user.Email,
                 DriverId = user.Driver.Id.ToString(),
                 FirstNames = user.Driver.FirstNames,
                 Surname = user.Driver.Surname,
-                PhoneNumber = user.Driver.PhoneNumber
+                PhoneNumber = user.Driver.PhoneNumber,
+                Address = user.Driver.Address,
+                Postcode = user.Driver.Postcode,
+                CreatedOn = user.RegisteredOn,
+                NiNo = user.Driver.NationalInsuranceNumber,
+                LimitedCompany = user.Driver.LimitedCompany.CompanyName,
+                CompanyRegistrationNumber = user.Driver.LimitedCompany.CompanyRegistrationNumber
             };
+            driver.ConvertDrivingLicenceEntitiesToCategoriesName(user.Driver.LicenceCategories);
+            return driver;
         }
     }
 }

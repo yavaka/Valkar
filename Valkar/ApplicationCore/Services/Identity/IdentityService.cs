@@ -107,6 +107,8 @@
         public User GetUserById(string userId)
             => this._userManager.Users
             .Include(d => d.Driver)
+            .Include(d => d.Driver.LicenceCategories)
+            .Include(d => d.Driver.LimitedCompany)
             .FirstOrDefault(i => i.Id == userId);
 
         public async Task<string> GeneratePasswordResetToken(User user)
@@ -114,7 +116,7 @@
 
         public async Task<IdentityResult> ResetPassword(User user, string token, string newPassword)
             => await this._userManager.ResetPasswordAsync(user, token, newPassword);
-        
+
         public async Task<IdentityResult> ChangePassword(string newPassword, ClaimsPrincipal claimsPrincipal)
         {
             // Get the current user
