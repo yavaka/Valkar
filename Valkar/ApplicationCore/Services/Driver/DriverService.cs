@@ -181,7 +181,7 @@
         }
 
         // TODO: Move to admin service
-        public async Task<IEnumerable<DriverServiceModel>> GetAllDrivers()
+        public async Task<IEnumerable<DriverAdminServiceModel>> GetAllDrivers()
         {
             // Get all drivers
             var drivers = await this._data.Drivers.ToListAsync();
@@ -189,7 +189,7 @@
             {
                 // Map all drivers to driver service models 
                 var result = this._mapper
-                    .Map<Driver, DriverServiceModel>(drivers.ToArray());
+                    .Map<Driver, DriverAdminServiceModel>(drivers.ToArray());
                 return result;
             }
             return null;

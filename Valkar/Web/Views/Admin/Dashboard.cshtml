@@ -38,26 +38,26 @@
                         <tbody>
                             @foreach (var driver in Model.Drivers)
                             {
-                                <tr class="align-middle">
-                                    <td class="text-nowrap">
-                                        <div class="d-flex align-items-center">
-                                            <div class="ms-2">@driver.FullName</div>
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap">@driver.Email</td>
-                                    <td class="text-nowrap">@driver.PhoneNumber</td>
-                                    <td class="align-middle white-space-nowrap py-2 text-end">
-                                        <div class="dropdown font-sans-serif position-static">
-                                            <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="customer-dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
-                                            <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="customer-dropdown-0">
-                                                <div class="bg-white py-2">
-                                                    <a class="dropdown-item" href="#!">Edit</a>
-                                                    <a class="dropdown-item text-danger" href="#!">Delete</a>
+                                    <tr class="align-middle">
+                                        <td class="text-nowrap">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ms-2">@driver.FullName</div>
+                                            </div>
+                                        </td>
+                                        <td class="text-nowrap">@driver.Email</td>
+                                        <td class="text-nowrap">@driver.PhoneNumber</td>
+                                        <td class="align-middle white-space-nowrap py-2 text-end">
+                                            <div class="dropdown font-sans-serif position-static">
+                                                <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="customer-dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                                                <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="customer-dropdown-0">
+                                                    <div class="bg-white py-2">
+                                                        <a class="dropdown-item"  asp-action="DriverProfile" asp-route-userId="@driver.UserId">View</a>
+                                                        <a class="dropdown-item text-danger" href="#!">Delete</a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                             }
                         </tbody>
                     </table>

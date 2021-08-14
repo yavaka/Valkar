@@ -5,8 +5,8 @@
     public class DashboardServiceModel
     {
         public DashboardServiceModel()
-            => this.Drivers = new List<DriverServiceModel>();
+            => this.Drivers = new List<DriverAdminServiceModel>();
 
-        public IEnumerable<DriverServiceModel> Drivers { get; set; }
+        public IEnumerable<DriverAdminServiceModel> Drivers { get; set; }
     }
 }

@@ -20,7 +20,7 @@
             CreateMap<LimitedCompany, LimitedCompanyServiceModel>();
 
             // Collections
-            CreateMap<Driver[], IEnumerable<DriverServiceModel>>();
+            CreateMap<Driver[], IEnumerable<DriverAdminServiceModel>>();
         }
     }
 }

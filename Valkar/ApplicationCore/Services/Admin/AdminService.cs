@@ -23,16 +23,16 @@
             this._mapper = mapper;
         }
 
-        public IEnumerable<DriverServiceModel> GetAllDrivers()
+        public IEnumerable<DriverAdminServiceModel> GetAllDrivers()
         {
             // Get all users including drivers 
             var users = this._identityService.GetAllUsers();
             
-            var results = new List<DriverServiceModel>();
+            var results = new List<DriverAdminServiceModel>();
             foreach (var user in users)
             {
                 //TODO: Enhance with AutoMapper
-                results.Add(new DriverServiceModel 
+                results.Add(new DriverAdminServiceModel 
                 {
                     UserId = user.Id,
                     DriverId = user.Driver.Id.ToString(),
@@ -43,6 +43,22 @@
                 });
             }
             return results;
+        }
+
+        public DriverAdminServiceModel GetDriverProfile(string userId)
+        {
+            // Get the user including the driver entity
+            var user = this._identityService.GetUserById(userId);
+
+            return new DriverAdminServiceModel
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                DriverId = user.Driver.Id.ToString(),
+                FirstNames = user.Driver.FirstNames,
+                Surname = user.Driver.Surname,
+                PhoneNumber = user.Driver.PhoneNumber
+            };
         }
     }
 }

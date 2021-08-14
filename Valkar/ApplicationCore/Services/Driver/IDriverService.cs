@@ -23,6 +23,6 @@
         /// This method is used only for admin purposes
         /// </summary>
         // TODO: Move to admin service
-        Task<IEnumerable<DriverServiceModel>> GetAllDrivers();
+        Task<IEnumerable<DriverAdminServiceModel>> GetAllDrivers();
     }
 }

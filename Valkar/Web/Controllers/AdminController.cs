@@ -25,5 +25,10 @@
                 Drivers = this._adminService.GetAllDrivers()
             });
         }
+
+        public IActionResult DriverProfile(string userId) 
+        {
+            return View(this._adminService.GetDriverProfile(userId));
+        }
     }
 }

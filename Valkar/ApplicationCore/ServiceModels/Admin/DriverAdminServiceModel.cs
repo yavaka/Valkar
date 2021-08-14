@@ -1,6 +1,6 @@
 ﻿namespace ApplicationCore.ServiceModels.Admin
 {
-    public class DriverServiceModel
+    public class DriverAdminServiceModel
     {
         /// <summary>
         /// The account id of the driver
@@ -12,5 +12,6 @@
         public string FullName => $"{this.FirstNames.Split(' ')[0]} {this.Surname}";
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        // TODO: Admin - Add date of birth prop.
     }
 }

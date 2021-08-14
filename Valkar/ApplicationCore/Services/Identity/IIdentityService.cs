@@ -34,6 +34,7 @@
         Task<bool> IsAdminLoggedIn(string email);
 
         Task<bool> IsOldPasswordValid(string oldPassword, ClaimsPrincipal claimsPrincipal);
-
+       
+        User GetUserById(string userId);
     }
 }

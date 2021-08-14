@@ -5,6 +5,7 @@
 
     public interface IAdminService
     {
-        IEnumerable<DriverServiceModel> GetAllDrivers();
+        IEnumerable<DriverAdminServiceModel> GetAllDrivers();
+        DriverAdminServiceModel GetDriverProfile(string userId);
     }
 }

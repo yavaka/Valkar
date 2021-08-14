@@ -104,6 +104,11 @@
             .Where(u => u.UserName != "Valkar-Admin" && u.IsCompleted)
             .ToList();
 
+        public User GetUserById(string userId)
+            => this._userManager.Users
+            .Include(d => d.Driver)
+            .FirstOrDefault(i => i.Id == userId);
+
         public async Task<string> GeneratePasswordResetToken(User user)
             => await this._userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -178,5 +183,6 @@
             }
             return false;
         }
+
     }
 }
