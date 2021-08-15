@@ -67,7 +67,7 @@
                             <div class="col-5 col-sm-4">
                                 <p class="fw-semi-bold mb-1">Date of birth</p>
                             </div>
-                            <div class="col">2019/01/12 23:13</div>
+                            <div class="col">@Model.DateOfBirth.ToString("dd/MM/yyyy")</div>
                         </div>
                         <div class="row">
                             <div class="col-5 col-sm-4">
@@ -126,12 +126,65 @@
                 </div>
             </div>
             <div class="card-footer border-top text-end">
-                <a class="btn btn-falcon-default btn-sm" asp-controller="EmergencyContact" asp-route-driverId="@Model.DriverId">Emergency contact</a>
+                <a class="btn btn-falcon-default btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Emergency contact</a>
             </div>
         </div>
-        @*-- Deliveries --*@
-        <div class="card mb-3">
-
+        @*-- Emergency contact collapse --*@
+        <div class="collapse" id="collapseExample">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Emergency contact</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body bg-light border-top">
+                    <div class="row">
+                        <div class="col-lg col-xxl-5">
+                            <h6 class="fw-semi-bold ls mb-3 text-uppercase">Details</h6>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">Name</p>
+                                </div>
+                                <div class="col">@Model.EmergencyContact.Title @Model.EmergencyContact.FirstNames @Model.EmergencyContact.Surname</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">Email</p>
+                                </div>
+                                <div class="col"><a href="mailto:@Model.EmergencyContact.Email">@Model.EmergencyContact.Email</a></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">Phone number</p>
+                                </div>
+                                <div class="col">
+                                    <p class="fst-italic text-400 mb-1"><a href="tel:@Model.EmergencyContact.PhoneNumber">@Model.EmergencyContact.PhoneNumber</a></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-0">Address</p>
+                                </div>
+                                <div class="col">
+                                    <p class="fst-italic text-400 mb-0"><a href="http://maps.google.com/?q=@Model.EmergencyContact.Address,@Model.EmergencyContact.Postcode" target="_blank" rel="noopener noreferrer">@Model.EmergencyContact.Address, @Model.EmergencyContact.Postcode</a></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-0">Relationship</p>
+                                </div>
+                                <div class="col">
+                                    <p class="fst-italic text-400 mb-0">@Model.EmergencyContact.Relationship</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer border-top">
+                </div>
+            </div>
         </div>
     </div>
 </div>

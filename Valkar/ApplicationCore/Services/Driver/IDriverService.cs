@@ -18,11 +18,5 @@
         Task<UpdateDriverDetailsServiceModel> GetDriverDetailsByUserId(string userId);
 
         Task<LimitedCompanyServiceModel> GetLimitedCompanyByUserId(string userId);
-
-        /// <summary>
-        /// This method is used only for admin purposes
-        /// </summary>
-        // TODO: Move to admin service
-        Task<IEnumerable<DriverAdminServiceModel>> GetAllDrivers();
     }
 }

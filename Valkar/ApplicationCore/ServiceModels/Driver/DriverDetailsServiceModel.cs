@@ -3,6 +3,7 @@
     using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Document;
     using Infrastructure.Common.Enums;
+    using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using static Infrastructure.Common.ModelConstants;
@@ -39,6 +40,10 @@
         [Phone]
         [DisplayName("Phone number")]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        [DisplayName("Date of birth")]
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         [DisplayName("Driving licence categories")]

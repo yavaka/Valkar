@@ -109,6 +109,7 @@
             .Include(d => d.Driver)
             .Include(d => d.Driver.LicenceCategories)
             .Include(d => d.Driver.LimitedCompany)
+            .Include(d => d.Driver.EmergencyContact)
             .FirstOrDefault(i => i.Id == userId);
 
         public async Task<string> GeneratePasswordResetToken(User user)

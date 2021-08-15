@@ -61,6 +61,11 @@
                                 </div>
                             </div>
                             <div class="mb-3">
+                                <label class="form-label" asp-for="DateOfBirth"></label>
+                                <input class="form-control datetimepicker" asp-for="DateOfBirth" type="text" placeholder="d/m/y" data-options='{"dateFormat":"d/m/y","disableMobile":true}' />
+                                <span asp-validation-for="DateOfBirth" class="text-danger" style="font-size:small;"></span>
+                            </div>
+                            <div class="mb-3">
                                 <label class="form-label" asp-for="PhoneNumber"></label>
                                 <input class="form-control" asp-for="PhoneNumber" type="text" placeholder="(+44) 07312365411" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger" style="font-size:smaller;"></span>

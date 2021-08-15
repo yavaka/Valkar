@@ -13,10 +13,13 @@
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
+        private readonly IDriverService _driverService;
 
-        public AdminController(IAdminService adminService)
+        public AdminController(IAdminService adminService,
+            IDriverService driverService)
         {
             this._adminService = adminService;
+            this._driverService = driverService;
         }
 
         public IActionResult Dashboard()

@@ -36,6 +36,9 @@
             // Phone number
             builder.Property(p => p.PhoneNumber).IsRequired();
 
+            // Date of birth
+            builder.Property(d => d.DateOfBirth).IsRequired();
+
             // Emergency contact one to one
             builder.HasOne(ec => ec.EmergencyContact)
                 .WithOne(d => d.Driver)

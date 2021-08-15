@@ -33,6 +33,9 @@
             // Postcode
             builder.Property(p => p.Postcode).IsRequired();
 
+            // Email
+            builder.Property(e => e.Email).IsRequired();
+
             // Phone number
             builder.Property(p => p.PhoneNumber).IsRequired();
 

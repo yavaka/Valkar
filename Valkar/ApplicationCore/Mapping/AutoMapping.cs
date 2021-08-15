@@ -18,7 +18,7 @@
             CreateMap<LimitedCompanyServiceModel, LimitedCompany>();
             CreateMap<Driver, UpdateDriverDetailsServiceModel>();
             CreateMap<LimitedCompany, LimitedCompanyServiceModel>();
-
+            CreateMap<EmergencyContact, EmergencyContactServiceModel>();
             // Collections
             CreateMap<Driver[], IEnumerable<DriverAdminServiceModel>>();
         }

@@ -1,5 +1,6 @@
 ﻿namespace ApplicationCore.ServiceModels.Admin
 {
+    using ApplicationCore.ServiceModels.Driver;
     using Infrastructure.Models;
     using System;
     using System.Collections.Generic;
@@ -17,6 +18,7 @@
         public string Surname { get; set; }
         public string FullName => $"{this.FirstNames.Split(' ')[0]} {this.Surname}";
         public string PhoneNumber { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
         public string Postcode { get; set; }
         public DateTime CreatedOn { get; set; }
@@ -24,6 +26,7 @@
         public string NiNo { get; set; }
         public string LimitedCompany { get; set; }
         public string CompanyRegistrationNumber { get; set; }
+        public EmergencyContactServiceModel EmergencyContact { get; set; }
         // TODO: Admin - Add date of birth prop.
 
         /// <summary>

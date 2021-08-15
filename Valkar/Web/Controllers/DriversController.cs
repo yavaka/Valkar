@@ -8,6 +8,7 @@
     using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@
         private const string YES = "Yes";
         private const long MAX_FILE_SIZE = 10 * 1024 * 1024;
         private const string SUCCESSFUL_UPDATE_MSG = "Your details was updated successfully.";
+        private const int MIN_DRIVER_AGE = 18;
 
         private readonly IDriverService _driverService;
         private readonly IIdentityService _identityService;
@@ -130,6 +132,7 @@
         public async Task<IActionResult> DriverDetails(DriverDetailsServiceModel model)
         {
             // TODO: Define Validation method and bring all validation logic there
+            ValidateDateOfBirth(model.DateOfBirth);
             ValidateUploadedFiles(model.Documents);
             ValidateDrivingLicenceCategories(model.DrivingLicenceCategories);
             if (model.IsLimitedCompany is YES)
@@ -153,6 +156,22 @@
             else
             {
                 return View(model);
+            }
+        }
+
+        #region Validations
+        
+        private void ValidateDateOfBirth(DateTime dateOfBirth)
+        {
+            var today = DateTime.Today;
+            var age = today.Year - dateOfBirth.Year;
+            if (dateOfBirth > today.AddYears(-age))
+            {
+                age--;
+            }
+            if (age < MIN_DRIVER_AGE)
+            {
+                ModelState.AddModelError("DateOfBirth","Driver cannot be under 18 years old.");
             }
         }
 
@@ -225,5 +244,7 @@
                     "Company registration number cannot be empty.");
             }
         }
+        
+        #endregion
     }
 }

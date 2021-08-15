@@ -13,6 +13,7 @@
         public string Address { get; set; }
         public string Postcode { get; set; }
         public string PhoneNumber { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string NationalInsuranceNumber { get; set; }
         public ICollection<LicenceCategory> LicenceCategories { get; set; }
         public ICollection<File> Documents { get; set; }

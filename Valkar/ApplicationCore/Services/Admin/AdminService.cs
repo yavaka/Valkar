@@ -1,9 +1,11 @@
 ﻿namespace ApplicationCore.Services.Admin
 {
     using ApplicationCore.ServiceModels.Admin;
+    using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
     using AutoMapper;
+    using Infrastructure.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -59,10 +61,12 @@
                 PhoneNumber = user.Driver.PhoneNumber,
                 Address = user.Driver.Address,
                 Postcode = user.Driver.Postcode,
+                DateOfBirth = user.Driver.DateOfBirth,
                 CreatedOn = user.RegisteredOn,
                 NiNo = user.Driver.NationalInsuranceNumber,
                 LimitedCompany = user.Driver.LimitedCompany.CompanyName,
-                CompanyRegistrationNumber = user.Driver.LimitedCompany.CompanyRegistrationNumber
+                CompanyRegistrationNumber = user.Driver.LimitedCompany.CompanyRegistrationNumber,
+                EmergencyContact = this._mapper.Map<EmergencyContact, EmergencyContactServiceModel>(user.Driver.EmergencyContact)
             };
             driver.ConvertDrivingLicenceEntitiesToCategoriesName(user.Driver.LicenceCategories);
             return driver;
