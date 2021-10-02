@@ -1,8 +1,6 @@
 ﻿namespace ApplicationCore.Services.Driver
 {
-    using ApplicationCore.ServiceModels.Admin;
     using ApplicationCore.ServiceModels.Driver;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IDriverService

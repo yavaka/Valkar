@@ -1,6 +1,25 @@
-﻿@model ApplicationCore.ServiceModels.Admin.DriverAdminServiceModel
+﻿@using Infrastructure.Common.Enums;
+
+@model ApplicationCore.ServiceModels.Admin.DriverAdminServiceModel
 @{
     ViewData["Title"] = "DriverProfile";
+
+    // Used to pass multiple data through asp-all-route-data
+    var identityData = new Dictionary<string, string>
+    {
+        { "uploaderId", Model.DriverId },
+        { "documentType", DocumentTypes.IdentityDocument.ToString() }
+    };
+    var licenceData = new Dictionary<string, string>
+    {
+        { "uploaderId", Model.DriverId },
+        { "documentType", DocumentTypes.DrivingLicence.ToString() }
+    };
+    var niNoData = new Dictionary<string, string>
+    {
+        { "uploaderId", Model.DriverId },
+        { "documentType", DocumentTypes.NationalInsuranceNumber.ToString() }
+    };
 }
 
 <div class="container" data-layout="container">
@@ -44,11 +63,11 @@
                     <div class="col-auto">
                         <button class="btn btn-falcon-default btn-sm dropdown-toggle ms-2 dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documents</button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Driving licence</a>
+                            <a class="dropdown-item" asp-controller="Documents" asp-action="Download" asp-all-route-data="licenceData">Driving licence</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Identity document</a>
+                            <a class="dropdown-item" asp-controller="Documents" asp-action="Download" asp-all-route-data="identityData">Identity document</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">NiNo letter</a>
+                            <a class="dropdown-item" asp-controller="Documents" asp-action="Download" asp-all-route-data="niNoData">NiNo letter</a>
                         </div>
                     </div>
                 </div>
