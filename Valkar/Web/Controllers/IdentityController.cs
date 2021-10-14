@@ -239,7 +239,7 @@
                 new SettingsServiceModel
                 { // Return password model errors, driver details and ltd fields
                     ChangePassword = model,
-                    DriverDetails = await this._driverService.GetDriverDetailsByUserId(userId),
+                    DriverDetails = await this._driverService.GetDriverDetailsForUpdateByUserId(userId),
                     LimitedCompany = await this._driverService.GetLimitedCompanyByUserId(userId)
                 });
         }

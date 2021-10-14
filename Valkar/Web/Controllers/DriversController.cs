@@ -40,8 +40,8 @@
             {
                 return RedirectToAction(nameof(DriverDetails));
             }
-
-            return View(new DriverDetailsServiceModel { FirstNames = "TestUser" });
+            var driver = await this._driverService.GetDriverProfileByUserId(userId);
+            return View(driver);
         }
 
         [HttpGet]
@@ -107,7 +107,7 @@
                 new SettingsServiceModel
                 { // Return ltd model errors and driver details fields
                     LimitedCompany = model,
-                    DriverDetails = await this._driverService.GetDriverDetailsByUserId(userId)
+                    DriverDetails = await this._driverService.GetDriverDetailsForUpdateByUserId(userId)
                 });
         }
 

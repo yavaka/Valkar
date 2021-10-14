@@ -15,6 +15,8 @@
             this.Documents = new DocumentsServiceModel();
         }
 
+        public Guid DriverId { get; set; }
+
         [Required(ErrorMessage = "Title is required.")]
         public Titles Title { get; set; }
 

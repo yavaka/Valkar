@@ -13,8 +13,9 @@
 
         Task<SettingsServiceModel> GetDriverSettingsByUserId(string userId);
 
-        Task<UpdateDriverDetailsServiceModel> GetDriverDetailsByUserId(string userId);
+        Task<UpdateDriverDetailsServiceModel> GetDriverDetailsForUpdateByUserId(string userId);
 
         Task<LimitedCompanyServiceModel> GetLimitedCompanyByUserId(string userId);
+        Task<DriverProfileServiceModel> GetDriverProfileByUserId(string userId);
     }
 }

@@ -23,6 +23,7 @@
         public bool IsCompleted { get; set; }
         public EmergencyContact EmergencyContact { get; set; }
         public LimitedCompany LimitedCompany { get; set; }
+        public ICollection<WorkingDay> WorkedDays { get; set; }
 
         public string UserId { get; set; }
         public User User { get; set; }

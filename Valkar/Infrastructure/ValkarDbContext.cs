@@ -17,7 +17,8 @@
         public DbSet<LimitedCompany> LimitedCompanies { get; set; }
         public DbSet<LicenceCategory> DriversLicenceCategories { get; set; }
         public DbSet<File> Files { get; set; }
-        
+        public DbSet<WorkingDay> WorkedDays { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

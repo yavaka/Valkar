@@ -6,6 +6,10 @@
     using ApplicationCore.Services.File;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
+    using ApplicationCore.Services.PDFGenerator;
+    using ApplicationCore.Services.WorkingDay;
+    using DinkToPdf;
+    using DinkToPdf.Contracts;
     using Infrastructure;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Identity;
@@ -31,7 +35,12 @@
             services.AddEmailSender(configuration);
 
             services.AddTransient<IAdminService, AdminService>();
+            
+            services.AddTransient<IWorkingDayService, WorkingDayService>();
 
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+            services.AddTransient<IPDFGeneratorService, PDFGeneratorService>();
+            
             return services;
         }
 

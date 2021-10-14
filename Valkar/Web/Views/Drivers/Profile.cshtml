@@ -1,4 +1,4 @@
-﻿@model ApplicationCore.ServiceModels.Driver.DriverDetailsServiceModel
+﻿@model ApplicationCore.ServiceModels.Driver.DriverProfileServiceModel
 
 @{
     TempData["Title"] = "Profile";
@@ -35,7 +35,7 @@
                                         {
                                             @:Good Night
                                         }
-                                    }, @Model.FirstNames!
+                                    }, @Model.Title.ToLower() @Model.Surname!
                                 </h3>
                             </div>
                         </div>
@@ -47,7 +47,12 @@
             <div class="col-lg-12">
                 <div class="card mb-3 mb-lg-0">
                     <div class="card-header bg-light d-flex justify-content-between">
-                        <h5 class="mb-0">Deliveries</h5>
+                        <div class="col-auto">
+                            <h5 class="mb-0">Worked Days</h5>
+                        </div>
+                        <div class="col-auto">
+                            <a class="btn btn-falcon-primary btn-sm" asp-controller="WorkingDays" asp-action="AddWorkingDay" asp-route-driverId="@Model.DriverId"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1"></span>Add</a>
+                        </div>
                     </div>
                     <div class="card-body fs--1">
                         <div class="row">

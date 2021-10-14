@@ -101,7 +101,7 @@
             return settingsModel;
         }
 
-        public async Task<UpdateDriverDetailsServiceModel> GetDriverDetailsByUserId(string userId)
+        public async Task<UpdateDriverDetailsServiceModel> GetDriverDetailsForUpdateByUserId(string userId)
         {
             // Get driver with its DL categories and limited company
             var driver = await this._data.Drivers
@@ -128,6 +128,15 @@
 
             // Map driver details
             return this._mapper.Map<LimitedCompany, LimitedCompanyServiceModel>(limitedCompany);
+        }
+
+        public async Task<DriverProfileServiceModel> GetDriverProfileByUserId(string userId)
+        {
+            // Get driver with its DL categories and limited company
+            var driver = await this._data.Drivers
+                .FirstOrDefaultAsync(i => i.UserId == userId);
+
+            return this._mapper.Map<Driver, DriverProfileServiceModel>(driver);
         }
 
         #region Helpers
