@@ -3,6 +3,7 @@
     using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Admin;
     using ApplicationCore.ServiceModels.Driver;
+    using ApplicationCore.ServiceModels.WorkingDay;
     using ApplicationCore.Services.File;
     using ApplicationCore.Services.Mapper;
     using Infrastructure;
@@ -132,11 +133,17 @@
 
         public async Task<DriverProfileServiceModel> GetDriverProfileByUserId(string userId)
         {
-            // Get driver with its DL categories and limited company
             var driver = await this._data.Drivers
+                .Include(wd => wd.WorkedDays)
                 .FirstOrDefaultAsync(i => i.UserId == userId);
+            var driverServiceModel = this._mapper.Map<Driver, DriverProfileServiceModel>(driver);
 
-            return this._mapper.Map<Driver, DriverProfileServiceModel>(driver);
+            foreach (var workedDay in driver.WorkedDays.OrderByDescending(d => d.Date).ToList())
+            {
+                driverServiceModel.WorkedDays.Add(
+                    this._mapper.Map<WorkingDay, WorkingDayServiceModel>(workedDay));
+            }
+            return driverServiceModel;
         }
 
         #region Helpers

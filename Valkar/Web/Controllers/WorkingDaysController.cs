@@ -42,6 +42,10 @@
             {
                 ModelState.AddModelError(nameof(WorkingDayServiceModel.Date), $"{nameof(WorkingDayServiceModel.Date)} is required");
             }
+            if (model.Date > DateTime.Now)
+            {
+                ModelState.AddModelError(nameof(WorkingDayServiceModel.Date), $"{nameof(WorkingDayServiceModel.Date)} cannot be in the future");
+            }
             if (model.TimeOut == default)
             {
                 ModelState.AddModelError(nameof(WorkingDayServiceModel.TimeOut), $"{nameof(WorkingDayServiceModel.TimeOut)} is required");
