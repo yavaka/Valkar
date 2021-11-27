@@ -4,6 +4,7 @@
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
+    using ApplicationCore.Services.WorkingDay;
     using AutoMapper;
     using Infrastructure.Models;
     using System.Collections.Generic;
@@ -13,15 +14,18 @@
     {
         private readonly IDriverService _driverService;
         private readonly IIdentityService _identityService;
+        private readonly IWorkingDayService _workingDayService;
         private readonly IMapper _mapper;
 
         public AdminService(
             IDriverService driverService,
             IIdentityService identityService,
+            IWorkingDayService workingDayService,
             IMapper mapper)
         {
             this._driverService = driverService;
             this._identityService = identityService;
+            this._workingDayService = workingDayService;
             this._mapper = mapper;
         }
 
@@ -47,7 +51,7 @@
             return results;
         }
 
-        public DriverAdminServiceModel GetDriverProfile(string userId)
+        public async Task<DriverAdminServiceModel> GetDriverProfileAsync(string userId)
         {
             // Get the user including the driver entity
             var user = this._identityService.GetUserById(userId);
@@ -66,7 +70,8 @@
                 NiNo = user.Driver.NationalInsuranceNumber,
                 LimitedCompany = user.Driver.LimitedCompany.CompanyName,
                 CompanyRegistrationNumber = user.Driver.LimitedCompany.CompanyRegistrationNumber,
-                EmergencyContact = this._mapper.Map<EmergencyContact, EmergencyContactServiceModel>(user.Driver.EmergencyContact)
+                EmergencyContact = this._mapper.Map<EmergencyContact, EmergencyContactServiceModel>(user.Driver.EmergencyContact),
+                WorkingDays = await this._workingDayService.GetWorkingDaysByDriverId(user.Driver.Id.ToString())
             };
             driver.ConvertDrivingLicenceEntitiesToCategoriesName(user.Driver.LicenceCategories);
             return driver;

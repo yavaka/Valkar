@@ -32,9 +32,9 @@
             });
         }
 
-        public IActionResult DriverProfile(string userId) 
+        public async Task<IActionResult> DriverProfileAsync(string userId) 
         {
-            return View(this._adminService.GetDriverProfile(userId));
+            return View(await this._adminService.GetDriverProfileAsync(userId));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace ApplicationCore.ServiceModels.Admin
 {
     using ApplicationCore.ServiceModels.Driver;
+    using ApplicationCore.ServiceModels.WorkingDay;
     using Infrastructure.Models;
     using System;
     using System.Collections.Generic;
@@ -28,6 +29,7 @@
         public string CompanyRegistrationNumber { get; set; }
         public EmergencyContactServiceModel EmergencyContact { get; set; }
         // TODO: Admin - Add date of birth prop.
+        public ICollection<WorkingDayServiceModel> WorkingDays { get; set; }
 
         /// <summary>
         /// Converts driver`s licence category entities to list of categories names

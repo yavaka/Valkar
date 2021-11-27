@@ -6,17 +6,17 @@
 
     // Used to pass multiple data through asp-all-route-data
     var identityData = new Dictionary<string, string>
-    {
+{
         { "uploaderId", Model.DriverId },
         { "documentType", DocumentTypes.IdentityDocument.ToString() }
     };
     var licenceData = new Dictionary<string, string>
-    {
+{
         { "uploaderId", Model.DriverId },
         { "documentType", DocumentTypes.DrivingLicence.ToString() }
     };
     var niNoData = new Dictionary<string, string>
-    {
+{
         { "uploaderId", Model.DriverId },
         { "documentType", DocumentTypes.NationalInsuranceNumber.ToString() }
     };
@@ -50,6 +50,36 @@
                             <a class="dropdown-item text-danger" href="#">Delete driver</a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        @*-- Working Days --*@
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="col-auto">
+                    <h5 class="mb-0">Working Days</h5>
+                </div>
+            </div>
+            <div class="card-body fs--1">
+                <div class="row">
+                    @foreach (var workedDay in Model.WorkingDays)
+                    {
+                        <div class="col-md-6 h-100" id="row_@workedDay.Id">
+                            <div class="d-flex btn-reveal-trigger">
+                                <div class="calendar">
+                                    <span class="calendar-month">@workedDay.Date.ToString("MMM")</span>
+                                    <span class="calendar-day">@workedDay.Date.ToString("dd")</span>
+                                </div>
+                                <div class="flex-1 position-relative ps-3">
+                                    <p class="text-1000 mb-0">Time in: @workedDay.TimeIn.ToString("hh\\:mm")</p>
+                                    <p class="text-1000 mb-0">Break: @workedDay.Break.ToString("hh\\:mm")</p>
+                                    <p class="text-1000 mb-0">Time out: @workedDay.TimeOut.ToString("hh\\:mm")</p>
+                                    <p class="text-1000 mb-0">Total hours: @workedDay.TotalHours.ToString("hh\\:mm")</p>
+                                    <div class="border-dashed-bottom my-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
