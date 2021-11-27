@@ -1,12 +1,12 @@
 ﻿namespace ApplicationCore.Services.Admin
 {
     using ApplicationCore.ServiceModels.Admin;
-    using ApplicationCore.ServiceModels.Driver;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public interface IAdminService
     {
         IEnumerable<DriverAdminServiceModel> GetAllDrivers();
-        DriverAdminServiceModel GetDriverProfile(string userId);
+        Task<DriverAdminServiceModel> GetDriverProfileAsync(string userId);
     }
 }

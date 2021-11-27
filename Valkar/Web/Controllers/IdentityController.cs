@@ -163,7 +163,7 @@
 
                     TempData["sentEmail"] = "We have sent an email with password reset link. Please check your mailbox.";
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     TempData["error"] = "Error occured, please contact site owner.";
                 }
