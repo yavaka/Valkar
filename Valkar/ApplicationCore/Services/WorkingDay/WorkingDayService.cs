@@ -6,8 +6,6 @@
     using Microsoft.EntityFrameworkCore;
     using Infrastructure.Models;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class WorkingDayService : IWorkingDayService
     {
@@ -49,12 +47,5 @@
 
         private async Task<WorkingDay> GetWorkingDayModelById(int id)
             => await this._data.WorkedDays.FirstOrDefaultAsync(i => i.Id == id);
-
-        public async Task<ICollection<WorkingDayServiceModel>> GetWorkingDaysByDriverId(string driverId)
-            => await this._data.WorkedDays
-                .Where(i => i.DriverId.ToString() == driverId)
-                .Select(wd => 
-                    this._mapper.Map<WorkingDay, WorkingDayServiceModel>(wd))
-                .ToListAsync();
     }
 }
