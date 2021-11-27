@@ -3,6 +3,8 @@
     using ApplicationCore.ServiceModels.WorkingDay;
     using ApplicationCore.Services.Mapper;
     using Infrastructure;
+    using Microsoft.EntityFrameworkCore;
+    using Infrastructure.Models;
     using System.Threading.Tasks;
 
     public class WorkingDayService : IWorkingDayService
@@ -21,10 +23,29 @@
         public async Task AddWorkingDay(WorkingDayServiceModel model)
         {
             var workingDay = this._mapper
-                .Map<WorkingDayServiceModel, Infrastructure.Models.WorkingDay>(model);
+                .Map<WorkingDayServiceModel, WorkingDay>(model);
             
             await this._data.WorkedDays.AddAsync(workingDay);
             await this._data.SaveChangesAsync();
         }
+
+        public async Task EditWorkingDay(WorkingDayServiceModel model)
+        {
+            this._data.WorkedDays.Update(this._mapper
+                .Map<WorkingDayServiceModel, WorkingDay>(model));
+            await this._data.SaveChangesAsync();
+        }
+
+        public async Task DeleteWorkingDay(int id)
+        {
+            this._data.WorkedDays.Remove(await GetWorkingDayModelById(id));
+            await this._data.SaveChangesAsync();
+        }
+
+        public async Task<WorkingDayServiceModel> GetWorkingDayById(int id)
+            => this._mapper.Map<WorkingDay, WorkingDayServiceModel>(await GetWorkingDayModelById(id));
+
+        private async Task<WorkingDay> GetWorkingDayModelById(int id)
+            => await this._data.WorkedDays.FirstOrDefaultAsync(i => i.Id == id);
     }
 }

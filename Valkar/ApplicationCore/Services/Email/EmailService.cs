@@ -54,7 +54,7 @@
 
             // Send the email
             client.Send(emailMessage);
-            
+
             await client.DisconnectAsync(true);
         }
     }

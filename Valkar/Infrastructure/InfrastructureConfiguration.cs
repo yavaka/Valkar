@@ -3,6 +3,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using System;
 
     public static class InfrastructureConfiguration
     {
@@ -14,9 +15,21 @@
         private static IServiceCollection AddDbContext(
            this IServiceCollection services,
            IConfiguration configuration)
-            => services.AddDbContext<ValkarDbContext>(opt =>
+        {
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
             {
-                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            });
+                return services.AddDbContext<ValkarDbContext>(opt =>
+                {
+                    opt.UseSqlServer(configuration.GetConnectionString("AzureConnection"));
+                });
+            }
+            else
+            {
+                return services.AddDbContext<ValkarDbContext>(opt =>
+                {
+                    opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                });
+            }
+        }
     }
 }

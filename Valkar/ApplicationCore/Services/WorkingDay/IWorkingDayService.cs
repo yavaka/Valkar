@@ -6,5 +6,8 @@
     public interface IWorkingDayService
     {
         Task AddWorkingDay(WorkingDayServiceModel model);
+        Task EditWorkingDay(WorkingDayServiceModel model);
+        Task DeleteWorkingDay(int id);
+        Task<WorkingDayServiceModel> GetWorkingDayById(int id);
     }
 }

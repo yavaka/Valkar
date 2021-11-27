@@ -153,13 +153,21 @@
                     },
                     protocol: Request.Scheme);
 
-                // Send email
-                await this._emailService.SendEmail(new Message(
-                    to: new string[] { user.Email },
-                    subject: "Valkar account reset password",
-                    content: $"Reset password link: \n\r{callback}"));
+                try
+                {
+                    // Send email
+                    await this._emailService.SendEmail(new Message(
+                        to: new string[] { user.Email },
+                        subject: "Valkar account reset password",
+                        content: $"Reset password link: \n\r{callback}"));
 
-                TempData["sentEmail"] = "We have sent an email with password reset link. Please check your mailbox.";
+                    TempData["sentEmail"] = "We have sent an email with password reset link. Please check your mailbox.";
+                }
+                catch (Exception e)
+                {
+                    TempData["error"] = "Error occured, please contact site owner.";
+                }
+
                 return View();
             }
             return View(model);

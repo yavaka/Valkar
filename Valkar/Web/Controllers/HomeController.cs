@@ -14,17 +14,6 @@
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Index(DriverDetailsServiceModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // some code
-            }
-            return View(model);
-        }
-
         [Authorize(Roles = Role.Admin)]
         public IActionResult Privacy()
         {

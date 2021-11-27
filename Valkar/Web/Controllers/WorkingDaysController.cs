@@ -23,6 +23,7 @@
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddWorkingDayAsync(WorkingDayServiceModel model)
         {
             Validate(model);
@@ -34,6 +35,34 @@
                 return RedirectToAction("Profile", "Drivers");
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditWorkingDay(int id)
+        {
+            return View(await this._workingDayService.GetWorkingDayById(id));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditWorkingDay(WorkingDayServiceModel model)
+        {
+            Validate(model);
+
+            if (ModelState.IsValid)
+            {
+                model.CalculateTotlaHours();
+                await this._workingDayService.EditWorkingDay(model);
+                return RedirectToAction("Profile", "Drivers");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteWorkingDayAsync(int id)
+        {
+            await this._workingDayService.DeleteWorkingDay(id);
+            return Json(new { status = "Success" });
         }
 
         private void Validate(WorkingDayServiceModel model)

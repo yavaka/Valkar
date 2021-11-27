@@ -5,8 +5,8 @@
 
     public class WorkingDayServiceModel
     {
+        public int Id { get; set; }
         public string DriverId { get; set; }
-        
         public DateTime Date { get; set; } = DateTime.Now.Date;
         
         [DisplayName("Time In")]
@@ -25,7 +25,7 @@
         /// </summary>
         public void CalculateTotlaHours() 
         {
-            if (this.TimeIn != default && this.TimeOut != default)
+            if (this.TimeOut != default)
             {
                 this.TotalHours = this.TimeOut.Subtract(this.TimeIn).Subtract(this.Break);
             }

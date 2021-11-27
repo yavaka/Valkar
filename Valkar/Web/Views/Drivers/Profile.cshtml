@@ -13,8 +13,6 @@
                 <div class="card bg-transparent-50 overflow-hidden">
                     <div class="card-body position-relative">
                         <div class="bg-holder d-none d-md-block bg-card z-index-1" style="background-image:url(../../img/icons/corner-3.png);background-size:230px;background-position:right bottom;z-index:-1;"></div>
-                        <!--/.bg-holder-->
-
                         <div class="position-relative z-index-2">
                             <div>
                                 <h3 class="text-primary mb-1">
@@ -48,7 +46,7 @@
                 <div class="card mb-3 mb-lg-0">
                     <div class="card-header bg-light d-flex justify-content-between">
                         <div class="col-auto">
-                            <h5 class="mb-0">Worked Days</h5>
+                            <h5 class="mb-0">Working Days</h5>
                         </div>
                         <div class="col-auto">
                             <a class="btn btn-falcon-primary btn-sm" asp-controller="WorkingDays" asp-action="AddWorkingDay" asp-route-driverId="@Model.DriverId"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1"></span>Add</a>
@@ -58,7 +56,7 @@
                         <div class="row">
                             @foreach (var workedDay in Model.WorkedDays)
                             {
-                                <div class="col-md-6 h-100">
+                                <div class="col-md-6 h-100" id="row_@workedDay.Id">
                                     <div class="d-flex btn-reveal-trigger">
                                         <div class="calendar">
                                             <span class="calendar-month">@workedDay.Date.ToString("MMM")</span>
@@ -71,6 +69,15 @@
                                             <p class="text-1000 mb-0">Total hours: @workedDay.TotalHours.ToString("hh\\:mm")</p>
                                             <div class="border-dashed-bottom my-3"></div>
                                         </div>
+                                        <div class="justify-content-end">
+                                            <div class="dropdown">
+                                                <button class="btn" id="dropdownMenu2" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-bars fs-2"></span></button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                    <a class="dropdown-item" asp-action="EditWorkingDay" asp-controller="WorkingDays" asp-route-id="@workedDay.Id" style="cursor: pointer;">Edit</a>
+                                                    <a class="dropdown-item" onclick="confirmDelete('@workedDay.Id')" style="color: red; cursor: pointer;">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             }
@@ -81,4 +88,55 @@
             <!-- #endregion -->
         </div>
     </div>
+
+    <input type="hidden" id="working-day-id" />
+    
+    <!-- #region Delete confirmation modal -->
+    <div class="modal fade" id="delete-confirmation-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
+            <div class="modal-content position-relative">
+                <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
+                    <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base float-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
+                        <h5 class="mb-1" id="modalExampleDemoLabel">Delete working day</h5>
+                    </div>
+                    <div class="p-4 pb-0">
+                        <h5>Are you sure you want to remove this working day?</h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-success" onclick="deleteWorkingDay()">Confirm</a>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #endregion -->
+
 </div>
+
+@section Scripts{
+    <script>
+
+        function confirmDelete(workedDayId) {
+            $('#working-day-id').val(workedDayId);
+            $('#delete-confirmation-modal').modal('show');
+        }
+
+        function deleteWorkingDay() {
+            var workedDayId = $('#working-day-id').val();
+            $.ajax({
+                type: 'POST',
+                url: '/WorkingDays/DeleteWorkingDay',
+                data: { id: workedDayId },
+                success: function () {
+                    $('#delete-confirmation-modal').modal('hide');
+                    location.reload();
+                }
+            })
+        }
+
+    </script>
+}
