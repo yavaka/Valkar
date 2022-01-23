@@ -21,54 +21,65 @@
                     </div>
                     <div class="px-sm-3 px-md-5">
                         <div class="card-body py-4">
+                            @*Title*@
                             <div class="mb-3">
                                 <label asp-for="Title"></label>
-                                <select class="form-control" asp-for="Title" asp-items="Html.GetEnumSelectList<Titles>()">
-                                    <option selected="selected" value="">Please select</option>
-                                </select>
-                                <span asp-validation-for="Title" class="text-danger" style="font-size: smaller"></span>
+                                <select id="driver-title" class="form-control" asp-for="Title" asp-items="Html.GetEnumSelectList<Titles>()"></select>
+                                <span asp-validation-for="Title" id="driver-title-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
                             <div class="row g-2">
                                 <div class="col-6">
+                                    @*First Names*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="FirstNames"></label>
-                                        <input class="form-control" asp-for="FirstNames" type="text" placeholder="John Smith" />
-                                        <span asp-validation-for="FirstNames" class="text-danger" style="font-size:smaller;"></span>
+                                        <input class="form-control" id="driver-first-names" asp-for="FirstNames" type="text" placeholder="John Smith" />
+                                        <span asp-validation-for="FirstNames" id="driver-first-names-validation-message" class="text-danger" style="font-size:smaller;"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
+                                    @*Surname*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="Surname"></label>
-                                        <input class="form-control" asp-for="Surname" type="text" placeholder="Western" />
-                                        <span asp-validation-for="Surname" class="text-danger" style="font-size:smaller;"></span>
+                                        <input class="form-control" id="driver-surname" asp-for="Surname" type="text" placeholder="Western" />
+                                        <span asp-validation-for="Surname" id="driver-surname-validation-message" class="text-danger" style="font-size:smaller;"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row g-2">
                                 <div class="col-6">
+                                    @*Address*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="Address"></label>
-                                        <input class="form-control" asp-for="Address" type="text" placeholder="7 White Road, Birmingham, West Midlands" />
-                                        <span asp-validation-for="Address" class="text-danger" style="font-size:smaller;"></span>
+                                        <input class="form-control" id="driver-address" asp-for="Address" type="text" placeholder="7 White Road, Birmingham, West Midlands" />
+                                        <span asp-validation-for="Address" id="driver-address-validation-message" class="text-danger" style="font-size:smaller;"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
+                                    @*Postcode*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="Postcode"></label>
-                                        <input class="form-control" asp-for="Postcode" type="text" placeholder="E1 1AA" />
-                                        <span asp-validation-for="Postcode" class="text-danger" style="font-size:smaller;"></span>
+                                        <input class="form-control" id="driver-postcode" asp-for="Postcode" type="text" placeholder="E1 1AA" />
+                                        <span asp-validation-for="Postcode" id="driver-postcode-validation-message" class="text-danger" style="font-size:smaller;"></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label" asp-for="DateOfBirth"></label>
-                                <input class="form-control datetimepicker" asp-for="DateOfBirth" type="text" placeholder="d/m/y" data-options='{"dateFormat":"d/m/y","disableMobile":true}' />
-                                <span asp-validation-for="DateOfBirth" class="text-danger" style="font-size:small;"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" asp-for="PhoneNumber"></label>
-                                <input class="form-control" asp-for="PhoneNumber" type="text" placeholder="(+44) 07312365411" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger" style="font-size:smaller;"></span>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    @*Date of birth*@
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="DateOfBirth"></label>
+                                        <input class="form-control datetimepicker" asp-for="DateOfBirth" id="datepicker" type="text" placeholder="Select Date" />
+                                        <span asp-validation-for="DateOfBirth" id="driver-date-of-birth-validation-message"  class="text-danger" style="font-size:small;"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    @*Phone Number*@
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="PhoneNumber"></label>
+                                        <input class="form-control" asp-for="PhoneNumber" id="driver-phone-number" type="text" placeholder="(+44) 07312365411" />
+                                        <span asp-validation-for="PhoneNumber" id="driver-phone-number-validation-message" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -83,15 +94,16 @@
                     </div>
                     <div class="px-sm-3 px-md-5">
                         <div class="card-body py-4">
+                            @*Driving Licence Categories*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="DrivingLicenceCategories"></label>
                                 <div class="panel panel-primary">
                                     <div class="panel-body">
-                                        <ul class="list-group" style="max-height: 200px; overflow: scroll; -webkit-overflow-scrolling: touch;">
+                                        <ul class="list-group" id="dl-categories" style="max-height: 200px; overflow: scroll; -webkit-overflow-scrolling: touch;">
                                             @for (int i = 0; i < Model.DrivingLicenceCategories.Length; i++)
                                             {
                                                 <li class="list-group-item form-control">
-                                                    <input asp-for="@Model.DrivingLicenceCategories[i].IsChecked" type="checkbox" />
+                                                    <input asp-for="@Model.DrivingLicenceCategories[i].IsChecked" onclick="DriverDetails.dlCategoriesClickEvent()" type="checkbox" />
                                                     <label asp-for="@Model.DrivingLicenceCategories[i].IsChecked"> @Model.DrivingLicenceCategories[i].Text</label>
                                                     <input asp-for="@Model.DrivingLicenceCategories[i].Text" type="hidden" />
                                                     <input asp-for="@Model.DrivingLicenceCategories[i].Value" type="hidden" />
@@ -100,37 +112,43 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <span asp-validation-for="DrivingLicenceCategories" class="text-danger" style="font-size: smaller"></span>
+                                <span asp-validation-for="DrivingLicenceCategories" id="dl-categories-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
+                            @*Driving Licence Front*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="Documents.DrivingLicenceFront"></label>
-                                <input class="form-control" asp-for="Documents.DrivingLicenceFront" type="file" required value="@Model.Documents.DrivingLicenceFront">
-                                <span asp-validation-for="Documents.DrivingLicenceFront" class="text-danger" style="font-size: smaller"></span>
+                                <input class="form-control" id="dl-front" asp-for="Documents.DrivingLicenceFront" type="file" value="@Model.Documents.DrivingLicenceFront">
+                                <span asp-validation-for="Documents.DrivingLicenceFront" id="dl-front-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
+                            @*Driving Licence Back*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="Documents.DrivingLicenceBack"></label>
-                                <input class="form-control" asp-for="Documents.DrivingLicenceBack" type="file" required value="@Model.Documents.DrivingLicenceBack">
-                                <span asp-validation-for="Documents.DrivingLicenceBack" class="text-danger" style="font-size: smaller"></span>
+                                <input class="form-control" id="dl-back" asp-for="Documents.DrivingLicenceBack" type="file" value="@Model.Documents.DrivingLicenceBack">
+                                <span asp-validation-for="Documents.DrivingLicenceBack" id="dl-back-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
+                            @*Identity Document Front*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="Documents.IdentityDocumentFront"></label>
-                                <input class="form-control" asp-for="Documents.IdentityDocumentFront" type="file" required value="@Model.Documents.IdentityDocumentFront">
-                                <span asp-validation-for="Documents.IdentityDocumentFront" class="text-danger" style="font-size: smaller"></span>
+                                <input class="form-control" id="id-front" asp-for="Documents.IdentityDocumentFront" type="file" value="@Model.Documents.IdentityDocumentFront">
+                                <span asp-validation-for="Documents.IdentityDocumentFront" id="id-front-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
+                            @*Identity Document Back*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="Documents.IdentityDocumentBack"></label>
-                                <input class="form-control" asp-for="Documents.IdentityDocumentBack" type="file" value="@Model.Documents.IdentityDocumentBack">
-                                <span asp-validation-for="Documents.IdentityDocumentBack" class="text-danger" style="font-size: smaller"></span>
+                                <input class="form-control" id="id-back" asp-for="Documents.IdentityDocumentBack" type="file" value="@Model.Documents.IdentityDocumentBack">
+                                <span asp-validation-for="Documents.IdentityDocumentBack" id="id-back-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
+                            @*National Insurance Number*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="NationalInsuranceNumber"></label>
-                                <input class="form-control" asp-for="NationalInsuranceNumber" type="text">
-                                <span asp-validation-for="NationalInsuranceNumber" class="text-danger" style="font-size: smaller"></span>
+                                <input class="form-control" id="nino" asp-for="NationalInsuranceNumber" type="text">
+                                <span asp-validation-for="NationalInsuranceNumber" id="nino-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
+                            @*National Insurance Number Letter*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="Documents.NationalInsuranceNumber"></label>
-                                <input class="form-control" asp-for="Documents.NationalInsuranceNumber" type="file" required value="@Model.Documents.NationalInsuranceNumber">
-                                <span asp-validation-for="Documents.NationalInsuranceNumber" class="text-danger" style="font-size: smaller"></span>
+                                <input class="form-control" id="nino-letter" asp-for="Documents.NationalInsuranceNumber" type="file" value="@Model.Documents.NationalInsuranceNumber">
+                                <span asp-validation-for="Documents.NationalInsuranceNumber" id="nino-letter-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
                         </div>
                     </div>
@@ -145,72 +163,71 @@
                     </div>
                     <div class="px-sm-3 px-md-5">
                         <div class="card-body py-4">
+                            @*Title*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="EmergencyContact.Title"></label>
-                                <select asp-for="EmergencyContact.Title" asp-items="Html.GetEnumSelectList<Titles>()" class="form-control">
-                                    <option selected="selected" value="">Please select</option>
-                                </select>
-                                <span asp-validation-for="EmergencyContact.Title" class="text-danger" style="font-size: smaller"></span>
+                                <select asp-for="EmergencyContact.Title" id="ec-title" asp-items="Html.GetEnumSelectList<Titles>()" class="form-control"></select>
+                                <span asp-validation-for="EmergencyContact.Title" id="ec-title-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
-                            @*
-                                    <div class="row g-2">
-                                    <div class="col-6">
-                                    </div>
-                                </div>
-                            *@
-
                             <div class="row g-2">
                                 <div class="col-6">
+                                    @*First Names*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="EmergencyContact.FirstNames"></label>
-                                        <input asp-for="EmergencyContact.FirstNames" type="text" class="form-control">
-                                        <span asp-validation-for="EmergencyContact.FirstNames" class="text-danger" style="font-size: smaller"></span>
+                                        <input asp-for="EmergencyContact.FirstNames" id="ec-first-names" type="text" class="form-control">
+                                        <span asp-validation-for="EmergencyContact.FirstNames" id="ec-first-names-validation-message" class="text-danger" style="font-size: smaller"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
+                                    @*Surname*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="EmergencyContact.Surname"></label>
-                                        <input asp-for="EmergencyContact.Surname" type="text" class="form-control">
-                                        <span asp-validation-for="EmergencyContact.Surname" class="text-danger" style="font-size: smaller"></span>
+                                        <input asp-for="EmergencyContact.Surname" id="ec-surname" type="text" class="form-control">
+                                        <span asp-validation-for="EmergencyContact.Surname" id="ec-surname-validation-message" class="text-danger" style="font-size: smaller"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row g-2">
                                 <div class="col-6">
+                                    @*Address*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="EmergencyContact.Address"></label>
-                                        <input asp-for="EmergencyContact.Address" type="text" class="form-control">
-                                        <span asp-validation-for="EmergencyContact.Address" class="text-danger" style="font-size: smaller"></span>
+                                        <input asp-for="EmergencyContact.Address" id="ec-address" type="text" class="form-control">
+                                        <span asp-validation-for="EmergencyContact.Address" id="ec-address-validation-message" class="text-danger" style="font-size: smaller"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
+                                    @*Postcode*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="EmergencyContact.Postcode"></label>
-                                        <input asp-for="EmergencyContact.Postcode" type="text" class="form-control">
-                                        <span asp-validation-for="EmergencyContact.Postcode" class="text-danger" style="font-size: smaller"></span>
+                                        <input asp-for="EmergencyContact.Postcode" id="ec-postcode" type="text" class="form-control">
+                                        <span asp-validation-for="EmergencyContact.Postcode" id="ec-postcode-validation-message" class="text-danger" style="font-size: smaller"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row g-2">
                                 <div class="col-6">
+                                    @*Email*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="EmergencyContact.Email"></label>
-                                        <input asp-for="EmergencyContact.Email" type="email" class="form-control">
-                                        <span asp-validation-for="EmergencyContact.Email" class="text-danger" style="font-size: smaller"></span>
+                                        <input asp-for="EmergencyContact.Email" id="ec-email" type="email" class="form-control">
+                                        <span asp-validation-for="EmergencyContact.Email" id="ec-email-validation-message" class="text-danger" style="font-size: smaller"></span>
                                     </div>
                                 </div>
                                 <div class="col-6">
+                                    @*Phone Number*@
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="EmergencyContact.PhoneNumber"></label>
-                                        <input asp-for="EmergencyContact.PhoneNumber" type="text" class="form-control">
-                                        <span asp-validation-for="EmergencyContact.PhoneNumber" class="text-danger" style="font-size: smaller"></span>
+                                        <input asp-for="EmergencyContact.PhoneNumber" id="ec-phone-number" type="text" class="form-control">
+                                        <span asp-validation-for="EmergencyContact.PhoneNumber" id="ec-phone-number-validation-message" class="text-danger" style="font-size: smaller"></span>
                                     </div>
                                 </div>
                             </div>
+                            @*Relationship*@
                             <div class="mb-3">
                                 <label class="form-label" asp-for="EmergencyContact.Relationship"></label>
-                                <input asp-for="EmergencyContact.Relationship" type="text" class="form-control">
-                                <span asp-validation-for="EmergencyContact.Relationship" class="text-danger" style="font-size: smaller"></span>
+                                <input asp-for="EmergencyContact.Relationship" id="ec-relationship" type="text" class="form-control">
+                                <span asp-validation-for="EmergencyContact.Relationship" id="ec-relationship-validation-message" class="text-danger" style="font-size: smaller"></span>
                             </div>
                             <br />
                         </div>
@@ -231,13 +248,13 @@
                                 <div class="mb-3">
                                     <label class="form-label">Do you have Limited Company(LTD)</label><br />
                                     <div class="form-check">
-                                        <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1">
+                                        <input asp-for="IsLimitedCompany" id="radio-btn-yes" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                             Yes
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="No" id="flexRadioDefault2">
+                                        <input asp-for="IsLimitedCompany" id="radio-btn-no" class="form-check-input" type="radio" value="No" id="flexRadioDefault2">
                                         <label class="form-check-label" for="flexRadioDefault2">
                                             No
                                         </label>
@@ -247,14 +264,14 @@
                                 <div class="limited-company">
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="LimitedCompany.CompanyName"></label>
-                                        <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
-                                        <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger" style="font-size: smaller"></span>
+                                        <input asp-for="LimitedCompany.CompanyName" id="company-name" type="text" class="form-control">
+                                        <span asp-validation-for="LimitedCompany.CompanyName" id="company-name-validation-message" class="text-danger" style="font-size: smaller"></span>
                                     </div>
                                     <br />
                                     <div class="mb-3">
                                         <label class="form-label" asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
-                                        <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
-                                        <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger" style="font-size: smaller"></span>
+                                        <input asp-for="LimitedCompany.CompanyRegistrationNumber" id="company-reg-num" type="text" class="form-control">
+                                        <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" id="company-reg-num-validation-message" class="text-danger" style="font-size: smaller"></span>
                                     </div>
                                     <br />
                                 </div>
@@ -266,13 +283,13 @@
                                     <div class="mb-3">
                                         <label class="form-label">Do you have Limited Company(LTD)</label><br />
                                         <div class="form-check">
-                                            <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1">
+                                            <input asp-for="IsLimitedCompany" id="radio-btn-yes" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1">
                                             <label class="form-check-label" for="flexRadioDefault1">
                                                 Yes
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="No" id="flexRadioDefault2" checked>
+                                            <input asp-for="IsLimitedCompany" id="radio-btn-no" class="form-check-input" type="radio" value="No" id="flexRadioDefault2" checked>
                                             <label class="form-check-label" for="flexRadioDefault2">
                                                 No
                                             </label>
@@ -282,14 +299,14 @@
                                     <div class="limited-company" hidden>
                                         <div class="mb-3">
                                             <label class="form-label" asp-for="LimitedCompany.CompanyName"></label>
-                                            <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
-                                            <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger" style="font-size: smaller"></span>
+                                            <input asp-for="LimitedCompany.CompanyName" id="company-name" type="text" class="form-control">
+                                            <span asp-validation-for="LimitedCompany.CompanyName" id="company-name-validation-message" class="text-danger" style="font-size: smaller"></span>
                                         </div>
                                         <br />
                                         <div class="mb-3">
                                             <label class="form-label" asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
-                                            <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
-                                            <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger" style="font-size: smaller"></span>
+                                            <input asp-for="LimitedCompany.CompanyRegistrationNumber" id="company-reg-num" type="text" class="form-control">
+                                            <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" id="company-reg-num-validation-message" class="text-danger" style="font-size: smaller"></span>
                                         </div>
                                         <br />
                                     </div>
@@ -299,13 +316,13 @@
                                     <div class="mb-3">
                                         <label class="form-label">Do you have Limited Company(LTD)</label><br />
                                         <div class="form-check">
-                                            <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1" checked>
+                                            <input asp-for="IsLimitedCompany" id="radio-btn-yes" class="form-check-input" type="radio" value="Yes" id="flexRadioDefault1" checked>
                                             <label class="form-check-label" for="flexRadioDefault1">
                                                 Yes
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input asp-for="IsLimitedCompany" class="form-check-input" type="radio" value="No" id="flexRadioDefault2">
+                                            <input asp-for="IsLimitedCompany" id="radio-btn-no" class="form-check-input" type="radio" value="No" id="flexRadioDefault2">
                                             <label class="form-check-label" for="flexRadioDefault2">
                                                 No
                                             </label>
@@ -315,21 +332,21 @@
                                     <div class="limited-company">
                                         <div class="mb-3">
                                             <label class="form-label" asp-for="LimitedCompany.CompanyName"></label>
-                                            <input asp-for="LimitedCompany.CompanyName" type="text" class="form-control">
-                                            <span asp-validation-for="LimitedCompany.CompanyName" class="text-danger" style="font-size: smaller"></span>
+                                            <input asp-for="LimitedCompany.CompanyName" id="company-name" type="text" class="form-control">
+                                            <span asp-validation-for="LimitedCompany.CompanyName" id="company-name-validation-message" class="text-danger" style="font-size: smaller"></span>
                                         </div>
                                         <br />
                                         <div class="mb-3">
                                             <label class="form-label" asp-for="LimitedCompany.CompanyRegistrationNumber"></label>
-                                            <input asp-for="LimitedCompany.CompanyRegistrationNumber" type="text" class="form-control">
-                                            <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" class="text-danger" style="font-size: smaller"></span>
+                                            <input asp-for="LimitedCompany.CompanyRegistrationNumber" id="company-reg-num" type="text" class="form-control">
+                                            <span asp-validation-for="LimitedCompany.CompanyRegistrationNumber" id="company-reg-num-validation-message" class="text-danger" style="font-size: smaller"></span>
                                         </div>
                                         <br />
                                     </div>
                                 }
                             }
                             <div class="mb-3">
-                                <button class="btn btn-primary d-block w-100 mt-3" type="submit" name="submit">Onboard</button>
+                                <button class="btn btn-primary d-block w-100 mt-3" id="submit-btn" type="submit" name="submit">Onboard</button>
                             </div>
                         </div>
                     </div>
@@ -340,38 +357,29 @@
 </div>
 
 @section Scripts{
-    <script>
-        const YES = 'Yes';
-        const NO = 'No';
+<script src="@Url.Content("~/js/Views/Drivers/DriverDetails.js")" type="module"></script>
 
-            $(document).ready(function () {
-            // On page loading hides or show the limited company section
-            @if (Model.IsLimitedCompany is null)
+<script>
+    $(document).ready(function () {
+        DriverDetails.onInit(null);
+        
+        // On page loading hides or show the limited company section
+        @if (Model.IsLimitedCompany is null)
+        {
+            @:$('.limited-company').hide();
+        }
+        else
+        {
+            @if (Model.IsLimitedCompany is "Yes")
+            {
+                @:$('.limited-company').show();
+            }
+            @if (Model.IsLimitedCompany is "No")
             {
                 @:$('.limited-company').hide();
             }
-            else
-            {
-                @if (Model.IsLimitedCompany is "Yes")
-                {
-                    @:$('.limited-company').show();
-                }
-                @if (Model.IsLimitedCompany is "No")
-                {
-                    @:$('.limited-company').hide();
-                }
-            }
+        }
 
-            $('input[type="radio"]').click(function () {
-                // Get the checked radio button
-                var inputValue = $("input[type='radio']:checked").val();
-                if (inputValue === YES) {
-                    $('.limited-company').show();
-                }
-                else if (inputValue === NO) {
-                    $('.limited-company').hide();
-                }
-            });
-        });
-    </script>
+    });
+</script>
 }

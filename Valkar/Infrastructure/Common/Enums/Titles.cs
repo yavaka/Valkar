@@ -1,10 +1,18 @@
 ﻿namespace Infrastructure.Common.Enums
 {
+    using System.ComponentModel;
+
     public enum Titles
     {
-        Mr = 0,
-        Ms = 1,
-        Mrs = 2,
-        Miss = 3
+        [Description("Please select")]
+        None = 0,
+        [Description("Mr")]
+        Mr = 1,
+        [Description("Ms")]
+        Ms = 2,
+        [Description("Mrs")]
+        Mrs = 3,
+        [Description("Miss")]
+        Miss = 4
     }
 }

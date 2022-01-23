@@ -5,20 +5,20 @@
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Identity;
+    using Infrastructure.Common.Enums;
     using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
+    using static Infrastructure.Common.ModelConstants;
 
     [Authorize(Roles = Role.Driver)]
     public class DriversController : Controller
     {
         private const string YES = "Yes";
-        private const long MAX_FILE_SIZE = 10 * 1024 * 1024;
-        private const string SUCCESSFUL_UPDATE_MSG = "Your details was updated successfully.";
-        private const int MIN_DRIVER_AGE = 18;
 
         private readonly IDriverService _driverService;
         private readonly IIdentityService _identityService;
@@ -131,10 +131,7 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DriverDetails(DriverDetailsServiceModel model)
         {
-            // TODO: Define Validation method and bring all validation logic there
-            ValidateDateOfBirth(model.DateOfBirth);
-            ValidateUploadedFiles(model.Documents);
-            ValidateDrivingLicenceCategories(model.DrivingLicenceCategories);
+            Validations(model);
             if (model.IsLimitedCompany is YES)
             {
                 ValidateLimitedCompanyFields(model.LimitedCompany);
@@ -160,7 +157,58 @@
         }
 
         #region Validations
-        
+
+        private void Validations(DriverDetailsServiceModel model)
+        {
+            ValidateDriverDetails(model);
+            ValidateDrivingLicenceCategories(model.DrivingLicenceCategories);
+            ValidateUploadedFiles(model.Documents);
+            ValidateEmergencyContact(model.EmergencyContact);
+        }
+
+        private void ValidateDriverDetails(DriverDetailsServiceModel model)
+        {
+            if (model.Title == Titles.None)
+            {
+                ModelState.AddModelError("Title", "Title required");
+            }
+            if (string.IsNullOrEmpty(model.FirstNames) || (model.FirstNames.Length > MAX_NAME_LENGTH || model.FirstNames.Length < MIN_NAME_LENGTH))
+            {
+                ModelState.AddModelError("FirstNames", $"First name/s cannot be less than {MIN_NAME_LENGTH} and more than {MAX_NAME_LENGTH} symbols");
+            }
+            if (string.IsNullOrEmpty(model.Surname) || (model.Surname.Length > MAX_NAME_LENGTH || model.Surname.Length < MIN_NAME_LENGTH))
+            {
+                ModelState.AddModelError("Surname", $"Surname cannot be less than {MIN_NAME_LENGTH} and more than {MAX_NAME_LENGTH} symbols");
+            }
+            if (string.IsNullOrEmpty(model.Address) || (model.Address.Length > MAX_ADDRESS_LENGTH))
+            {
+                ModelState.AddModelError("Address", $"Address cannot be more than {MAX_ADDRESS_LENGTH} symbols");
+            }
+            if (string.IsNullOrEmpty(model.Postcode) || (!RegexValidation(model.Postcode, POSTCODE_REGEX)))
+            {
+                ModelState.AddModelError("Postcode", $"Invalid Postcode");
+            }
+            ValidateDateOfBirth(model.DateOfBirth);
+            if (string.IsNullOrEmpty(model.PhoneNumber) || (!RegexValidation(model.PhoneNumber, PHONE_NUMBER_REGEX)))
+            {
+                ModelState.AddModelError("PhoneNumber", $"Invalid Phone number");
+            }
+            if (string.IsNullOrEmpty(model.NationalInsuranceNumber))
+            {
+                ModelState.AddModelError("NationalInsuranceNumber", $"Invalid National insurance number");
+            }
+        }
+
+        private static bool RegexValidation(string fieldValue, string regex)
+        {
+            var match = Regex.Match(fieldValue, regex);
+            if (match.Success)
+            {
+                return true;
+            }
+            return false;
+        }
+
         private void ValidateDateOfBirth(DateTime dateOfBirth)
         {
             var today = DateTime.Today;
@@ -171,7 +219,17 @@
             }
             if (age < MIN_DRIVER_AGE)
             {
-                ModelState.AddModelError("DateOfBirth","Driver cannot be under 18 years old.");
+                ModelState.AddModelError("DateOfBirth", "Age is under 18");
+            }
+        }
+
+        private void ValidateDrivingLicenceCategories(CheckBoxModel[] drivingLicenceCategories)
+        {
+            if (!drivingLicenceCategories.Any(c => c.IsChecked))
+            {
+                ModelState.AddModelError(
+                    "DrivingLicenceCategories",
+                    "Driving licence categories required");
             }
         }
 
@@ -194,35 +252,90 @@
 
         private void ValidateUploadedFiles(DocumentsServiceModel documents)
         {
+            // DL front
             if (documents.DrivingLicenceFront.Length > MAX_FILE_SIZE)
             {
-                ModelState.AddModelError("Documents.DrivingLicenceFront", $"File cannot be more than 10MB.");
+                ModelState.AddModelError("Documents.DrivingLicenceFront", $"File cannot be more than 20MB.");
+            } 
+            else if (!RegexValidation(documents.DrivingLicenceFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            {
+                ModelState.AddModelError("Documents.DrivingLicenceFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
             }
+            
+            // DL back
             if (documents.DrivingLicenceBack.Length > MAX_FILE_SIZE)
             {
-                ModelState.AddModelError("Documents.DrivingLicenceBack", $"File cannot be more than 10MB.");
+                ModelState.AddModelError("Documents.DrivingLicenceBack", $"File cannot be more than 20MB.");
             }
+            else if (!RegexValidation(documents.DrivingLicenceBack.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            {
+                ModelState.AddModelError("Documents.DrivingLicenceBack", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+            }
+
+            // ID front
             if (documents.IdentityDocumentFront.Length > MAX_FILE_SIZE)
             {
-                ModelState.AddModelError("Documents.IdentityDocumentFront", $"File cannot be more than 10MB.");
+                ModelState.AddModelError("Documents.IdentityDocumentFront", $"File cannot be more than 20MB.");
             }
+            else if (!RegexValidation(documents.IdentityDocumentFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            {
+                ModelState.AddModelError("Documents.IdentityDocumentFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+            }
+
+            // ID back
             if (documents.IdentityDocumentBack is not null && documents.IdentityDocumentBack.Length > MAX_FILE_SIZE)
             {
-                ModelState.AddModelError("Documents.IdentityDocumentBack", $"File cannot be more than 10MB.");
+                ModelState.AddModelError("Documents.IdentityDocumentBack", $"File cannot be more than 20MB.");
             }
+            else if (documents.IdentityDocumentBack is not null && !RegexValidation(documents.IdentityDocumentBack.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            {
+                ModelState.AddModelError("Documents.IdentityDocumentBack", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+            }
+
+            // NiNo letter
             if (documents.NationalInsuranceNumber.Length > MAX_FILE_SIZE)
             {
-                ModelState.AddModelError("Documents.NationalInsuranceNumber", $"File cannot be more than 10MB.");
+                ModelState.AddModelError("Documents.NationalInsuranceNumber", $"File cannot be more than 20MB.");
+            }
+            else if (!RegexValidation(documents.NationalInsuranceNumber.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            {
+                ModelState.AddModelError("Documents.NationalInsuranceNumber", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
             }
         }
 
-        private void ValidateDrivingLicenceCategories(CheckBoxModel[] drivingLicenceCategories)
+        private void ValidateEmergencyContact(EmergencyContactServiceModel model)
         {
-            if (!drivingLicenceCategories.Any(c => c.IsChecked))
+            if (model.Title == Titles.None)
             {
-                ModelState.AddModelError(
-                    "DrivingLicenceCategories",
-                    "You should select your driving licence categories");
+                ModelState.AddModelError("EmergencyContact.Title", "Title required");
+            }
+            if (string.IsNullOrEmpty(model.FirstNames) || (model.FirstNames.Length > MAX_NAME_LENGTH || model.FirstNames.Length < MIN_NAME_LENGTH))
+            {
+                ModelState.AddModelError("EmergencyContact.FirstNames", $"First name/s cannot be less than {MIN_NAME_LENGTH} and more than {MAX_NAME_LENGTH} symbols");
+            }
+            if (string.IsNullOrEmpty(model.Surname) || (model.Surname.Length > MAX_NAME_LENGTH || model.Surname.Length < MIN_NAME_LENGTH))
+            {
+                ModelState.AddModelError("EmergencyContact.Surname", $"Surname cannot be less than {MIN_NAME_LENGTH} and more than {MAX_NAME_LENGTH} symbols");
+            }
+            if (string.IsNullOrEmpty(model.Address) || (model.Address.Length > MAX_ADDRESS_LENGTH))
+            {
+                ModelState.AddModelError("EmergencyContact.Address", $"Address cannot be more than {MAX_ADDRESS_LENGTH} symbols");
+            }
+            if (string.IsNullOrEmpty(model.Postcode) || (!RegexValidation(model.Postcode, POSTCODE_REGEX)))
+            {
+                ModelState.AddModelError("EmergencyContact.Postcode", $"Invalid Postcode");
+            }
+            if (string.IsNullOrEmpty(model.Email) || (!RegexValidation(model.Email, EMAIL_REGEX)))
+            {
+                ModelState.AddModelError("EmergencyContact.Email", $"Invalid Email");
+            }
+            if (string.IsNullOrEmpty(model.PhoneNumber) || (!RegexValidation(model.PhoneNumber, PHONE_NUMBER_REGEX)))
+            {
+                ModelState.AddModelError("EmergencyContact.PhoneNumber", $"Invalid Phone number");
+            }
+            if (string.IsNullOrEmpty(model.Relationship) || (model.Relationship.Length > MAX_NAME_LENGTH || model.Relationship.Length < MIN_NAME_LENGTH))
+            {
+                ModelState.AddModelError("EmergencyContact.Relationship", $"Relationship cannot be less than {MIN_NAME_LENGTH} and more than {MAX_NAME_LENGTH} symbols");
             }
         }
 
@@ -244,7 +357,7 @@
                     "Company registration number cannot be empty.");
             }
         }
-        
+
         #endregion
     }
 }

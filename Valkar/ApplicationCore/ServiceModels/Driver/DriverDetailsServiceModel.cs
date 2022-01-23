@@ -21,18 +21,16 @@
         public Titles Title { get; set; }
 
         [Required]
-        [StringLength(MAX_NAME_LENGTH, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = MIN_NAME_LENGTH)]
+        [StringLength(MAX_NAME_LENGTH, ErrorMessage = "{0} must be at least {2} characters long.", MinimumLength = MIN_NAME_LENGTH)]
         [DisplayName("First name/s")]
         public string FirstNames { get; set; }
 
         [Required]
-        [StringLength(MAX_NAME_LENGTH, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = MIN_NAME_LENGTH)]
+        [StringLength(MAX_NAME_LENGTH, ErrorMessage = "{0} must be at least {2} characters long.", MinimumLength = MIN_NAME_LENGTH)]
         public string Surname { get; set; }
 
-        // TODO: Date of birth prop
-
         [Required]
-        [StringLength(MAX_ADDRESS_LENGTH, ErrorMessage = "The {0} must be at least {2} characters long.")]
+        [StringLength(MAX_ADDRESS_LENGTH, ErrorMessage = "{0} must be at least {2} characters long.")]
         public string Address { get; set; }
 
         [Required]
