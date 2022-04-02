@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>@ViewData["Title"] - Valkar</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,700,900|Display+Playfair:200,300,400,700">
+    <link rel="stylesheet" href="~/static/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="~/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/static/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/static/css/jquery-ui.css">
+    <link rel="stylesheet" href="~/static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/static/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="~/static/css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="~/static/fonts/flaticon/font/flaticon.css">
+
+
+
+    <link rel="stylesheet" href="~/static/css/aos.css">
+
+    <link rel="stylesheet" href="~/static/css/style.css">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div class="site-wrap">
+
+        <div class="site-mobile-menu">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close mt-3">
+                    <span class="icon-close2 js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
+        </div>
+
+        <header class="site-navbar py-3" role="banner">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-11 col-xl-2">
+                        <a class="navbar-brand" asp-action="Index" asp-controller="Home">
+                            <img src="~/static/logo/logo_white_resized.png" height="48" alt="Valkar">
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-10 d-none d-xl-block">
+                        <nav class="site-navigation position-relative text-right" role="navigation">
+                            <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
+                                <li id="btnHomeNavbar" ><a asp-action="Index" asp-controller="Home">Home</a></li>
+                                <li id="btnAboutNavbar" ><a asp-action="About" asp-controller="Home">About us</a></li>
+                                <li id="btnContactNavbar" ><a asp-action="Contact" asp-controller="Home">Contact us</a></li>
+                                <li class="has-children">
+                                    <a>Account</a>
+                                    <ul class="dropdown">
+                                        <li><a asp-action="Login" asp-controller="Identity">Login</a></li>
+                                        <li><a asp-action="Register" asp-controller="Identity">Register</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;">
+                        <a href="#"
+                           class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+    <!-- Navbar end-->
+
+    <main class="main" id="top">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer" style="padding-bottom: 0px;">
+        <div class="container" style="margin-top: -115px;">
+            <nav class="navbar">
+                <a class="nav-item" asp-action="Index" asp-controller="Home">Home</a>
+                <a class="nav-item" asp-action="About" asp-controller="Home">About us</a>
+                <a class="nav-item" asp-action="Contact" asp-controller="Home">Contact us</a>
+                <a class="nav-item" asp-action="Login" asp-controller="Identity">Login</a>
+                <a class="nav-item" asp-action="Register" asp-controller="Identity">Register</a>
+            </nav>
+            <div class="row text-center" style="margin-top: 0px;">
+                <div class="col-md-12">
+                    <div class="border-top" style="margin-top: 10px;">
+                        <p style="margin-top: 10px;">Copyright ©Valkar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/static/js/jquery-3.3.1.min.js"></script>
+    <script src="~/static/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="~/static/js/jquery-ui.js"></script>
+    <script src="~/static/js/popper.min.js"></script>
+    <script src="~/static/js/bootstrap.min.js"></script>
+    <script src="~/static/js/owl.carousel.min.js"></script>
+    <script src="~/static/js/jquery.stellar.min.js"></script>
+    <script src="~/static/js/jquery.countdown.min.js"></script>
+    <script src="~/static/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/static/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/static/js/aos.js"></script>
+
+    <script src="~/static/js/main.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

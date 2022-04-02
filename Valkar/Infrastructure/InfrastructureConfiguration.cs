@@ -16,20 +16,18 @@
            this IServiceCollection services,
            IConfiguration configuration)
         {
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+#if DEBUG
+            return services.AddDbContext<ValkarDbContext>(opt =>
             {
-                return services.AddDbContext<ValkarDbContext>(opt =>
-                {
-                    opt.UseSqlServer(configuration.GetConnectionString("AzureConnection"));
-                });
-            }
-            else
+                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
+
+#elif RELEASE
+            return services.AddDbContext<ValkarDbContext>(opt =>
             {
-                return services.AddDbContext<ValkarDbContext>(opt =>
-                {
-                    opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-                });
-            }
+                opt.UseSqlServer(configuration.GetConnectionString("HostingConnection"));
+            });         
+#endif
         }
     }
 }

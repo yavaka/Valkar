@@ -8,6 +8,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using System.Threading.Tasks;
+    using System.Linq;
 
     public static class ApplicationBuilderExtenstions
     {
@@ -17,7 +18,10 @@
 
             var dbContext = services.ServiceProvider.GetService<ValkarDbContext>();
 
-            dbContext.Database.Migrate();
+            if (dbContext.Database.GetPendingMigrations().Any())
+            {
+                dbContext.Database.Migrate();
+            }
         }
 
         public static async Task AddRolesAndAdminAsync(this IApplicationBuilder app)

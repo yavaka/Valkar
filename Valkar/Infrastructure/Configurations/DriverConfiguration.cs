@@ -27,8 +27,7 @@
 
             // Address
             builder.Property(a => a.Address)
-                .HasMaxLength(MAX_ADDRESS_LENGTH)
-                .IsRequired();
+                .HasMaxLength(MAX_ADDRESS_LENGTH);
 
             // Postcode
             builder.Property(p => p.Postcode).IsRequired();

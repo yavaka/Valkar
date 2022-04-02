@@ -18,4 +18,9 @@
 		<ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Properties\ServiceDependencies\" />
+	  <Folder Include="wwwroot\static\" />
+	</ItemGroup>
+
 </Project>

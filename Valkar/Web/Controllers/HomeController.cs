@@ -1,6 +1,5 @@
 ﻿namespace Web.Controllers
 {
-    using ApplicationCore.ServiceModels.Driver;
     using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -9,16 +8,12 @@
 
     public class HomeController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
 
-        [Authorize(Roles = Role.Admin)]
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        public IActionResult About() => View();
+
+        public IActionResult Contact() => View();
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -13,6 +13,6 @@
 
         public DateTime RegisteredOn { get; set; }
         public bool IsCompleted { get; set; }
-        public Driver Driver { get; set; } = new Driver();
+        public Driver Driver { get; set; }
     }
 }
