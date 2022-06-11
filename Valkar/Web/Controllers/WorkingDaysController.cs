@@ -10,8 +10,7 @@
     {
         private readonly IWorkingDayService _workingDayService;
 
-        public WorkingDaysController(IWorkingDayService workingDayService)
-            => this._workingDayService = workingDayService;
+        public WorkingDaysController(IWorkingDayService workingDayService) => this._workingDayService = workingDayService;
 
         [HttpGet]
         public IActionResult AddWorkingDay(string driverId)
