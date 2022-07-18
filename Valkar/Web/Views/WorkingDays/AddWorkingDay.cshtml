@@ -64,4 +64,8 @@
 </div>
 
 @section Scripts{
+<script src="@Url.Content("~/js/Views/WorkingDays/WorkingDays.js")" type="module"></script>
+<script>
+    $(document).ready(function () { WorkingDays.Init(null); });
+</script>
 }

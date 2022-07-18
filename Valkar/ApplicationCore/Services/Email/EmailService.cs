@@ -70,7 +70,9 @@
         private async Task SendAsync(MimeMessage emailMessage)
         {
             using var client = new SmtpClient();
-            
+
+            client.CheckCertificateRevocation = false;
+
             // Connect to the SmtpServer
             await client.ConnectAsync(
                 this._emailConfig.SmtpServer,

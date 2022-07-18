@@ -163,11 +163,10 @@
 
                     TempData["sentEmail"] = "We have sent an email with password reset link. Please check your mailbox.";
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    TempData["error"] = "Error occured, please contact site owner.";
+                    TempData["error"] = /*"Error occured, please contact help desk."*/e;
                 }
-
                 return View();
             }
             return View(model);
