@@ -187,5 +187,17 @@
             return false;
         }
 
+        public async Task DeleteUser(string userId)
+        {
+            if (userId is not null)
+            {
+                var user = await this._userManager.FindByIdAsync(userId);
+                if (user is not null)
+                {
+                    await this._userManager.DeleteAsync(await this._userManager.FindByIdAsync(userId));
+                }    
+            }
+        }
+
     }
 }

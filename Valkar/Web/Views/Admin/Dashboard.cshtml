@@ -50,7 +50,7 @@
                                             <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="customer-dropdown-0">
                                                 <div class="bg-white py-2">
                                                     <a class="dropdown-item" asp-action="DriverProfile" asp-route-userId="@driver.UserId">View</a>
-                                                    <a class="dropdown-item text-danger" href="#!">Delete</a>
+                                                    <a class="dropdown-item text-danger" onclick="Identity.updateDefaults({ userId: '@driver.UserId'})" data-bs-toggle="modal" data-bs-target="#delete-user-modal"  style='cursor: pointer'>Delete</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -80,7 +80,20 @@
                 <ul class="pagination mb-0"></ul>
                 <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next"><span class="fas fa-chevron-right"></span></button>
             </div>
-
         </div>
     </div>
 </div>
+
+<div id="deleteUserConfirmationDialog"></div>
+
+@section Scripts{
+<script src="@Url.Content("~/js/Views/Identity/Identity.js")" type="module"></script>
+
+<script>
+    $(document).ready(function(){
+        Identity.onInit({
+            deleteConfirmationUrl: '@Url.Action("ConfirmDeletion", "Identity")'
+        });
+    });
+</script>
+}

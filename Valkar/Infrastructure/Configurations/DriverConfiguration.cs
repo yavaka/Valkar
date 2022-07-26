@@ -52,7 +52,8 @@
             // User one to one
             builder.HasOne(u => u.User)
                 .WithOne(d => d.Driver)
-                .HasForeignKey<Driver>(u => u.UserId);
+                .HasForeignKey<Driver>(u => u.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

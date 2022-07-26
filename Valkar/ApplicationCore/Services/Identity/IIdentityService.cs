@@ -3,6 +3,7 @@
     using ApplicationCore.ServiceModels.Identity;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Identity;
+    using System;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -36,5 +37,11 @@
         Task<bool> IsOldPasswordValid(string oldPassword, ClaimsPrincipal claimsPrincipal);
        
         User GetUserById(string userId);
+
+        /// <summary>
+        /// Cascade delete on all mapped entities
+        /// </summary>
+        /// <param name="userId">User id to be deleted</param>
+        Task DeleteUser(string userId);
     }
 }

@@ -6,6 +6,7 @@
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Email;
     using ApplicationCore.Services.Identity;
+    using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System;
@@ -249,6 +250,21 @@
                     DriverDetails = await this._driverService.GetDriverDetailsForUpdateByUserId(userId),
                     LimitedCompany = await this._driverService.GetLimitedCompanyByUserId(userId)
                 });
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmDeletion(string userId)
+        {
+            return PartialView("IdentityPartials/_DeleteUserConfirmation", userId);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            // Delete user from Users table
+            await this._identityService.DeleteUser(userId);
+
+            return RedirectToAction(nameof(AdminController.Dashboard), "Admin");
         }
     }
 }
