@@ -15,17 +15,19 @@
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string NationalInsuranceNumber { get; set; }
-        public ICollection<LicenceCategory> LicenceCategories { get; set; }
-        public ICollection<File> Documents { get; set; }
         /// <summary>
         /// Shows whether or not the driver filled in all personal details
         /// </summary>
         public bool IsCompleted { get; set; }
-        public EmergencyContact EmergencyContact { get; set; }
-        public LimitedCompany LimitedCompany { get; set; }
-        public ICollection<WorkingDay> WorkedDays { get; set; }
-
+        
         public string UserId { get; set; }
         public User User { get; set; }
+        public EmergencyContact EmergencyContact { get; set; }
+        public LimitedCompany LimitedCompany { get; set; }
+        
+        public ICollection<LicenceCategory> LicenceCategories { get; set; }
+        public ICollection<File> Documents { get; set; }
+        public ICollection<WorkingDay> WorkedDays { get; set; }
+
     }
 }

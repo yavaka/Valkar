@@ -8,6 +8,7 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using System.Linq;
+    using System;
 
     public class WorkingDayService : IWorkingDayService
     {
@@ -52,6 +53,43 @@
                 .Where(i => i.DriverId.ToString() == driverId)
                 .Select(wd => this._mapper.Map<WorkingDay, WorkingDayServiceModel>(wd))
                 .ToListAsync();
+
+        public async Task<ICollection<WorkingDayServiceModel>> GetWorkingDaysForFullWeekAsync(string driverId, DateTime weekStart)
+        {
+            var workingDays = await this._data.WorkedDays
+                .Where(w => w.Date >= weekStart 
+                    && w.Date <= weekStart.AddDays(6) 
+                    && w.DriverId.ToString() == driverId)
+                .Select(w => this._mapper.Map<WorkingDay, WorkingDayServiceModel>(w))
+                .ToListAsync();
+
+            if (workingDays.Count is 7)
+                return workingDays;
+
+            // set empty working days
+            if (workingDays is not null && workingDays.Count > 0)
+            {
+                var emptyWorkingDays = new List<WorkingDay>();
+                var weekEnd = weekStart.AddDays(6);
+                for (DateTime date = weekStart.Date; date.Date <= weekEnd.Date; date = date.AddDays(1))
+                {
+                    if (workingDays.Any(d => d.Date.Date == date.Date) is false)
+                    {
+                        workingDays.Add(new WorkingDayServiceModel
+                        {
+                            Date = date,
+                            TimeIn = new TimeSpan(),
+                            Break = new TimeSpan(),
+                            TimeOut = new TimeSpan(),
+                        });
+                    }
+                }
+            }
+            return workingDays.OrderBy(d => d.Date).ToList();
+        }
+
+        public double GetTotalWorkingHours(List<TimeSpan> workingDaysTotalHours)
+            => workingDaysTotalHours.Sum(w => w.TotalHours);
 
         private async Task<WorkingDay> GetWorkingDayModelById(int id)
             => await this._data.WorkedDays.FirstOrDefaultAsync(i => i.Id == id);

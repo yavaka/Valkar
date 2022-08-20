@@ -1,7 +1,6 @@
 ﻿namespace ApplicationCore.Services.Driver
 {
     using ApplicationCore.Helpers.CheckBox;
-    using ApplicationCore.ServiceModels.Admin;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.ServiceModels.WorkingDay;
     using ApplicationCore.Services.File;
@@ -144,6 +143,15 @@
                     this._mapper.Map<WorkingDay, WorkingDayServiceModel>(workedDay));
             }
             return driverServiceModel;
+        }
+
+        public async Task<string> GetDriverFullNameById(string id)
+        {
+            var driver = await this._data.Drivers
+                .FirstOrDefaultAsync(i => i.Id.ToString() == id);
+            return driver is not null 
+                ? $"{driver.FirstNames} {driver.Surname}"
+                : string.Empty;
         }
 
         #region Helpers

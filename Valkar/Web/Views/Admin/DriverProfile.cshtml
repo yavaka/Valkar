@@ -47,6 +47,7 @@
                     <div class="col-auto d-none d-sm-block">
                         <button class="btn btn-falcon-default btn-sm dropdown-toggle ms-2 dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h"></span></button>
                         <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-action="GenerateTimeSheetReport" asp-controller="Reports" asp-route-employeeId="@Model.DriverId" style='cursor: pointer'>Time Sheet</a>
                             <a class="dropdown-item text-danger" onclick="Identity.updateDefaults({ userId: '@Model.UserId'})" data-bs-toggle="modal" data-bs-target="#delete-user-modal" style='cursor: pointer'>Delete</a>
                         </div>
                     </div>

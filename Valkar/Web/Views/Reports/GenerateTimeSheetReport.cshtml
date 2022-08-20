@@ -1,0 +1,49 @@
+﻿@model ApplicationCore.ServiceModels.Report.TimeSheetReportServiceModel
+@{
+    ViewData["Title"] = "Time Sheet Settings";
+}
+
+<div class="container" data-layout="container">
+    <partial name="_NavbarPartial" />
+    <div class="content" style="margin-top: 1%">
+        <div class="row g-3 mb-3">
+            <div class="col-lg-12">
+                <div class="card mb-3 mb-lg-0">
+                    <div class="card-header bg-light d-flex justify-content-between">
+                        <h5 class="mb-0">Generate Time Sheet</h5>
+                    </div>
+                    <form asp-action="GenerateTimeSheetReport" method="post">
+                        <input type="hidden" asp-for="EmployeeId" />
+                        <input type="hidden" asp-for="Error" />
+                        <span asp-validation-for="Error" class="text-danger" style="font-size:medium;"></span>
+                        <div class="card-body fs--1">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="StartDate">Start Date</label>
+                                        <input class="form-control" asp-for="StartDate" type="date" id="from-date" />
+                                        <span asp-validation-for="StartDate" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="Company">Company</label>
+                                        <input class="form-control" asp-for="Company" type="text" id="company" />
+                                        <span asp-validation-for="Company" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="mb-3" style="margin-top: 28px">
+                                        <button class="btn btn-primary" type="submit" style="width:100%">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

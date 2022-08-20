@@ -6,7 +6,7 @@
     using ApplicationCore.Services.File;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
-    using ApplicationCore.Services.PDFGenerator;
+    using ApplicationCore.Services.Report;
     using ApplicationCore.Services.WorkingDay;
     using DinkToPdf;
     using DinkToPdf.Contracts;
@@ -37,10 +37,9 @@
             services.AddTransient<IAdminService, AdminService>();
             
             services.AddTransient<IWorkingDayService, WorkingDayService>();
-
-            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
-            services.AddTransient<IPDFGeneratorService, PDFGeneratorService>();
             
+            services.AddTransient<IReportService, ReportService>();
+
             return services;
         }
 
