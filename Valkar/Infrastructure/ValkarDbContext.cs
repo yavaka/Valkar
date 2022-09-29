@@ -8,9 +8,7 @@
     public class ValkarDbContext : IdentityDbContext<User>
     {
         public ValkarDbContext(DbContextOptions<ValkarDbContext> options)
-            : base(options)
-        {
-        }
+            : base(options) {}
 
         public DbSet<Driver> Drivers{ get; set; }
         public DbSet<EmergencyContact> EmergencyContacts { get; set; }
@@ -18,6 +16,7 @@
         public DbSet<LicenceCategory> DriversLicenceCategories { get; set; }
         public DbSet<File> Files { get; set; }
         public DbSet<WorkingDay> WorkedDays { get; set; }
+        public DbSet<Company> PartnerCompanies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
