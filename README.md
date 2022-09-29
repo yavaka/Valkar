@@ -10,7 +10,6 @@ Built with:
 * ASP.NET Identity
 * Entity Framework Core
 * SQL Server
-* Microsoft Reporting Services (RDLC)
 * JavaScript
 * jQuery
 
@@ -21,7 +20,6 @@ Built with:
 * Registration of accounts from invitation link
 * Managing user accounts
 * Uploading files
-* PDF export using RDLC
 * Manual signing forms
 * Google Calendar import
 
