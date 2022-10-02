@@ -1,0 +1,84 @@
+﻿@model ApplicationCore.ServiceModels.Company.CompanyServiceModel
+@{
+    ViewData["Title"] = "Company Details";
+}
+
+<div class="container" data-layout="container">
+    <partial name="_NavbarPartial" />
+    <div class="content" style="margin-top: 1%">
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5 class="mb-0">@Model.Name Details</h5>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-falcon-default btn-sm dropdown-toggle ms-2 dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-controller="Companies" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" data-bs-toggle="modal" onclick="Companies.updateDefaults({ companyId: '@Model.Id'})" data-bs-target="#delete-company-modal" style='cursor: pointer'>Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body bg-light border-top">
+                <div class="row">
+                    <div class="col-lg col-xxl-5">
+                        @*Company name*@
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Name</p>
+                            </div>
+                            <div class="col">@Model.Name</div>
+                        </div>
+                        @*Email address*@
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Email Address</p>
+                            </div>
+                            <div class="col"><a href="mailto:@Model.EmailAddress">@Model.EmailAddress</a></div>
+                        </div>
+                        @*Phone number*@
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Phone Number</p>
+                            </div>
+                            <div class="col"><a href="tel:@Model.PhoneNumber">@Model.PhoneNumber</a></div>
+                        </div>
+                        @*Registration number*@
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-1">Registration Number</p>
+                            </div>
+                            <div class="col">@Model.RegistrationNumber</div>
+                        </div>
+                        @*Address*@
+                        <div class="row">
+                            <div class="col-5 col-sm-4">
+                                <p class="fw-semi-bold mb-0">Address</p>
+                            </div>
+                            <div class="col">
+                                <p class="fst-italic text-400 mb-0"><a href="http://maps.google.com/?q=@Model.OfficeAddress,@Model.OfficePostCode" target="_blank" rel="noopener noreferrer">@Model.OfficeAddress, @Model.OfficePostCode</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="deleteConfirmationDialog"></div>
+
+@section Scripts{
+    <script src="@Url.Content("~/js/Views/Companies/Companies.js")" type="module"></script>
+
+    <script>
+        $(document).ready(function () {
+            Companies.onInit({
+                deleteConfirmationUrl: '@Url.Action("ConfirmDeletion", "Companies")'
+            });
+        });
+    </script>
+}

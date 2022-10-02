@@ -1,6 +1,7 @@
 ﻿namespace ApplicationCore
 {
     using ApplicationCore.Services.Admin;
+    using ApplicationCore.Services.Company;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Email;
     using ApplicationCore.Services.File;
@@ -38,9 +39,8 @@
             
             services.AddTransient<IWorkingDayService, WorkingDayService>();
 
-            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
-            services.AddTransient<IPDFGeneratorService, PDFGeneratorService>();
-            
+            services.AddTransient<ICompanyService, CompanyService>();
+
             return services;
         }
 

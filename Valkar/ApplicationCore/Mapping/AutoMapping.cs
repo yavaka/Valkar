@@ -8,6 +8,8 @@
     using System.Collections.Generic;
     using ApplicationCore.ServiceModels.WorkingDay;
     using System.Linq;
+    using ApplicationCore.ServiceModels.Company;
+    using System;
 
     public class AutoMapping : Profile
     {
@@ -26,7 +28,7 @@
                     opt => opt.MapFrom(i => i.Id.ToString()))
                 .ForMember(wd => wd.WorkedDays, opt => opt.Ignore());
             
-            // LTD
+            // Employee/Contractor LTD
             CreateMap<LimitedCompanyServiceModel, LimitedCompany>();
             CreateMap<LimitedCompany, LimitedCompanyServiceModel>();
             
@@ -40,6 +42,14 @@
             // Collections
             CreateMap<Driver[], IEnumerable<DriverAdminServiceModel>>();
             CreateMap<WorkingDay[], IEnumerable<WorkingDayServiceModel>>();
+
+            // Partner Comapny
+            CreateMap<CompanyServiceModel, Company>()
+                .ForMember(i => i.Id, 
+                    opt => opt.MapFrom(i => Guid.Parse(i.Id)));
+            CreateMap<Company, CompanyServiceModel>()
+                .ForMember(i => i.Id,
+                    opt => opt.MapFrom(i => i.Id.ToString()));
         }
     }
 }
