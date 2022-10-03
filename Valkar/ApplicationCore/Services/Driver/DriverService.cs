@@ -1,7 +1,6 @@
 ﻿namespace ApplicationCore.Services.Driver
 {
     using ApplicationCore.Helpers.CheckBox;
-    using ApplicationCore.ServiceModels.Admin;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.ServiceModels.WorkingDay;
     using ApplicationCore.Services.File;

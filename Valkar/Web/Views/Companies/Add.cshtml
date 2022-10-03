@@ -1,0 +1,82 @@
+﻿@model ApplicationCore.ServiceModels.Company.CompanyServiceModel
+
+<div class="container" data-layout="container">
+    <partial name="_NavbarPartial" />
+    <div class="content" style="margin-top: 1%">
+        <div class="row g-3 mb-3">
+            <div class="col-lg-12">
+                <div class="card mb-3 mb-lg-0">
+                    <div class="card-header bg-light d-flex justify-content-between">
+                        <h5 class="mb-0">Add Company</h5>
+                    </div>
+                    <form asp-action="Add" method="post">
+                        <div class="card-body fs--1">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="Name"></label>
+                                        <input class="form-control" asp-for="Name" id="companyName" />
+                                        <span asp-validation-for="Name" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="EmailAddress"></label>
+                                        <input class="form-control" asp-for="EmailAddress" type="email" id="email" />
+                                        <span asp-validation-for="EmailAddress" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="PhoneNumber"></label>
+                                        <input class="form-control" asp-for="PhoneNumber" type="tel" id="phoneNumber" />
+                                        <span asp-validation-for="PhoneNumber" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="RegistrationNumber"></label>
+                                        <input class="form-control" asp-for="RegistrationNumber" id="regNumber" />
+                                        <span asp-validation-for="RegistrationNumber" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="OfficeAddress"></label>
+                                        <input class="form-control" asp-for="OfficeAddress" id="address" />
+                                        <span asp-validation-for="OfficeAddress" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="OfficePostCode"></label>
+                                        <input class="form-control" asp-for="OfficePostCode" id="postcode" />
+                                        <span asp-validation-for="OfficePostCode" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="mb-3" style="margin-top: 28px">
+                                        <button class="btn btn-primary" type="submit" style="width:100%">Create</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@section Scripts{
+    <script src="@Url.Content("~/js/Views/Company/Company.js")" type="module"></script>
+    <script>
+        $(document).ready(function () { Company.Init(null); });
+    </script>
+}*@

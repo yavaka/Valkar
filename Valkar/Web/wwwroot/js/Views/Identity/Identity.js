@@ -17,19 +17,13 @@
     };
 
     function initDeleteUserConfirmationModal() {
-
         $('a[data-bs-toggle="modal"]').click(function () {
-            debugger;
-
             $.get(defaults.deleteConfirmationUrl, { userId: defaults.userId })
                 .done(function (data) {
-                    debugger;
                     $('#deleteUserConfirmationDialog').html(data);
                     $('#deleteUserConfirmationDialog').find('.modal').modal('show');
                 });
         });
-
-
     }
 
     //#region Helpers
