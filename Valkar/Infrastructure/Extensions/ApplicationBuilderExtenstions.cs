@@ -9,6 +9,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using System.Threading.Tasks;
     using System.Linq;
+    using System.Collections.Generic;
 
     public static class ApplicationBuilderExtenstions
     {
@@ -33,33 +34,39 @@
             if (await roleManager.RoleExistsAsync(Role.Admin) is false)
             {
                 // Create Admin role
-                var result = await roleManager.CreateAsync(
-                    new IdentityRole(Role.Admin));
+                var result = await roleManager.CreateAsync(new IdentityRole(Role.Admin));
 
                 if (result.Succeeded)
                 {
                     var userManager = services.ServiceProvider.GetRequiredService<UserManager<User>>();
+
                     // Get AdminCredentials section in appsettings.json
-                    var adminCredentials = services.ServiceProvider.GetRequiredService<IConfiguration>();
-                    // Get admin by email 
-                    var admin = await userManager.FindByEmailAsync(adminCredentials["AdminCredentials:Email"]);
+                    var configuration = services.ServiceProvider.GetRequiredService<IConfiguration>();
 
-                    // Create admin
-                    if (admin is null)
+                    var admins = configuration.GetSection("AdminCredentials").Get<List<AdminCredentials>>();
+
+                    foreach (var a in admins)
                     {
-                        admin = new User
-                        {
-                            Email = adminCredentials["AdminCredentials:Email"],
-                            UserName = adminCredentials["AdminCredentials:UserName"],
-                            EmailConfirmed = true
-                        };
+                        // Get admin by email 
+                        var admin = await userManager.FindByEmailAsync(a.Email);
 
-                        result = await userManager.CreateAsync(admin, adminCredentials["AdminCredentials:Password"]);
-
-                        // Assign admin to role
-                        if (result.Succeeded)
+                        // Create admin
+                        if (admin is null)
                         {
-                            await userManager.AddToRoleAsync(admin, Role.Admin);
+                            admin = new User
+                            {
+                                Email = a.Email,
+                                UserName = a.UserName,
+                                EmailConfirmed = true
+                            };
+
+                            result = await userManager.CreateAsync(admin, a.Password);
+
+                            // Assign admin to role
+                            if (result.Succeeded)
+                            {
+                                await userManager.AddToRoleAsync(admin, Role.Admin);
+                            }
                         }
                     }
                 }
@@ -70,6 +77,13 @@
                 await roleManager.CreateAsync(
                     new IdentityRole(Role.Driver));
             }
+        }
+
+        private class AdminCredentials
+        {
+            public string Email { get; set; }
+            public string UserName { get; set; }
+            public string Password { get; set; }
         }
     }
 }
