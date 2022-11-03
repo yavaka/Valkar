@@ -1,5 +1,6 @@
 ﻿namespace Web.Controllers
 {
+    using ApplicationCore.Enums;
     using ApplicationCore.Helpers;
     using ApplicationCore.ServiceModels.ContactUsForm;
     using ApplicationCore.Services.Email;
@@ -15,13 +16,13 @@
 
         public HomeController(IEmailService emailService) => _emailService = emailService;
 
-        public IActionResult Index() => View();
+        public IActionResult Index() => View(new ContactUs());
 
         public IActionResult About() => View();
 
-        public IActionResult Contact() => View();
+        public IActionResult Contact() => View(new ContactUs());
 
-        public async Task<IActionResult> SendContactFormAsync(ContactUs model)
+        public async Task<IActionResult> SendContactFormAsync(ContactUs model, InvokedFrom invokedFrom)
         {
             Validate(model);
             if (ModelState.IsValid)
@@ -30,7 +31,14 @@
 
                 TempData.Add("ContactFormSent", "We have received your enquery and we will come back to you shortly.");
             }
-            return RedirectToAction(nameof(Contact));
+            switch (invokedFrom)
+            {
+                case InvokedFrom.HomePage:
+                    return RedirectToAction(nameof(Index));
+                case InvokedFrom.ContactUsPage:
+                    return RedirectToAction(nameof(Contact));
+            };
+            return RedirectToAction(nameof(Index));
         }
 
         private void Validate(ContactUs model)

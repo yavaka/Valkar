@@ -27,14 +27,18 @@
         {
             // Convert to MIME message
             var emailMessage = new MimeMessage();
+            
             // From - service email
             emailMessage.From.Add(
                 new MailboxAddress(this._emailConfig.From));
+
             // To - help desk email
             emailMessage.To.Add(
                 new MailboxAddress(this._emailConfig.HelpDeskEmail));
+
             // Subject - include First and last name follwed by subject
             emailMessage.Subject = $"{contactUsForm.Subject}";
+
             // Body
             var bodyBuilder = new BodyBuilder()
             {

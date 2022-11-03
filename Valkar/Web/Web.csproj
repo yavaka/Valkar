@@ -6,6 +6,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Properties\ServiceDependencies\**" />
+	  <Content Remove="Properties\ServiceDependencies\**" />
+	  <EmbeddedResource Remove="Properties\ServiceDependencies\**" />
+	  <None Remove="Properties\ServiceDependencies\**" />
+	  <_WebToolingArtifacts Remove="Properties\ServiceDependencies\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7">
 			<PrivateAssets>all</PrivateAssets>
@@ -16,11 +24,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Properties\ServiceDependencies\" />
-	  <Folder Include="wwwroot\static\" />
 	</ItemGroup>
 
 </Project>
