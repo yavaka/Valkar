@@ -46,6 +46,13 @@
                                 <li id="btnAboutNavbar"><a asp-action="About" asp-controller="Home">About us</a></li>
                                 <li id="btnContactNavbar"><a asp-action="Contact" asp-controller="Home">Contact us</a></li>
                                 <li class="has-children">
+                                    <a>Legals</a>
+                                    <ul class="dropdown">
+                                        <li><a asp-action="Privacy" asp-controller="Home">Privacy Policy</a></li>
+                                        <li><a asp-action="TermsAndConditions" asp-controller="Home">Terms and Conditions</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-children">
                                     <a>Account</a>
                                     <ul class="dropdown">
                                         <li><a asp-action="Login" asp-controller="Identity">Login</a></li>

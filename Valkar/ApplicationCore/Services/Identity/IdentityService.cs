@@ -39,7 +39,7 @@
 
             var result = await this._userManager
                 .CreateAsync(user, model.Password);
-            if (!result.Succeeded)
+            if (result.Succeeded is false)
             {
                 foreach (var error in result.Errors)
                 {
