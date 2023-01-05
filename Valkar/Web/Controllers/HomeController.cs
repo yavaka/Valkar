@@ -22,6 +22,12 @@
 
         public IActionResult Contact() => View(new ContactUs());
 
+        public IActionResult TermsAndConditions() => View();
+        
+        public IActionResult Privacy() => View();
+
+        public IActionResult CookiePolicy() => View();
+
         public async Task<IActionResult> SendContactFormAsync(ContactUs model, InvokedFrom invokedFrom)
         {
             Validate(model);

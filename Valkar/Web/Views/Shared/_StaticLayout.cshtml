@@ -46,6 +46,14 @@
                                 <li id="btnAboutNavbar"><a asp-action="About" asp-controller="Home">About us</a></li>
                                 <li id="btnContactNavbar"><a asp-action="Contact" asp-controller="Home">Contact us</a></li>
                                 <li class="has-children">
+                                    <a>Legals</a>
+                                    <ul class="dropdown">
+                                        <li><a asp-action="Privacy" asp-controller="Home">Privacy Policy</a></li>
+                                        <li><a asp-action="CookiePolicy" asp-controller="Home">Cookie Policy</a></li>
+                                        <li><a asp-action="TermsAndConditions" asp-controller="Home">Terms and Conditions</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-children">
                                     <a>Account</a>
                                     <ul class="dropdown">
                                         <li><a asp-action="Login" asp-controller="Identity">Login</a></li>
@@ -78,6 +86,8 @@
     <main class="main" id="top">
         @RenderBody()
     </main>
+
+    <partial name="_CookieConsentPartial" />
 
     <footer class="site-footer" style="padding-bottom: 0px;">
         <div class="container" style="margin-top: -115px;">

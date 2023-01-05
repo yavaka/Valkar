@@ -10,6 +10,8 @@
     using ApplicationCore.Services.WorkingDay;
     using Infrastructure;
     using Infrastructure.Models;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -17,33 +19,23 @@
 
     public static class ApplicationCoreConfiguration
     {
-        public static IServiceCollection AddApplicationCore(
-            this IServiceCollection services,
-            IConfiguration configuration)
+        public static IServiceCollection AddApplicationCore(this IServiceCollection services, IConfiguration configuration)
+            => services.AddIdentityService()
+                .AddApplicationCookie(configuration)
+                .AddEmailSender(configuration)
+                .AddTransient<IMapperService, MapperService>()
+                .AddTransient<IDriverService, DriverService>()
+                .AddTransient<IFileService, FileService>()
+                .AddTransient<IAdminService, AdminService>()
+                .AddTransient<IWorkingDayService, WorkingDayService>()
+                .AddTransient<ICompanyService, CompanyService>();
+
+        /// <summary>
+        /// Identity config
+        /// </summary>
+        private static IServiceCollection AddIdentityService(this IServiceCollection services)
         {
-            services.AddIdentityService();
-            services.AddApplicationCookie(configuration);
-
-            services.AddTransient<IMapperService, MapperService>();
-
-            services.AddTransient<IDriverService, DriverService>();
-
-            services.AddTransient<IFileService, FileService>();
-
-            services.AddEmailSender(configuration);
-
-            services.AddTransient<IAdminService, AdminService>();
-
-            services.AddTransient<IWorkingDayService, WorkingDayService>();
-
-            services.AddTransient<ICompanyService, CompanyService>();
-
-            return services;
-        }
-
-        private static IServiceCollection AddIdentityService(
-            this IServiceCollection services)
-        {
+            // password config
             services.AddIdentity<User, IdentityRole>(opt =>
                 {
                     opt.Password.RequiredLength = 6;
@@ -56,27 +48,44 @@
                 .AddEntityFrameworkStores<ValkarDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Token config
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
                opt.TokenLifespan = TimeSpan.FromHours(24));
 
+            // register identity service
             services.AddTransient<IIdentityService, IdentityService>();
 
             return services;
         }
 
-        private static IServiceCollection AddApplicationCookie(
-            this IServiceCollection services,
-            IConfiguration configuration)
-            => services.ConfigureApplicationCookie(config =>
+        /// <summary>
+        /// Cookies consent and config
+        /// </summary>
+        private static IServiceCollection AddApplicationCookie(this IServiceCollection services, IConfiguration configuration)
+        {
+            // cookies consent
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential 
+                // cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
+            });
+
+            services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = configuration["ApplicationSettings:LoginPath"];
                 config.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                 config.AccessDeniedPath = configuration["ApplicationSettings:AccessDenied"];
             });
 
-        private static IServiceCollection AddEmailSender(
-            this IServiceCollection services,
-            IConfiguration configuration)
+            return services;
+        }
+
+        /// <summary>
+        /// Email sender
+        /// </summary>
+        private static IServiceCollection AddEmailSender(this IServiceCollection services, IConfiguration configuration)
         {
             // Fetch EmailConfiguration section from appsettings.json
             var emailConfig = configuration
