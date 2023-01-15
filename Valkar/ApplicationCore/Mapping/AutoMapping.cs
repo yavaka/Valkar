@@ -10,6 +10,7 @@
     using System.Linq;
     using ApplicationCore.ServiceModels.Company;
     using System;
+    using ApplicationCore.ServiceModels.Document;
 
     public class AutoMapping : Profile
     {
@@ -20,14 +21,15 @@
 
             // Driver
             CreateMap<DriverDetailsServiceModel, Driver>()
-                .ForMember(d => d.Documents, opt => opt.Ignore());
+                .ForMember(d => d.PersonalDocuments, opt => opt.Ignore());
+            CreateMap<Driver, DriverDetailsServiceModel>();
             CreateMap<EmergencyContactServiceModel, EmergencyContact>();
             CreateMap<Driver, UpdateDriverDetailsServiceModel>();
             CreateMap<Driver, DriverProfileServiceModel>()
                 .ForMember(d => d.DriverId, 
                     opt => opt.MapFrom(i => i.Id.ToString()))
                 .ForMember(wd => wd.WorkedDays, opt => opt.Ignore());
-            
+
             // Employee/Contractor LTD
             CreateMap<LimitedCompanyServiceModel, LimitedCompany>();
             CreateMap<LimitedCompany, LimitedCompanyServiceModel>();
@@ -50,6 +52,11 @@
             CreateMap<Company, CompanyServiceModel>()
                 .ForMember(i => i.Id,
                     opt => opt.MapFrom(i => i.Id.ToString()));
+
+            // Sign PDF PersonalDocuments
+            CreateMap<TempDocumentServiceModel, TempDocument>();
+            CreateMap<TempDocument, TempDocumentServiceModel>()
+                .ForMember(p => p.SentTo, opt => opt.Ignore());
         }
     }
 }

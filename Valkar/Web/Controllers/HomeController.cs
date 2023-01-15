@@ -57,7 +57,7 @@
             {
                 ModelState.AddModelError(nameof(ContactUs.LastName), $"Last name cannot be less than {MIN_NAME_LENGTH} and more than {MAX_NAME_LENGTH} symbols");
             }
-            if (string.IsNullOrEmpty(model.Email) || (!ValidationHelper.RegexValidation(model.Email, EMAIL_REGEX)))
+            if (string.IsNullOrEmpty(model.Email) || (ValidationHelper.RegexValidation(model.Email, EMAIL_REGEX) is false))
             {
                 ModelState.AddModelError(nameof(ContactUs.Email), $"Invalid Email");
             }

@@ -195,7 +195,7 @@
 
                 var resetPassResult = await this._identityService
                     .ResetPassword(user, model.Token, model.Password);
-                if (!resetPassResult.Succeeded)
+                if (resetPassResult.Succeeded is false)
                 {
                     foreach (var error in resetPassResult.Errors)
                     {
@@ -224,7 +224,7 @@
                     // Change password with the new one
                     var result = await this._identityService.ChangePassword(model.NewPassword, User);
 
-                    if (!result.Succeeded)
+                    if (result.Succeeded is false)
                     {
                         foreach (var error in result.Errors)
                         {

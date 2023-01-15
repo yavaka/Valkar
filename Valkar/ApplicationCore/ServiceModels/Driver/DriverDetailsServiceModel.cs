@@ -12,7 +12,7 @@
     {
         public DriverDetailsServiceModel()
         {
-            this.Documents = new DocumentsServiceModel();
+            this.Documents = new EmployeeDocumentsServiceModel();
         }
 
         public Guid DriverId { get; set; }
@@ -54,7 +54,7 @@
         [DisplayName("National insurance number")]
         public string NationalInsuranceNumber { get; set; }
 
-        public DocumentsServiceModel Documents { get; set; }
+        public EmployeeDocumentsServiceModel Documents { get; set; }
 
         public EmergencyContactServiceModel EmergencyContact { get; set; }
 

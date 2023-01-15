@@ -20,7 +20,7 @@
 
         public const string POSTCODE_REGEX = @"^([A-Z][A-HJ-Y]?[0-9][A-Z0-9]? ?[0-9][A-Z]{2}|GIR ?0A{2})$";
         public const string PHONE_NUMBER_REGEX = @"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$";
-        public const string FILE_EXTENSIONS_REGEX = @"\.doc|\.docx|\.pdf|\.jpg|\.jpeg|\.png|\.bmp$i";
+        public const string FILE_EXTENSIONS_REGEX = @"\.doc|\.docx|\.pdf|\.xlsx|\.jpg|\.jpeg|\.png|\.bmp$i";
         public const string NINO_REGEX = @"/[abceghj-prstw-z][abceghj-nprstw-z]\d{6}[abcd]/i";
         public const string EMAIL_REGEX = "^(([^<>()[\\]\\.,;:\\s@\"]+(\\.[^<>()[\\]\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 

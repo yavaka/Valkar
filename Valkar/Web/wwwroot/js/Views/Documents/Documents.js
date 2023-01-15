@@ -1,4 +1,4 @@
-﻿window.Companies = (function () {
+﻿window.Documents = (function () {
     var defaults = {
         deleteConfirmationUrl: ''
     };
@@ -6,6 +6,9 @@
     return {
         onInit: function (obj) {
             $.extend(defaults, obj);
+        },
+        onPreviewClick(docId) {
+            window.open(`/Documents/PreviewDocument?docId=${docId}`, "_blank");
         },
         deleteConfirmation: function (id) {
             $.get(defaults.deleteConfirmationUrl, { id: id })

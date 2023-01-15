@@ -69,7 +69,7 @@
             // Check is the password valid
             var passwordValid = await this._userManager
                 .CheckPasswordAsync(user, model.Password);
-            if (!passwordValid)
+            if (passwordValid is false)
             {
                 ModelErrorHelper.ModelErrors.Add(INVALID_LOGIN_ERROR);
                 throw new Exception();
@@ -137,7 +137,7 @@
 
             var result = await this._userManager.UpdateAsync(user);
 
-            if (!result.Succeeded)
+            if (result.Succeeded is false)
             {
                 foreach (var error in result.Errors)
                 {

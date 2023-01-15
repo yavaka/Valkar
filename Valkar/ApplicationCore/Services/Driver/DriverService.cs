@@ -38,8 +38,8 @@
             driver.LicenceCategories = ConvertToDLCategories(model.DrivingLicenceCategories);
 
             // Convert uploaded documents to File models
-            driver.Documents = await this._fileService
-                .ProcessUploadedDocuments(model.Documents);
+            driver.PersonalDocuments = await this._fileService
+                .ProcessEmployeeUploadedDocuments(model.Documents);
 
             // set user id to this driver
             driver.UserId = userId;
@@ -158,7 +158,7 @@
             foreach (var category in driverCategories)
             {
                 // If the category is removed
-                if (!newDLCategories.Any(c => c.Category == category.Category))
+                if (newDLCategories.Any(c => c.Category == category.Category) is false)
                 {
                     result.Remove(category);
                 }
@@ -167,7 +167,7 @@
             foreach (var category in newDLCategories)
             {
                 // If the category is new
-                if (!driverCategories.Any(i => i.Category == category.Category))
+                if (driverCategories.Any(i => i.Category == category.Category) is false)
                 {
                     result.Add(category);
                 }
@@ -176,7 +176,7 @@
             return result;
         }
 
-        private List<LicenceCategory> ConvertToDLCategories(CheckBoxModel[] drivingLicenceCategories)
+        private static List<LicenceCategory> ConvertToDLCategories(CheckBoxModel[] drivingLicenceCategories)
         {
             var licenceCategories = new List<LicenceCategory>();
 
@@ -185,7 +185,7 @@
                 .Where(c => c.IsChecked)
                 .ToArray();
 
-            // Make new LicenceCategories and populate licenceCategories collection
+            // Make new LicenceCategories and populate licenceCategories collections
             foreach (var category in drivingLicenceCategories)
             {
                 licenceCategories.Add(new LicenceCategory

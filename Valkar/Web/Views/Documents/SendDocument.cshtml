@@ -1,0 +1,54 @@
+﻿@model Web.ViewModels.Documents.SendDocumentViewModel
+
+<div class="container" data-layout="container">
+    <partial name="_NavbarPartial" />
+    <div class="content" style="margin-top: 1%">
+        <div class="row g-3 mb-3">
+            <div class="col-lg-12">
+                <div class="card mb-3 mb-lg-0">
+                    <div class="card-header bg-light d-flex justify-content-between">
+                        <h5 class="mb-0">Send Document</h5>
+                    </div>
+                    <form asp-action="SendDocument" method="post" enctype="multipart/form-data">
+                        <div class="card-body fs--1">
+                            <div class="row g-2">
+                                @* File *@
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="File"></label>
+                                        <input class="form-control" id="dl-front" asp-for="File" type="file" value="@Model.File" />
+                                        <span asp-validation-for="File" id="pdf-file-validation-message" class="text-danger" style="font-size: smaller"></span>
+                                    </div>
+                                </div>
+                                @* Employee name *@
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="EmployeeNameSelectList"></label>
+                                        <select class="form-select js-choice" asp-for="EmployeeId" asp-items="@Model.EmployeeNameSelectList" data-options='{"removeItemButton":true,"placeholder":true}'>
+                                            <option value="">Select employee</option>
+                                        </select>
+                                        <span asp-validation-for="EmployeeNameSelectList" class="text-danger" style="font-size:smaller;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @* Message to employee *@
+                            <div class="row g-2">
+                                <div class="mb-3">
+                                    <label class="form-label" asp-for="MessageToEmployee"></label>
+                                    <textarea class="form-control" asp-for="MessageToEmployee" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="mb-3" style="margin-top: 28px">
+                                        <button class="btn btn-primary" type="submit" style="width:100%">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
