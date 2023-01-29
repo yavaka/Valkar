@@ -7,7 +7,9 @@
     public interface IDocumentService
     {
         Task SendDocumentToEmployee(TempDocumentServiceModel model);
-        Task<ICollection<TempDocumentServiceModel>> FetchDocuments();
+        Task UploadSignedDocument(TempDocumentServiceModel model);
+        Task<ICollection<TempDocumentServiceModel>> FetchAllDocuments();
+        Task<ICollection<TempDocumentServiceModel>> FetchAllDocumentsByEmployeeId(string employeeId);
         Task<TempDocumentServiceModel> GetDocumentByIdAsync(string id);
         Task DeleteAsync(string id);
     }

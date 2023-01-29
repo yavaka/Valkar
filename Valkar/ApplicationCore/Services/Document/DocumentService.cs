@@ -23,20 +23,46 @@
             this._mapper = mapper;
         }
 
-        /// <summary>
-        /// This method save uploaded PDF to Sign PDF PersonalDocuments table.
-        /// </summary>
         public async Task SendDocumentToEmployee(TempDocumentServiceModel model)
         {
             await this._data.AddAsync(this._mapper.Map<TempDocumentServiceModel, TempDocument>(model));
             await this._data.SaveChangesAsync();
         }
 
-        public async Task<ICollection<TempDocumentServiceModel>> FetchDocuments()
+        public async Task UploadSignedDocument(TempDocumentServiceModel serviceModel)
+        {
+            var documentModel = await FetchByIdAsync(serviceModel.Id.ToString());
+            if (documentModel is not null)
+            {
+                documentModel.Data = serviceModel.Data;
+                documentModel.Extension = serviceModel.Extension;
+                documentModel.FileType = serviceModel.FileType;
+                documentModel.Name = serviceModel.Name;
+                documentModel.IsSigned = true;
+
+                this._data.TempDocuments.Update(documentModel);
+                await this._data.SaveChangesAsync();
+            }
+            //TODO: log error
+        }
+
+        public async Task<ICollection<TempDocumentServiceModel>> FetchAllDocuments()
         {
             // Automapper does not map the employee details
-            var documentsModel = await this._data.TempDocuments
-                .Include(s => s.SentTo)
+            var documentsModel = await FetchAll()
+                .ToListAsync();
+
+            var result = new List<TempDocumentServiceModel>();
+
+            documentsModel.ForEach(doc => result.Add(MapToServiceModel(doc)));
+
+            return result;
+        }
+
+        public async Task<ICollection<TempDocumentServiceModel>> FetchAllDocumentsByEmployeeId(string employeeId)
+        {
+            var documentsModel = await FetchAll()
+                .Where(u => u.SentToId.ToString() == employeeId)
                 .ToListAsync();
 
             var result = new List<TempDocumentServiceModel>();
@@ -76,6 +102,11 @@
             => await this._data.TempDocuments
                 .Include(s => s.SentTo)
                 .FirstOrDefaultAsync(p => p.Id.ToString() == id);
+
+        private IOrderedQueryable<TempDocument> FetchAll()
+            => this._data.TempDocuments.AsNoTracking()
+                .Include(s => s.SentTo)
+                .OrderBy(s => s.UploadedOn);
 
         #endregion
 

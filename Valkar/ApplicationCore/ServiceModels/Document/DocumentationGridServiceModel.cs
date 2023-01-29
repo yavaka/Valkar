@@ -10,9 +10,5 @@
         }
 
         public ICollection<TempDocumentServiceModel> Documents { get; set; }
-        /// <summary>
-        /// Default is true
-        /// </summary>
-        public bool IsAdminPanel { get; set; } = true;
     }
 }

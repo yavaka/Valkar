@@ -1,4 +1,5 @@
-﻿@model ApplicationCore.ServiceModels.Document.DocumentationGridServiceModel
+﻿@using Infrastructure.Common.Global
+@model ApplicationCore.ServiceModels.Document.DocumentationGridServiceModel
 
 @{
     ViewData["Title"] = "Documentation";
@@ -43,8 +44,18 @@
                                     <p>@doc.SentTo.FirstNames @doc.SentTo.Surname</p>
                                     <p>@doc.UploadedOn</p>
                                     <hr />
+                                    @*-- preview btn --*@
                                     <a class="btn btn-primary btn-sm" onclick="Documents.onPreviewClick('@doc.Id')"><span class="fas fa-eye" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Preview</span></a>
-                                    <a class="btn btn-danger btn-sm" onclick="Documents.deleteConfirmation('@doc.Id')" style='cursor: pointer'><span class="fas fa-trash" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Delete</span></a>
+                                    @if (User.IsInRole(Role.Admin))
+                                    {
+                                        @*-- delete btn --*@
+                                        <a class="btn btn-danger btn-sm" onclick="Documents.deleteConfirmation('@doc.Id')" style='cursor: pointer'><span class="fas fa-trash" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Delete</span></a>
+                                    }
+                                    else
+                                    {
+                                        @*-- upload btn --*@
+                                        <a class="btn btn-secondary btn-sm" asp-action="UploadSignedDocument" asp-route-docId="@doc.Id" style='cursor: pointer'><span class="fas fa-upload" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Upload</span></a>
+                                    }
                                 </div>
                             </div>
                         </div>

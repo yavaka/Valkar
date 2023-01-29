@@ -12,7 +12,6 @@
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using static Infrastructure.Common.ModelConstants;
 
@@ -247,12 +246,12 @@
             if (documents.DrivingLicenceFront.Length > MAX_FILE_SIZE)
             {
                 ModelState.AddModelError("Documents.DrivingLicenceFront", $"File cannot be more than 20MB.");
-            } 
+            }
             else if (ValidationHelper.RegexValidation(documents.DrivingLicenceFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
             {
                 ModelState.AddModelError("Documents.DrivingLicenceFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
             }
-            
+
             // DL back
             if (documents.DrivingLicenceBack.Length > MAX_FILE_SIZE)
             {
