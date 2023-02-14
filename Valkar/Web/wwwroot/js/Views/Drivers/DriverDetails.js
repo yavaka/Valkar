@@ -39,7 +39,6 @@ window.DriverDetails = (function () {
     //#region Validations
 
     function validations() {
-        debugger;
         //#region Driver
 
         var isFormValid = true;
@@ -250,7 +249,6 @@ window.DriverDetails = (function () {
     //#region File validations
 
     function validateUploadedFiles() {
-        debugger;
         var isValid = true;
 
         // DL front
@@ -392,7 +390,6 @@ window.DriverDetails = (function () {
         });
         // First names
         $('#driver-first-names').blur(function () {
-            debugger;
             $('#driver-first-names-validation-message').text('');
         });
         // Surname

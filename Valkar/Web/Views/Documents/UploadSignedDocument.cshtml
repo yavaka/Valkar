@@ -1,0 +1,55 @@
+﻿@model ApplicationCore.ServiceModels.Document.UploadSignedDocumentServiceModel
+
+<div class="container" data-layout="container">
+    <partial name="_NavbarPartial" />
+    <div class="content" style="margin-top: 1%">
+        <div class="row g-3 mb-3">
+            <div class="col-lg-12">
+                <div class="card mb-3 mb-lg-0">
+                    <div class="card-header bg-light d-flex justify-content-between">
+                        <h5 class="mb-0">Send Document</h5>
+                    </div>
+                    <form asp-action="UploadSignedDocument" method="post" enctype="multipart/form-data">
+                        <div class="card-body fs--1">
+                            <div class="row g-2">
+                                <div class="col-sm-12 col-lg-6">
+                                    @* File *@
+                                    <div class="mb-3">
+                                        <label class="form-label" asp-for="File"></label>
+                                        <input class="form-control" asp-for="File" type="file" value="@Model.File" />
+                                        <span asp-validation-for="File" id="file-validation-message" class="text-danger" style="font-size: smaller"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-6">
+                                    @* File Name *@
+                                    <div class="mb-3">
+                                        <label class="form-label">File Name</label>
+                                        <p>@Model.Document.Name</p>
+                                    </div>
+                                </div>
+                            </div>
+                            @* Message *@
+                            <div class="row g-2">
+                                <div class="mb-3">
+                                    <label class="form-label">Message</label>
+                                    <p>@Model.Document.MessageToEmployee</p>
+                                </div>
+                            </div>
+                            @* Document Id *@
+                            <input class="form-control" asp-for="Document.Id" type="hidden" value="@Model.Document.Id" />
+                            <input class="form-control" asp-for="Document.Name" type="hidden" value="@Model.Document.Name" />
+                            <input class="form-control" asp-for="Document.MessageToEmployee" type="hidden" value="@Model.Document.MessageToEmployee" />
+                            <div class="row g-2">
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="mb-3" style="margin-top: 28px">
+                                        <button class="btn btn-primary" type="submit" style="width:100%">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

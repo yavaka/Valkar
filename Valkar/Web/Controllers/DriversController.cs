@@ -12,7 +12,6 @@
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using static Infrastructure.Common.ModelConstants;
 
@@ -37,7 +36,7 @@
         {
             // Redirect to onboarding view if not completed
             var userId = this._identityService.GetUserId(User);
-            if (!await this._identityService.IsOnboardingCompleted(userId))
+            if (await this._identityService.IsOnboardingCompleted(userId) is false)
             {
                 return RedirectToAction(nameof(DriverDetails));
             }
@@ -50,7 +49,7 @@
         {
             // Redirect to onboarding view if not completed
             var userId = this._identityService.GetUserId(User);
-            if (!await this._identityService.IsOnboardingCompleted(userId))
+            if (await this._identityService.IsOnboardingCompleted(userId) is false)
             {
                 return RedirectToAction(nameof(DriverDetails));
             }
@@ -185,12 +184,12 @@
             {
                 ModelState.AddModelError("Address", $"Address cannot be more than {MAX_ADDRESS_LENGTH} symbols");
             }
-            if (string.IsNullOrEmpty(model.Postcode) || (!ValidationHelper.RegexValidation(model.Postcode, POSTCODE_REGEX)))
+            if (string.IsNullOrEmpty(model.Postcode) || (ValidationHelper.RegexValidation(model.Postcode, POSTCODE_REGEX) is false))
             {
                 ModelState.AddModelError("Postcode", $"Invalid Postcode");
             }
             ValidateDateOfBirth(model.DateOfBirth);
-            if (string.IsNullOrEmpty(model.PhoneNumber) || (!ValidationHelper.RegexValidation(model.PhoneNumber, PHONE_NUMBER_REGEX)))
+            if (string.IsNullOrEmpty(model.PhoneNumber) || (ValidationHelper.RegexValidation(model.PhoneNumber, PHONE_NUMBER_REGEX) is false))
             {
                 ModelState.AddModelError("PhoneNumber", $"Invalid Phone number");
             }
@@ -216,7 +215,7 @@
 
         private void ValidateDrivingLicenceCategories(CheckBoxModel[] drivingLicenceCategories)
         {
-            if (!drivingLicenceCategories.Any(c => c.IsChecked))
+            if (drivingLicenceCategories.Any(c => c.IsChecked) is false)
             {
                 ModelState.AddModelError(
                     "DrivingLicenceCategories",
@@ -229,36 +228,36 @@
         /// </summary>
         private void ValidateUpdatedLimitedCompanyFields(LimitedCompanyServiceModel model)
         {
-            if (!string.IsNullOrEmpty(model.CompanyName) &&
+            if (string.IsNullOrEmpty(model.CompanyName) is false &&
                 string.IsNullOrEmpty(model.CompanyRegistrationNumber))
             {
                 ModelState.AddModelError("CompanyRegistrationNumber", "Company registration number required.");
             }
             if (string.IsNullOrEmpty(model.CompanyName) &&
-                !string.IsNullOrEmpty(model.CompanyRegistrationNumber))
+                string.IsNullOrEmpty(model.CompanyRegistrationNumber) is false)
             {
                 ModelState.AddModelError("CompanyName", "Company name required.");
             }
         }
 
-        private void ValidateUploadedFiles(DocumentsServiceModel documents)
+        private void ValidateUploadedFiles(EmployeeDocumentsServiceModel documents)
         {
             // DL front
             if (documents.DrivingLicenceFront.Length > MAX_FILE_SIZE)
             {
                 ModelState.AddModelError("Documents.DrivingLicenceFront", $"File cannot be more than 20MB.");
-            } 
-            else if (!ValidationHelper.RegexValidation(documents.DrivingLicenceFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            }
+            else if (ValidationHelper.RegexValidation(documents.DrivingLicenceFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
             {
                 ModelState.AddModelError("Documents.DrivingLicenceFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
             }
-            
+
             // DL back
             if (documents.DrivingLicenceBack.Length > MAX_FILE_SIZE)
             {
                 ModelState.AddModelError("Documents.DrivingLicenceBack", $"File cannot be more than 20MB.");
             }
-            else if (!ValidationHelper.RegexValidation(documents.DrivingLicenceBack.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            else if (ValidationHelper.RegexValidation(documents.DrivingLicenceBack.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
             {
                 ModelState.AddModelError("Documents.DrivingLicenceBack", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
             }
@@ -268,7 +267,7 @@
             {
                 ModelState.AddModelError("Documents.IdentityDocumentFront", $"File cannot be more than 20MB.");
             }
-            else if (!ValidationHelper.RegexValidation(documents.IdentityDocumentFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            else if (ValidationHelper.RegexValidation(documents.IdentityDocumentFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
             {
                 ModelState.AddModelError("Documents.IdentityDocumentFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
             }
@@ -278,7 +277,7 @@
             {
                 ModelState.AddModelError("Documents.IdentityDocumentBack", $"File cannot be more than 20MB.");
             }
-            else if (documents.IdentityDocumentBack is not null && !ValidationHelper.RegexValidation(documents.IdentityDocumentBack.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            else if (documents.IdentityDocumentBack is not null && ValidationHelper.RegexValidation(documents.IdentityDocumentBack.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
             {
                 ModelState.AddModelError("Documents.IdentityDocumentBack", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
             }
@@ -288,7 +287,7 @@
             {
                 ModelState.AddModelError("Documents.NationalInsuranceNumber", $"File cannot be more than 20MB.");
             }
-            else if (!ValidationHelper.RegexValidation(documents.NationalInsuranceNumber.FileName.ToLower(), FILE_EXTENSIONS_REGEX))
+            else if (ValidationHelper.RegexValidation(documents.NationalInsuranceNumber.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
             {
                 ModelState.AddModelError("Documents.NationalInsuranceNumber", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
             }
@@ -312,15 +311,15 @@
             {
                 ModelState.AddModelError("EmergencyContact.Address", $"Address cannot be more than {MAX_ADDRESS_LENGTH} symbols");
             }
-            if (string.IsNullOrEmpty(model.Postcode) || (!ValidationHelper.RegexValidation(model.Postcode, POSTCODE_REGEX)))
+            if (string.IsNullOrEmpty(model.Postcode) || (ValidationHelper.RegexValidation(model.Postcode, POSTCODE_REGEX) is false))
             {
                 ModelState.AddModelError("EmergencyContact.Postcode", $"Invalid Postcode");
             }
-            if (string.IsNullOrEmpty(model.Email) || (!ValidationHelper.RegexValidation(model.Email, EMAIL_REGEX)))
+            if (string.IsNullOrEmpty(model.Email) || (ValidationHelper.RegexValidation(model.Email, EMAIL_REGEX) is false))
             {
                 ModelState.AddModelError("EmergencyContact.Email", $"Invalid Email");
             }
-            if (string.IsNullOrEmpty(model.PhoneNumber) || (!ValidationHelper.RegexValidation(model.PhoneNumber, PHONE_NUMBER_REGEX)))
+            if (string.IsNullOrEmpty(model.PhoneNumber) || (ValidationHelper.RegexValidation(model.PhoneNumber, PHONE_NUMBER_REGEX) is false))
             {
                 ModelState.AddModelError("EmergencyContact.PhoneNumber", $"Invalid Phone number");
             }

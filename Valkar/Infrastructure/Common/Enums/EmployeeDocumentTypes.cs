@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Common.Enums
 {
-    public enum DocumentTypes
+    public enum EmployeeDocumentTypes
     {
         IdentityDocument = 0,
         DrivingLicence = 1,

@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     public class MapperService : IMapperService
     {
@@ -13,7 +14,7 @@
         public TDestination Map<TSource, TDestination>(TSource source)
             => this._mapper.Map<TDestination>(source);
 
-        public IEnumerable<TDestination> Map<TSource, TDestination>(TSource[] sources) 
-            => this._mapper.Map<TSource[], IEnumerable<TDestination>>(sources);
+        public ICollection<TDestination> Map<TSource, TDestination>(ICollection<TSource> sources) 
+            => this._mapper.Map< ICollection<TSource>, ICollection<TDestination>>(sources);
     }
 }

@@ -10,6 +10,7 @@
         public TimeSpan Break { get; set; }
         public TimeSpan TimeOut { get; set; }
         public TimeSpan TotalHours { get; set; }
+
         public Guid DriverId { get; set; }
         public Driver Driver { get; set; }
     }

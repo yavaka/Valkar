@@ -7,6 +7,7 @@
     using ApplicationCore.Services.File;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
+    using ApplicationCore.Services.PDFDocument;
     using ApplicationCore.Services.WorkingDay;
     using Infrastructure;
     using Infrastructure.Models;
@@ -28,7 +29,8 @@
                 .AddTransient<IFileService, FileService>()
                 .AddTransient<IAdminService, AdminService>()
                 .AddTransient<IWorkingDayService, WorkingDayService>()
-                .AddTransient<ICompanyService, CompanyService>();
+                .AddTransient<ICompanyService, CompanyService>()
+                .AddTransient<IDocumentService, DocumentService>();
 
         /// <summary>
         /// Identity config
