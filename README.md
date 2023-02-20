@@ -12,6 +12,7 @@ Built with:
 * SQL Server
 * JavaScript
 * jQuery
+* Google Drive API
 
 ## Features
 * User account
