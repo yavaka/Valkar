@@ -1,7 +1,6 @@
 ﻿namespace ApplicationCore.Services.File
 {
     using ApplicationCore.ServiceModels.Document;
-    using ApplicationCore.Services.Driver;
     using Infrastructure;
     using Infrastructure.Common.Enums;
     using Microsoft.AspNetCore.Http;
@@ -20,35 +19,56 @@
         public FileService(ValkarDbContext data)
             => this._data = data;
 
-        public async Task<ICollection<File>> ProcessUploadedDocuments(DocumentsServiceModel documents)
+        #region Employee documents
+
+        public async Task<ICollection<File>> ProcessEmployeeUploadedDocuments(EmployeeDocumentsServiceModel documents)
             => new List<File>()
             {
                 await ProcessFile(
                     documents.DrivingLicenceFront,
-                    nameof(DocumentsServiceModel.DrivingLicenceFront)),
+                    nameof(EmployeeDocumentsServiceModel.DrivingLicenceFront)),
                 await ProcessFile(
                     documents.DrivingLicenceBack,
-                    nameof(DocumentsServiceModel.DrivingLicenceBack)),
+                    nameof(EmployeeDocumentsServiceModel.DrivingLicenceBack)),
                 await ProcessFile(
                     documents.IdentityDocumentFront,
-                    nameof(DocumentsServiceModel.IdentityDocumentFront)),
+                    nameof(EmployeeDocumentsServiceModel.IdentityDocumentFront)),
                 await ProcessFile(
                     documents.IdentityDocumentBack,
-                    nameof(DocumentsServiceModel.IdentityDocumentBack)),
+                    nameof(EmployeeDocumentsServiceModel.IdentityDocumentBack)),
                 await ProcessFile(
                     documents.NationalInsuranceNumber,
-                    nameof(DocumentsServiceModel.NationalInsuranceNumber))
+                    nameof(EmployeeDocumentsServiceModel.NationalInsuranceNumber))
             }.Where(i => i is not null)
             .ToList();
 
-        public IEnumerable<DownloadDocumentServiceModel> GetDocuments(string uploaderId, DocumentTypes documentType)
+        public IEnumerable<DownloadDocumentServiceModel> GetEmployeeDocuments(string uploaderId, EmployeeDocumentTypes documentType)
             => documentType switch
             {
-                DocumentTypes.IdentityDocument => GetFiles(uploaderId, documentType),
-                DocumentTypes.DrivingLicence => GetFiles(uploaderId, documentType),
-                DocumentTypes.NationalInsuranceNumber => GetFiles(uploaderId, documentType),
+                EmployeeDocumentTypes.IdentityDocument => GetEmployeeFiles(uploaderId, documentType),
+                EmployeeDocumentTypes.DrivingLicence => GetEmployeeFiles(uploaderId, documentType),
+                EmployeeDocumentTypes.NationalInsuranceNumber => GetEmployeeFiles(uploaderId, documentType),
                 _ => null,
             };
+
+        #endregion
+
+        #region Temp Documents
+
+        public async Task<TempDocumentServiceModel> ProcessDocument(IFormFile formFile)
+        {
+            var file = await ProcessFile(formFile);
+            return new TempDocumentServiceModel
+            {
+                Name = file.Name,
+                Extension = file.Extension,
+                FileType = file.FileType,
+                Data = file.Data,
+                UploadedOn = file.UploadedOn,
+            };
+        }
+
+        #endregion
 
         public async Task<DownloadDocumentServiceModel> GetZipFile(List<DownloadDocumentServiceModel> documents)
         {
@@ -76,9 +96,9 @@
 
         #region Fetch Documents
 
-        private IEnumerable<DownloadDocumentServiceModel> GetFiles(
+        private IEnumerable<DownloadDocumentServiceModel> GetEmployeeFiles(
             string uploaderId,
-            DocumentTypes documentType)
+            EmployeeDocumentTypes documentType)
         {
             var uploaderName = GetUploaderNameById(uploaderId);
 
@@ -98,15 +118,17 @@
         #endregion
 
         #region Helpers
-        private async Task<File> ProcessFile(IFormFile file, string fileName)
+
+        private async Task<File> ProcessFile(IFormFile file, string fileName = default)
         {
             if (file is null)
-            {
                 return null;
-            }
+
             return new File
             {
-                Name = fileName,
+                Name = fileName == default
+                    ? file.FileName
+                    : fileName,
                 Extension = Path.GetExtension(file.FileName),
                 FileType = file.ContentType,
                 UploadedOn = DateTime.Now,
@@ -123,7 +145,7 @@
             return dataStream.ToArray();
         }
 
-        private string GetUploaderNameById(string id) 
+        private string GetUploaderNameById(string id)
         {
             var driver = this._data.Drivers
                 .Select(d => new

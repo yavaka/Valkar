@@ -6,8 +6,7 @@
 
     public static class WebConfiguration
     {
-        public static IServiceCollection AddWeb(
-            this IServiceCollection services)
+        public static IServiceCollection AddWeb(this IServiceCollection services)
         {
             services.AddAutoMapper(
                 typeof(Startup),

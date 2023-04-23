@@ -4,6 +4,6 @@ namespace Web.ViewModels
     {
         public string RequestId { get; set; }
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public bool ShowRequestId => string.IsNullOrEmpty(RequestId) is false;
     }
 }

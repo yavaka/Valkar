@@ -6,7 +6,6 @@
     using Infrastructure.Common.Global;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using static Infrastructure.Common.ModelConstants;
@@ -17,9 +16,7 @@
         private readonly ICompanyService _companyService;
 
         public CompaniesController(ICompanyService companyService)
-        {
-            this._companyService = companyService;
-        }
+            => this._companyService = companyService;
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -71,7 +68,7 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConfirmDeletion(string id)
+        public async Task<IActionResult> DeleteConfirmation(string id)
         {
             return PartialView("CompanyPartials/_DeleteCompanyConfirmation", await this._companyService.FetchAsync(id));
         }
@@ -91,19 +88,19 @@
             {
                 if (string.IsNullOrEmpty(model.Name) || (model.Name.Length > MAX_COMPANY_NAME_LENGTH || model.Name.Length < MIN_COMPANY_NAME_LENGTH))
                     ModelState.AddModelError("Name", $"Company name cannot be less than {MIN_COMPANY_NAME_LENGTH} and more than {MAX_COMPANY_NAME_LENGTH} symbols");
-                if (string.IsNullOrEmpty(model.EmailAddress) || (!ValidationHelper.RegexValidation(model.EmailAddress, EMAIL_REGEX)))
+                if (string.IsNullOrEmpty(model.EmailAddress) || (ValidationHelper.RegexValidation(model.EmailAddress, EMAIL_REGEX) is false))
                     ModelState.AddModelError("EmailAddress", $"Invalid Email address");
-                if (string.IsNullOrEmpty(model.PhoneNumber) || (!ValidationHelper.RegexValidation(model.PhoneNumber, PHONE_NUMBER_REGEX)))
+                if (string.IsNullOrEmpty(model.PhoneNumber) || (ValidationHelper.RegexValidation(model.PhoneNumber, PHONE_NUMBER_REGEX) is false))
                     ModelState.AddModelError("PhoneNumber", $"Invalid Phone number");
-                
-                if (string.IsNullOrEmpty(model.RegistrationNumber) is false 
+
+                if (string.IsNullOrEmpty(model.RegistrationNumber) is false
                     && (model.RegistrationNumber.Length < FIXED_COMPANY_REGISTRATION_NUMBER || model.RegistrationNumber.Length > FIXED_COMPANY_REGISTRATION_NUMBER
                     || model.RegistrationNumber.ToCharArray().Any(c => char.IsDigit(c) is false)))
                     ModelState.AddModelError("RegistrationNumber", $"Company registration number is fixed {FIXED_COMPANY_REGISTRATION_NUMBER} digits");
-                
+
                 if (string.IsNullOrEmpty(model.OfficeAddress) || (model.OfficeAddress.Length > MAX_ADDRESS_LENGTH))
                     ModelState.AddModelError("OfficeAddress", $"Address cannot be more than {MAX_ADDRESS_LENGTH} symbols");
-                if (string.IsNullOrEmpty(model.OfficePostCode) || (!ValidationHelper.RegexValidation(model.OfficePostCode, POSTCODE_REGEX)))
+                if (string.IsNullOrEmpty(model.OfficePostCode) || (ValidationHelper.RegexValidation(model.OfficePostCode, POSTCODE_REGEX) is false))
                     ModelState.AddModelError("OfficePostCode", $"Invalid Postcode");
             }
             else

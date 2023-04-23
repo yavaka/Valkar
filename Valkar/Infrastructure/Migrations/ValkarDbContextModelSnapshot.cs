@@ -230,6 +230,43 @@ namespace Infrastructure.Migrations
                     b.ToTable("LimitedCompanies");
                 });
 
+            modelBuilder.Entity("Infrastructure.Models.TempDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Extension")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSigned")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MessageToEmployee")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SentToId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UploadedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SentToId");
+
+                    b.ToTable("TempDocuments");
+                });
+
             modelBuilder.Entity("Infrastructure.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -488,7 +525,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Models.File", b =>
                 {
                     b.HasOne("Infrastructure.Models.Driver", "UploadedBy")
-                        .WithMany("Documents")
+                        .WithMany("PersonalDocuments")
                         .HasForeignKey("UploadedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -516,6 +553,17 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Infrastructure.Models.TempDocument", b =>
+                {
+                    b.HasOne("Infrastructure.Models.Driver", "SentTo")
+                        .WithMany("ReceivedDocuments")
+                        .HasForeignKey("SentToId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SentTo");
                 });
 
             modelBuilder.Entity("Infrastructure.Models.WorkingDay", b =>
@@ -582,13 +630,15 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.Driver", b =>
                 {
-                    b.Navigation("Documents");
-
                     b.Navigation("EmergencyContact");
 
                     b.Navigation("LicenceCategories");
 
                     b.Navigation("LimitedCompany");
+
+                    b.Navigation("PersonalDocuments");
+
+                    b.Navigation("ReceivedDocuments");
 
                     b.Navigation("WorkedDays");
                 });

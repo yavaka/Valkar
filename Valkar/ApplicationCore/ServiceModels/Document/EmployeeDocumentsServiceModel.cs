@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.Http;
     using System.ComponentModel;
 
-    public class DocumentsServiceModel
+    public class EmployeeDocumentsServiceModel
     {
         [DisplayName("Driving Licence (Front)")]
         public IFormFile DrivingLicenceFront { get; set; }

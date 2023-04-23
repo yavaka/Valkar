@@ -17,6 +17,7 @@
         public DbSet<File> Files { get; set; }
         public DbSet<WorkingDay> WorkedDays { get; set; }
         public DbSet<Company> PartnerCompanies { get; set; }
+        public DbSet<TempDocument> TempDocuments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

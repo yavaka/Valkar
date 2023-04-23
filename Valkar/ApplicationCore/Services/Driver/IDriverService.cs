@@ -1,6 +1,7 @@
 ﻿namespace ApplicationCore.Services.Driver
 {
     using ApplicationCore.ServiceModels.Driver;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IDriverService
@@ -16,6 +17,7 @@
         Task<UpdateDriverDetailsServiceModel> GetDriverDetailsForUpdateByUserId(string userId);
 
         Task<LimitedCompanyServiceModel> GetLimitedCompanyByUserId(string userId);
+        
         Task<DriverProfileServiceModel> GetDriverProfileByUserId(string userId);
     }
 }

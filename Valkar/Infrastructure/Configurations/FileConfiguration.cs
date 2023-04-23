@@ -13,7 +13,7 @@
 
             // UploadedBy one to many
             builder.HasOne(u => u.UploadedBy)
-                .WithMany(d => d.Documents)
+                .WithMany(d => d.PersonalDocuments)
                 .HasForeignKey(u => u.UploadedById);
         }
     }

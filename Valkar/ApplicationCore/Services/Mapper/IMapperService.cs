@@ -6,6 +6,6 @@ namespace ApplicationCore.Services.Mapper
     {
         TDestination Map<TSource, TDestination>(TSource source);
 
-        IEnumerable<TDestination> Map<TSource, TDestination>(TSource[] sources);
+        ICollection<TDestination> Map<TSource, TDestination>(ICollection<TSource> sources);
     }
 }
