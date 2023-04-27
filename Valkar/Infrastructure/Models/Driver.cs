@@ -19,9 +19,10 @@
         /// Shows whether or not the driver filled in all personal details
         /// </summary>
         public bool IsCompleted { get; set; }
+        public string GoogleDriveFolderId { get; set; }
 
         #region Mappings
-        
+
         public ICollection<LicenceCategory> LicenceCategories { get; set; }
         public ICollection<File> PersonalDocuments { get; set; }
         public EmergencyContact EmergencyContact { get; set; }

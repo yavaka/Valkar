@@ -1,14 +1,19 @@
-﻿namespace ApplicationCore
+﻿namespace ApplicationCore.Config
 {
+    using ApplicationCore;
     using ApplicationCore.Services.Admin;
     using ApplicationCore.Services.Company;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Email;
     using ApplicationCore.Services.File;
+    using ApplicationCore.Services.GoogleDriveAPI;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
     using ApplicationCore.Services.PDFDocument;
     using ApplicationCore.Services.WorkingDay;
+    using Google.Apis.Auth.OAuth2;
+    using Google.Apis.Drive.v3;
+    using Google.Apis.Services;
     using Infrastructure;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Builder;
@@ -24,6 +29,7 @@
             => services.AddIdentityService()
                 .AddApplicationCookie(configuration)
                 .AddEmailSender(configuration)
+                .AddGoogleDriveAPI(configuration)
                 .AddTransient<IMapperService, MapperService>()
                 .AddTransient<IDriverService, DriverService>()
                 .AddTransient<IFileService, FileService>()
@@ -96,6 +102,32 @@
 
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailService, EmailService>();
+
+            return services;
+        }
+
+        /// <summary>
+        /// Google Drive API
+        /// </summary>
+        private static IServiceCollection AddGoogleDriveAPI(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient(s =>
+            {
+                var credential = GoogleCredential.FromFile("Config\\valkar-service-account.json")
+                    .CreateScoped(new[] { DriveService.Scope.Drive });
+
+                var service = new DriveService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = "valkar"
+                });
+
+                return service;
+            });
+
+            services.AddTransient<IGoogleDriveAPIService, GoogleDriveAPIService>();
+
+            services.Configure<ApplicationCoreOptions>(configuration);
 
             return services;
         }
