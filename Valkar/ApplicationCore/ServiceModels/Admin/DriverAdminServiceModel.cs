@@ -1,6 +1,7 @@
 ﻿namespace ApplicationCore.ServiceModels.Admin
 {
     using ApplicationCore.ServiceModels.Driver;
+    using ApplicationCore.ServiceModels.GoogleDriveAPI;
     using ApplicationCore.ServiceModels.WorkingDay;
     using Infrastructure.Models;
     using System;
@@ -27,10 +28,12 @@
         public string NiNo { get; set; }
         public string LimitedCompany { get; set; }
         public string CompanyRegistrationNumber { get; set; }
+        public string GoogleDriveFolderId { get; set; }
+
         public EmergencyContactServiceModel EmergencyContact { get; set; }
         public ICollection<WorkingDayServiceModel> WorkingDays { get; set; }
+        public IEnumerable<GoogleDriveFileServiceModel> Documents { get; set; }
 
-        // TODO: Admin - Add date of birth prop.
         /// <summary>
         /// Converts driver`s licence category entities to list of categories names
         /// and set DrivingLicenceCategories prop

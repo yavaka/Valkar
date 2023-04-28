@@ -4,6 +4,7 @@
     using ApplicationCore.ServiceModels.Document;
     using ApplicationCore.Services.Admin;
     using ApplicationCore.Services.File;
+    using ApplicationCore.Services.GoogleDriveAPI;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.PDFDocument;
     using Infrastructure.Common.Enums;
@@ -26,16 +27,19 @@
         private readonly IAdminService _adminService;
         private readonly IIdentityService _identityService;
         private readonly IDocumentService _documentService;
+        private readonly IGoogleDriveAPIService _googleDriveAPIService;
 
         public DocumentsController(IFileService fileService,
             IAdminService adminService,
             IIdentityService identityService,
-            IDocumentService documentService)
+            IDocumentService documentService,
+            IGoogleDriveAPIService googleDriveAPIService)
         {
             this._fileService = fileService;
             this._adminService = adminService;
             this._identityService = identityService;
             this._documentService = documentService;
+            this._googleDriveAPIService = googleDriveAPIService;
         }
 
         public async Task<FileResult> DownloadAsync(string uploaderId, EmployeeDocumentTypes documentType)
@@ -116,6 +120,18 @@
                 return RedirectToAction(nameof(DocumentsController.Documentation));
             }
             return View(model);
+        }
+
+        #endregion
+
+        #region Google Drive Documents
+
+        [HttpGet]
+        public async Task<IActionResult> DownloadFileById(string fileId)
+        {
+            var file = await this._googleDriveAPIService.DownloadFileById(fileId);
+
+            return File(file.Data, file.MimeType, file.Name);
         }
 
         #endregion

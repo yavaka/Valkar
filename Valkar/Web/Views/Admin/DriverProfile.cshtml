@@ -25,6 +25,7 @@
 <div class="container" data-layout="container">
     <partial name="_NavbarPartial" />
     <div class="content" style="margin-top: 1%">
+
         @*-- Driver profile top card --*@
         <div class="card mb-3">
             <div class="card-header">
@@ -52,134 +53,105 @@
                     </div>
                 </div>
             </div>
-        </div>
-        @*-- Working Days --*@
-        <div class="card mb-3">
-            <div class="card-header">
-                <div class="col-auto">
-                    <h5 class="mb-0">Working Days</h5>
-                </div>
-            </div>
-            <div class="card-body fs--1">
-                <div class="row">
-                    @foreach (var workedDay in Model.WorkingDays)
-                    {
-                        <div class="col-md-6 h-100" id="row_@workedDay.Id">
-                            <div class="d-flex btn-reveal-trigger">
-                                <div class="calendar">
-                                    <span class="calendar-month">@workedDay.Date.ToString("MMM")</span>
-                                    <span class="calendar-day">@workedDay.Date.ToString("dd")</span>
-                                </div>
-                                <div class="flex-1 position-relative ps-3">
-                                    <p class="text-1000 mb-0">Time in: @workedDay.TimeIn.ToString("hh\\:mm")</p>
-                                    <p class="text-1000 mb-0">Break: @workedDay.Break.ToString("hh\\:mm")</p>
-                                    <p class="text-1000 mb-0">Time out: @workedDay.TimeOut.ToString("hh\\:mm")</p>
-                                    <p class="text-1000 mb-0">Total hours: @workedDay.TotalHours.ToString("hh\\:mm")</p>
-                                    <div class="border-dashed-bottom my-3"></div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
+            <div class="card-footer border-top text-start">
+                <a class="btn btn-falcon-default btn-sm" onclick="processCollapse('personal')" data-bs-toggle="collapse" href="#personalCollapse" role="button" aria-expanded="false" aria-controls="personalCollapse">Personal</a>
+                <a class="btn btn-falcon-default btn-sm" onclick="processCollapse('emergency')" data-bs-toggle="collapse" href="#emergencyCollapse" role="button" aria-expanded="false" aria-controls="emergencyCollapse">Emergency</a>
+                <a class="btn btn-falcon-default btn-sm" onclick="processCollapse('documents')" data-bs-toggle="collapse" href="#documentsCollapse" role="button" aria-expanded="false" aria-controls="documentsCollapse">Documents</a>
+                <a class="btn btn-falcon-default btn-sm" onclick="processCollapse('workingDays')" data-bs-toggle="collapse" href="#workingDaysCollapse" role="button" aria-expanded="false" aria-controls="workingDaysCollapse">Working Days</a>
             </div>
         </div>
+
         @*-- Driver details --*@
-        <div class="card mb-3">
-            <div class="card-header">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h5 class="mb-0">Details</h5>
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-falcon-default btn-sm dropdown-toggle ms-2 dropdown-caret-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documents</button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-controller="Documents" asp-action="Download" asp-all-route-data="licenceData">Driving licence</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" asp-controller="Documents" asp-action="Download" asp-all-route-data="identityData">Identity document</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" asp-controller="Documents" asp-action="Download" asp-all-route-data="niNoData">NiNo letter</a>
+        <div class="collapse show" id="personalCollapse">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Details</h5>
+                        </div>
+                        <div class="col-auto">
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body bg-light border-top">
-                <div class="row">
-                    <div class="col-lg col-xxl-5">
-                        <h6 class="fw-semi-bold ls mb-3 text-uppercase">Personal details</h6>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-1">Name</p>
+                <div class="card-body bg-light border-top">
+                    <div class="row">
+                        <div class="col-lg col-xxl-5">
+                            <h6 class="fw-semi-bold ls mb-3 text-uppercase">Personal details</h6>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">Name</p>
+                                </div>
+                                <div class="col">@Model.FirstNames @Model.Surname</div>
                             </div>
-                            <div class="col">@Model.FirstNames @Model.Surname</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-1">Date of birth</p>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">Date of birth</p>
+                                </div>
+                                <div class="col">@Model.DateOfBirth.ToString("dd/MM/yyyy")</div>
                             </div>
-                            <div class="col">@Model.DateOfBirth.ToString("dd/MM/yyyy")</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-1">Email</p>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">Email</p>
+                                </div>
+                                <div class="col"><a href="mailto:@Model.Email">@Model.Email</a></div>
                             </div>
-                            <div class="col"><a href="mailto:@Model.Email">@Model.Email</a></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-1">Phone number</p>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">Phone number</p>
+                                </div>
+                                <div class="col">
+                                    <p class="fst-italic text-400 mb-1"><a href="tel:@Model.PhoneNumber">@Model.PhoneNumber</a></p>
+                                </div>
                             </div>
-                            <div class="col">
-                                <p class="fst-italic text-400 mb-1"><a href="tel:@Model.PhoneNumber">@Model.PhoneNumber</a></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-0">Address</p>
-                            </div>
-                            <div class="col">
-                                <p class="fst-italic text-400 mb-0"><a href="http://maps.google.com/?q=@Model.Address,@Model.Postcode" target="_blank" rel="noopener noreferrer">@Model.Address, @Model.Postcode</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg col-xxl-5 mt-4 mt-lg-0 offset-xxl-1">
-                        <h6 class="fw-semi-bold ls mb-3 text-uppercase">Additional information</h6>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-1">Driving licence</p>
-                            </div>
-                            <div class="col">@string.Join(", ", Model.DrivingLicenceCategories)</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-1">NiNo</p>
-                            </div>
-                            <div class="col">
-                                <p class="mb-1">@Model.NiNo</p>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-0">Address</p>
+                                </div>
+                                <div class="col">
+                                    <p class="fst-italic text-400 mb-0"><a href="http://maps.google.com/?q=@Model.Address,@Model.Postcode" target="_blank" rel="noopener noreferrer">@Model.Address, @Model.Postcode</a></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-1">LTD</p>
+                        <div class="col-lg col-xxl-5 mt-4 mt-lg-0 offset-xxl-1">
+                            <h6 class="fw-semi-bold ls mb-3 text-uppercase">Additional information</h6>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">Driving licence</p>
+                                </div>
+                                <div class="col">@string.Join(", ", Model.DrivingLicenceCategories)</div>
                             </div>
-                            <div class="col">@Model.LimitedCompany</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5 col-sm-4">
-                                <p class="fw-semi-bold mb-0">Registration number</p>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">NiNo</p>
+                                </div>
+                                <div class="col">
+                                    <p class="mb-1">@Model.NiNo</p>
+                                </div>
                             </div>
-                            <div class="col">
-                                <p class="fw-semi-bold mb-0">@Model.CompanyRegistrationNumber</p>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-1">LTD</p>
+                                </div>
+                                <div class="col">@Model.LimitedCompany</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-4">
+                                    <p class="fw-semi-bold mb-0">Registration number</p>
+                                </div>
+                                <div class="col">
+                                    <p class="fw-semi-bold mb-0">@Model.CompanyRegistrationNumber</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-footer border-top text-end">
-                <a class="btn btn-falcon-default btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Emergency contact</a>
+                <div class="card-footer border-top text-start">
+                </div>
             </div>
         </div>
+
         @*-- Emergency contact collapse --*@
-        <div class="collapse" id="collapseExample">
+        <div class="collapse" id="emergencyCollapse">
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="row align-items-center">
@@ -235,18 +207,141 @@
                 </div>
             </div>
         </div>
+
+        @*-- Documents collapse --*@
+        <div class="collapse" id="documentsCollapse">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0">Documents</h5>
+                        </div>
+                        <div class="col-auto">
+                            <a class="btn btn-falcon-default btn-sm" type="button" asp-controller="Companies" asp-action="Add"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Upload</span></a>
+                            <a class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body border-top">
+                    <div class="table-responsive scrollbar">
+                        <table class="table table-hover table-striped overflow-hidden">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th class="text-end" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var doc in Model.Documents)
+                                {
+                                    <tr class="align-middle">
+                                        <td class="text-nowrap">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ms-2">@doc.Name</div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle white-space-nowrap py-2 text-end">
+                                            <div class="dropdown font-sans-serif position-static">
+                                                <button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" id="action-dropdown-0" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs--1"></span></button>
+                                                <div class="dropdown-menu dropdown-menu-end border py-0" aria-labelledby="action-dropdown-0">
+                                                    <div class="bg-white py-2">
+                                                        <a class="dropdown-item" target="_blank" href="https://drive.google.com/file/d/@doc.Id/view">View</a>
+                                                        <a class="dropdown-item" asp-action="DownloadFileById" asp-controller="Documents" asp-route-fileId="@doc.Id">Download</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.Documents.Count() < 10)
+                                {
+                                    for (int i = 0; i < (10 - Model.Documents.Count()); i++)
+                                    {
+                                        <tr class="align-middle">
+                                            <td><br /></td>
+                                            <td><br /></td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer border-top">
+                </div>
+            </div>
+        </div>
+
+        @*-- Working Days --*@
+        <div class="collapse" id="workingDaysCollapse">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="col-auto">
+                        <h5 class="mb-0">Working Days</h5>
+                    </div>
+                </div>
+                <div class="card-body fs--1">
+                    <div class="row">
+                        @foreach (var workedDay in Model.WorkingDays)
+                        {
+                            <div class="col-md-6 h-100" id="row_@workedDay.Id">
+                                <div class="d-flex btn-reveal-trigger">
+                                    <div class="calendar">
+                                        <span class="calendar-month">@workedDay.Date.ToString("MMM")</span>
+                                        <span class="calendar-day">@workedDay.Date.ToString("dd")</span>
+                                    </div>
+                                    <div class="flex-1 position-relative ps-3">
+                                        <p class="text-1000 mb-0">Time in: @workedDay.TimeIn.ToString("hh\\:mm")</p>
+                                        <p class="text-1000 mb-0">Break: @workedDay.Break.ToString("hh\\:mm")</p>
+                                        <p class="text-1000 mb-0">Time out: @workedDay.TimeOut.ToString("hh\\:mm")</p>
+                                        <p class="text-1000 mb-0">Total hours: @workedDay.TotalHours.ToString("hh\\:mm")</p>
+                                        <div class="border-dashed-bottom my-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 <div id="deleteUserConfirmationDialog"></div>
 
 @section Scripts{
-<script src="@Url.Content("~/js/Views/Identity/Identity.js")" type="module"></script>
+    <script src="@Url.Content("~/js/Views/Identity/Identity.js")" type="module"></script>
 
-<script>
-    $(document).ready(function(){
-        Identity.onInit({
-            deleteConfirmationUrl: '@Url.Action("ConfirmDeletion", "Identity")'
+    <script>
+        $(document).ready(function () {
+            Identity.onInit({
+                deleteConfirmationUrl: '@Url.Action("ConfirmDeletion", "Identity")'
+            });
         });
-    });
-</script>
+
+        function processCollapse(collapseBtnClicked) {
+            switch (collapseBtnClicked) {
+                case 'personal':
+                    $('#emergencyCollapse').removeClass('show');
+                    $('#documentsCollapse').removeClass('show');
+                    $('#workingDaysCollapse').removeClass('show');
+                    break;
+                case 'emergency':
+                    $('#personalCollapse').removeClass('show');
+                    $('#documentsCollapse').removeClass('show');
+                    $('#workingDaysCollapse').removeClass('show');
+                    break;
+                case 'documents':
+                    $('#personalCollapse').removeClass('show');
+                    $('#emergencyCollapse').removeClass('show');
+                    $('#workingDaysCollapse').removeClass('show');
+                    break;
+                case 'workingDays':
+                    $('#personalCollapse').removeClass('show');
+                    $('#emergencyCollapse').removeClass('show');
+                    $('#documentsCollapse').removeClass('show');
+                    break;
+            }
+        }
+    </script>
 }

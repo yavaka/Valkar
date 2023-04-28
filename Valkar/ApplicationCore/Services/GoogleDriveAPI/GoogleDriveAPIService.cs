@@ -94,8 +94,8 @@
         {
             var fileMetadata = new Google.Apis.Drive.v3.Data.File()
             {
-                Name = string.IsNullOrEmpty(fileName) 
-                    ? Path.GetFileName(file.FileName) 
+                Name = string.IsNullOrEmpty(fileName)
+                    ? Path.GetFileName(file.FileName)
                     : fileName,
                 Parents = new List<string> { folderId }
             };
@@ -132,7 +132,8 @@
             else
             {
                 await this._driveService.Files.Get(fileId).DownloadAsync(stream);
-                result.MimeType = GetMimeType(file.Name);
+                result.MimeType = file.MimeType;
+                result.Name += GetFileExtension(file.MimeType);
             }
 
             stream.Position = 0;
@@ -158,6 +159,25 @@
             }
             return mimeType;
         }
+
+        private static string GetFileExtension(string mimeType)
+            => mimeType switch
+            {
+                "application/msword" => ".doc",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document" => ".docx",
+                "application/vnd.ms-excel" => ".xls",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" => ".xlsx",
+                "application/vnd.ms-powerpoint" => ".ppt",
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation" => ".pptx",
+                "image/jpeg" => ".jpg",
+                "image/png" => ".png",
+                "image/gif" => ".gif",
+                "image/webp" => ".webp",
+                "text/plain" => ".txt",
+                "application/pdf" => ".pdf",
+                "application/zip" => ".zip",
+                _ => ""
+            };
 
         #endregion
     }

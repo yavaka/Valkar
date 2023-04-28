@@ -3,6 +3,7 @@
     using ApplicationCore.ServiceModels.Admin;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.Services.Driver;
+    using ApplicationCore.Services.GoogleDriveAPI;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.WorkingDay;
     using AutoMapper;
@@ -17,17 +18,20 @@
         private readonly IIdentityService _identityService;
         private readonly IWorkingDayService _workingDayService;
         private readonly IMapper _mapper;
+        private readonly IGoogleDriveAPIService _googleDriveAPIService;
 
         public AdminService(
             IDriverService driverService,
             IIdentityService identityService,
             IWorkingDayService workingDayService,
-            IMapper mapper)
+            IMapper mapper,
+            IGoogleDriveAPIService googleDriveAPIService)
         {
             this._driverService = driverService;
             this._identityService = identityService;
             this._workingDayService = workingDayService;
             this._mapper = mapper;
+            this._googleDriveAPIService = googleDriveAPIService;
         }
 
         public IEnumerable<DriverAdminServiceModel> GetAllDrivers()
@@ -72,7 +76,9 @@
                 LimitedCompany = user.Driver.LimitedCompany.CompanyName,
                 CompanyRegistrationNumber = user.Driver.LimitedCompany.CompanyRegistrationNumber,
                 EmergencyContact = this._mapper.Map<EmergencyContact, EmergencyContactServiceModel>(user.Driver.EmergencyContact),
-                WorkingDays = await this._workingDayService.GetWorkingDaysByDriverId(user.Driver.Id.ToString())
+                WorkingDays = await this._workingDayService.GetWorkingDaysByDriverId(user.Driver.Id.ToString()),
+                GoogleDriveFolderId = user.Driver.GoogleDriveFolderId,
+                Documents = await this._googleDriveAPIService.GetFilesByFolderIdAsync(user.Driver.GoogleDriveFolderId)
             };
             driver.ConvertDrivingLicenceEntitiesToCategoriesName(user.Driver.LicenceCategories);
             driver.WorkingDays = driver.WorkingDays.Count > 0
