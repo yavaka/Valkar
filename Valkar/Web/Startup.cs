@@ -1,6 +1,5 @@
 namespace Web
 {
-    using ApplicationCore;
     using Infrastructure;
     using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Builder;
@@ -8,6 +7,8 @@ namespace Web
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using ApplicationCore.Config;
+    using Web.Config;
 
     public class Startup
     {

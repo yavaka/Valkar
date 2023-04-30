@@ -1,6 +1,6 @@
-﻿namespace Web
+﻿namespace Web.Config
 {
-    using ApplicationCore;
+    using ApplicationCore.Config;
     using Infrastructure;
     using Microsoft.Extensions.DependencyInjection;
 

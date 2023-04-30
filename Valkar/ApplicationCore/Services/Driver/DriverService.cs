@@ -1,14 +1,18 @@
 ﻿namespace ApplicationCore.Services.Driver
 {
     using ApplicationCore.Helpers.CheckBox;
+    using ApplicationCore.ServiceModels.Document;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.ServiceModels.WorkingDay;
     using ApplicationCore.Services.File;
+    using ApplicationCore.Services.GoogleDriveAPI;
     using ApplicationCore.Services.Mapper;
     using Infrastructure;
     using Infrastructure.Common.Enums;
     using Infrastructure.Models;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -18,15 +22,18 @@
         private readonly ValkarDbContext _data;
         private readonly IMapperService _mapper;
         private readonly IFileService _fileService;
+        private readonly IGoogleDriveAPIService _driveAPIService;
 
         public DriverService(
             ValkarDbContext data,
             IMapperService mapper,
-            IFileService fileService)
+            IFileService fileService,
+            IGoogleDriveAPIService driveAPIService)
         {
             this._data = data;
             this._mapper = mapper;
             this._fileService = fileService;
+            this._driveAPIService = driveAPIService;
         }
 
         public async Task AddDriver(DriverDetailsServiceModel model, string userId)
@@ -40,6 +47,9 @@
             // Convert uploaded documents to File models
             driver.PersonalDocuments = await this._fileService
                 .ProcessEmployeeUploadedDocuments(model.Documents);
+
+            // Employee folder and documents
+            driver.GoogleDriveFolderId = await ProcessGoogleDrive(model.Documents, $"{driver.FirstNames} {driver.Surname}");
 
             // set user id to this driver
             driver.UserId = userId;
@@ -194,6 +204,33 @@
                 });
             }
             return licenceCategories;
+        }
+
+        /// <summary>
+        /// Create new folder in google drive on employee onboarding.
+        /// Upload all employee documents
+        /// </summary>
+        /// <returns>employee folder id</returns>
+        private async Task<string> ProcessGoogleDrive(EmployeeDocumentsServiceModel documents, string fullName)
+        {
+            // Create folder in Google Drive for this employee
+            var employeeFolderId = await this._driveAPIService.CreateFolder($"{fullName} - {Guid.NewGuid()}");
+
+            // Upload employee documents
+            
+            // DL
+            await this._driveAPIService.UploadFile(documents.DrivingLicenceFront, nameof(EmployeeDocumentsServiceModel.DrivingLicenceFront), employeeFolderId);
+            await this._driveAPIService.UploadFile(documents.DrivingLicenceBack, nameof(EmployeeDocumentsServiceModel.DrivingLicenceBack), employeeFolderId);
+            
+            // ID
+            await this._driveAPIService.UploadFile(documents.IdentityDocumentFront, nameof(EmployeeDocumentsServiceModel.IdentityDocumentFront), employeeFolderId);
+            if (documents.IdentityDocumentBack is not null)
+                await this._driveAPIService.UploadFile(documents.IdentityDocumentBack, nameof(EmployeeDocumentsServiceModel.IdentityDocumentBack), employeeFolderId);
+            
+            // NiNo
+            await this._driveAPIService.UploadFile(documents.NationalInsuranceNumber, nameof(EmployeeDocumentsServiceModel.NationalInsuranceNumber), employeeFolderId);
+
+            return employeeFolderId;
         }
 
         #endregion
