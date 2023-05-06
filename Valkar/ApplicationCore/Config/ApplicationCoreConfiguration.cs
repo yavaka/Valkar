@@ -6,6 +6,7 @@
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Email;
     using ApplicationCore.Services.File;
+    using ApplicationCore.Services.Google.ReCaptcha;
     using ApplicationCore.Services.GoogleDriveAPI;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
@@ -39,7 +40,8 @@
                 .AddTransient<IAdminService, AdminService>()
                 .AddTransient<IWorkingDayService, WorkingDayService>()
                 .AddTransient<ICompanyService, CompanyService>()
-                .AddTransient<IDocumentService, DocumentService>();
+                .AddTransient<IDocumentService, DocumentService>()
+                .AddSingleton<IGoogleReCaptchaService, GoogleReCaptchaService>();
         }
 
         /// <summary>
