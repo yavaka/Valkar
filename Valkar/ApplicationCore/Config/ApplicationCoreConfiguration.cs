@@ -26,10 +26,13 @@
     public static class ApplicationCoreConfiguration
     {
         public static IServiceCollection AddApplicationCore(this IServiceCollection services, IConfiguration configuration)
-            => services.AddIdentityService()
+        {
+            services.Configure<ApplicationCoreOptions>(configuration);
+            
+            return services.AddIdentityService()
                 .AddApplicationCookie(configuration)
                 .AddEmailSender(configuration)
-                .AddGoogleDriveAPI(configuration)
+                .AddGoogleDriveAPI()
                 .AddTransient<IMapperService, MapperService>()
                 .AddTransient<IDriverService, DriverService>()
                 .AddTransient<IFileService, FileService>()
@@ -37,6 +40,7 @@
                 .AddTransient<IWorkingDayService, WorkingDayService>()
                 .AddTransient<ICompanyService, CompanyService>()
                 .AddTransient<IDocumentService, DocumentService>();
+        }
 
         /// <summary>
         /// Identity config
@@ -109,7 +113,7 @@
         /// <summary>
         /// Google Drive API
         /// </summary>
-        private static IServiceCollection AddGoogleDriveAPI(this IServiceCollection services, IConfiguration configuration)
+        private static IServiceCollection AddGoogleDriveAPI(this IServiceCollection services)
         {
             services.AddTransient(s =>
             {
@@ -126,8 +130,6 @@
             });
 
             services.AddTransient<IGoogleDriveAPIService, GoogleDriveAPIService>();
-
-            services.Configure<ApplicationCoreOptions>(configuration);
 
             return services;
         }

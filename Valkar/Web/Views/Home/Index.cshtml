@@ -1,4 +1,10 @@
 ﻿@model ApplicationCore.ServiceModels.ContactUsForm.ContactUs
+
+@using Microsoft.Extensions.Options
+@using ApplicationCore.Config;
+
+@inject IOptions<ApplicationCoreOptions> _applicationCoreOptions
+
 @{
     Layout = "_StaticLayout";
     ViewData["Title"] = "Home";
@@ -89,14 +95,9 @@
 @* Contact Form *@
 <div class="site-section bg-light">
     <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center border-primary">
-                <h2 class="mb-0 text-primary">Contact us</h2>
-            </div>
-        </div>
         <div class="row">
             <div class="col-md-7 mb-5">
-                <form asp-controller="Home" asp-action="SendContactForm" class="p-5 bg-white" method="post" enctype="multipart/form-data">
+                <form asp-controller="Home" asp-action="SendContactForm" id="contact-form" class="p-5 bg-white" method="post" enctype="multipart/form-data">
                     <div class="row form-group">
                         @*First Name*@
                         <div class="col-md-6 mb-3 mb-md-0">
@@ -138,10 +139,11 @@
                             <span asp-validation-for="EmailContent" id="contact-validation-message" class="text-danger" style="font-size: smaller"></span>
                         </div>
                     </div>
+                    <input type="hidden" id="captcha-token" asp-for="Token" />
                     <input type="hidden" name="invokedFrom" value="@ApplicationCore.Enums.InvokedFrom.HomePage" />
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <input type="submit" value="Send Message" class="btn btn-primary py-2 px-4 text-white">
+                            <input type="submit" id="submit-btn" value="Send Message" class="btn btn-primary py-2 px-4 text-white">
                         </div>
                     </div>
 
@@ -170,11 +172,16 @@
 </div>
 
 @section Scripts{
+
+    <script src="@Url.Content("~/js/Views/Contact/ContactUs.js")" type="module"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=@_applicationCoreOptions.Value.GoogleCaptchaKeyId"></script>
+
     <script>
         $(document).ready(function () {
-            $('#btnHomeNavbar').addClass('active');
-            $('#btnAboutNavbar').removeClass('active');
-            $('#btnContactNavbar').removeClass('active');
+            ContactUs.onInit({
+                googleCaptchaKeyId: '@_applicationCoreOptions.Value.GoogleCaptchaKeyId',
+                invokedFrom: '@ApplicationCore.Enums.InvokedFrom.HomePage'
+            });
         });
-</script>
+    </script>
 }

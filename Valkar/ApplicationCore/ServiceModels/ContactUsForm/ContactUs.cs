@@ -7,5 +7,6 @@
         public string Email { get; set; }
         public string Subject { get; set; }
         public string EmailContent { get; set; }
+        public string Token { get; set; }
     }
 }
