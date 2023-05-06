@@ -2,7 +2,7 @@
 {
     using ApplicationCore.Config;
     using ApplicationCore.ServiceModels.GoogleDriveAPI;
-    using Google.Apis.Drive.v3;
+    using global::Google.Apis.Drive.v3;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Options;
     using System.Collections.Generic;
@@ -27,7 +27,7 @@
         public async Task<string> CreateFolder(string folderName)
         {
             // Create a new folder object
-            var folder = new Google.Apis.Drive.v3.Data.File
+            var folder = new global::Google.Apis.Drive.v3.Data.File
             {
                 Name = folderName,
                 MimeType = "application/vnd.google-apps.folder",
@@ -92,7 +92,7 @@
 
         public async Task UploadFile(IFormFile file, string fileName, string folderId)
         {
-            var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+            var fileMetadata = new global::Google.Apis.Drive.v3.Data.File()
             {
                 Name = string.IsNullOrEmpty(fileName)
                     ? Path.GetFileName(file.FileName)

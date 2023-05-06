@@ -4,6 +4,7 @@
     using ApplicationCore.Helpers;
     using ApplicationCore.ServiceModels.ContactUsForm;
     using ApplicationCore.Services.Email;
+    using ApplicationCore.Services.Google.ReCaptcha;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
     using System.Threading.Tasks;
@@ -13,8 +14,13 @@
     public class HomeController : Controller
     {
         private readonly IEmailService _emailService;
+        private readonly IGoogleReCaptchaService _googleReCaptchaService;
 
-        public HomeController(IEmailService emailService) => _emailService = emailService;
+        public HomeController(IEmailService emailService, IGoogleReCaptchaService googleReCaptchaService)
+        {
+            this._emailService = emailService;
+            this._googleReCaptchaService = googleReCaptchaService;
+        }
 
         public IActionResult Index() => View(new ContactUs());
 
@@ -23,20 +29,26 @@
         public IActionResult Contact() => View(new ContactUs());
 
         public IActionResult TermsAndConditions() => View();
-        
+
         public IActionResult Privacy() => View();
 
         public IActionResult CookiePolicy() => View();
 
         public async Task<IActionResult> SendContactFormAsync(ContactUs model, InvokedFrom invokedFrom)
         {
-            Validate(model);
-            if (ModelState.IsValid)
+            // recaptcha
+            var riskScore = _googleReCaptchaService.CreateAssessment(model.Token, "SendContactForm");
+            if (riskScore >= 0.7m)
             {
-                await this._emailService.SendContactFormToEmail(model);
+                Validate(model);
+                if (ModelState.IsValid)
+                {
+                    await this._emailService.SendContactFormToEmail(model);
 
-                TempData.Add("ContactFormSent", "We have received your enquery and we will come back to you shortly.");
+                    TempData.Add("ContactFormSent", "We have received your enquery and we will come back to you shortly.");
+                }
             }
+
             switch (invokedFrom)
             {
                 case InvokedFrom.HomePage:

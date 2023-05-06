@@ -6,6 +6,7 @@
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.Email;
     using ApplicationCore.Services.File;
+    using ApplicationCore.Services.Google.ReCaptcha;
     using ApplicationCore.Services.GoogleDriveAPI;
     using ApplicationCore.Services.Identity;
     using ApplicationCore.Services.Mapper;
@@ -26,17 +27,22 @@
     public static class ApplicationCoreConfiguration
     {
         public static IServiceCollection AddApplicationCore(this IServiceCollection services, IConfiguration configuration)
-            => services.AddIdentityService()
+        {
+            services.Configure<ApplicationCoreOptions>(configuration);
+            
+            return services.AddIdentityService()
                 .AddApplicationCookie(configuration)
                 .AddEmailSender(configuration)
-                .AddGoogleDriveAPI(configuration)
+                .AddGoogleDriveAPI()
                 .AddTransient<IMapperService, MapperService>()
                 .AddTransient<IDriverService, DriverService>()
                 .AddTransient<IFileService, FileService>()
                 .AddTransient<IAdminService, AdminService>()
                 .AddTransient<IWorkingDayService, WorkingDayService>()
                 .AddTransient<ICompanyService, CompanyService>()
-                .AddTransient<IDocumentService, DocumentService>();
+                .AddTransient<IDocumentService, DocumentService>()
+                .AddSingleton<IGoogleReCaptchaService, GoogleReCaptchaService>();
+        }
 
         /// <summary>
         /// Identity config
@@ -109,7 +115,7 @@
         /// <summary>
         /// Google Drive API
         /// </summary>
-        private static IServiceCollection AddGoogleDriveAPI(this IServiceCollection services, IConfiguration configuration)
+        private static IServiceCollection AddGoogleDriveAPI(this IServiceCollection services)
         {
             services.AddTransient(s =>
             {
@@ -126,8 +132,6 @@
             });
 
             services.AddTransient<IGoogleDriveAPIService, GoogleDriveAPIService>();
-
-            services.Configure<ApplicationCoreOptions>(configuration);
 
             return services;
         }
