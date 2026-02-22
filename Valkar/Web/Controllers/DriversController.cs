@@ -243,33 +243,54 @@
         private void ValidateUploadedFiles(EmployeeDocumentsServiceModel documents)
         {
             // DL front
-            if (documents.DrivingLicenceFront.Length > MAX_FILE_SIZE)
+            if (documents.DrivingLicenceFront is null)
             {
-                ModelState.AddModelError("Documents.DrivingLicenceFront", $"File cannot be more than 20MB.");
+                ModelState.AddModelError("Documents.DrivingLicenceFront", $"Driving Licence is required!");
             }
-            else if (ValidationHelper.RegexValidation(documents.DrivingLicenceFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
+            else
             {
-                ModelState.AddModelError("Documents.DrivingLicenceFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+                if (documents.DrivingLicenceFront.Length > MAX_FILE_SIZE)
+                {
+                    ModelState.AddModelError("Documents.DrivingLicenceFront", $"File cannot be more than 20MB.");
+                }
+                else if (ValidationHelper.RegexValidation(documents.DrivingLicenceFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
+                {
+                    ModelState.AddModelError("Documents.DrivingLicenceFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+                }
             }
 
             // DL back
-            if (documents.DrivingLicenceBack.Length > MAX_FILE_SIZE)
+            if (documents.DrivingLicenceBack is null)
             {
-                ModelState.AddModelError("Documents.DrivingLicenceBack", $"File cannot be more than 20MB.");
+                ModelState.AddModelError("Documents.DrivingLicenceBack", $"Driving Licence is required!");
             }
-            else if (ValidationHelper.RegexValidation(documents.DrivingLicenceBack.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
+            else
             {
-                ModelState.AddModelError("Documents.DrivingLicenceBack", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+                if (documents.DrivingLicenceBack.Length > MAX_FILE_SIZE)
+                {
+                    ModelState.AddModelError("Documents.DrivingLicenceBack", $"File cannot be more than 20MB.");
+                }
+                else if (ValidationHelper.RegexValidation(documents.DrivingLicenceBack.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
+                {
+                    ModelState.AddModelError("Documents.DrivingLicenceBack", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+                }
             }
 
             // ID front
-            if (documents.IdentityDocumentFront.Length > MAX_FILE_SIZE)
+            if (documents.IdentityDocumentFront is null)
             {
-                ModelState.AddModelError("Documents.IdentityDocumentFront", $"File cannot be more than 20MB.");
+                ModelState.AddModelError("Documents.IdentityDocumentFront", $"Identity Document is required!");
             }
-            else if (ValidationHelper.RegexValidation(documents.IdentityDocumentFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
+            else
             {
-                ModelState.AddModelError("Documents.IdentityDocumentFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+                if (documents.IdentityDocumentFront.Length > MAX_FILE_SIZE)
+                {
+                    ModelState.AddModelError("Documents.IdentityDocumentFront", $"File cannot be more than 20MB.");
+                }
+                else if (ValidationHelper.RegexValidation(documents.IdentityDocumentFront.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
+                {
+                    ModelState.AddModelError("Documents.IdentityDocumentFront", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+                }
             }
 
             // ID back
@@ -283,13 +304,20 @@
             }
 
             // NiNo letter
-            if (documents.NationalInsuranceNumber.Length > MAX_FILE_SIZE)
+            if (documents.NationalInsuranceNumber is null)
             {
-                ModelState.AddModelError("Documents.NationalInsuranceNumber", $"File cannot be more than 20MB.");
+                ModelState.AddModelError("Documents.NationalInsuranceNumber", $"NiNo letter is required!");
             }
-            else if (ValidationHelper.RegexValidation(documents.NationalInsuranceNumber.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
+            else
             {
-                ModelState.AddModelError("Documents.NationalInsuranceNumber", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+                if (documents.NationalInsuranceNumber.Length > MAX_FILE_SIZE)
+                {
+                    ModelState.AddModelError("Documents.NationalInsuranceNumber", $"File cannot be more than 20MB.");
+                }
+                else if (ValidationHelper.RegexValidation(documents.NationalInsuranceNumber.FileName.ToLower(), FILE_EXTENSIONS_REGEX) is false)
+                {
+                    ModelState.AddModelError("Documents.NationalInsuranceNumber", $"Invalid file, allowed file extensions are .jpg, .jpeg, .png, .bmp, .pdf, .doc, .docx");
+                }
             }
         }
 

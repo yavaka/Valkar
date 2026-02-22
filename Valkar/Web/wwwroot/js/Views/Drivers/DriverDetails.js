@@ -40,7 +40,6 @@ window.DriverDetails = (function () {
 
     function validations() {
         //#region Driver
-
         var isFormValid = true;
 
         // Title
@@ -509,7 +508,6 @@ window.DriverDetails = (function () {
 
     function initializeFlatpickr() {
         flatpickr("#datepicker", {
-            "dateFormat": "d/m/Y",
             "defaultDate": new Date(),
             "allowInput": false,
             "maxDate": new Date(),
