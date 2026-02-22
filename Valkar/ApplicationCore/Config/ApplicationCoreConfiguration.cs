@@ -1,4 +1,4 @@
-﻿namespace ApplicationCore.Config
+namespace ApplicationCore.Config
 {
     using ApplicationCore;
     using ApplicationCore.Services.Admin;
@@ -29,7 +29,13 @@
         public static IServiceCollection AddApplicationCore(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<ApplicationCoreOptions>(configuration);
-            
+            services.PostConfigure<ApplicationCoreOptions>(options =>
+            {
+                var driveFolderId = configuration["GoogleDriveAPI:DriveMainFolderId"];
+                if (!string.IsNullOrWhiteSpace(driveFolderId))
+                    options.GoogleDriveMainFolderId = driveFolderId;
+            });
+
             return services.AddIdentityService()
                 .AddApplicationCookie(configuration)
                 .AddEmailSender(configuration)

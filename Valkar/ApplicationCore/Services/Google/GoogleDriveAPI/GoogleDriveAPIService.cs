@@ -1,10 +1,11 @@
-﻿namespace ApplicationCore.Services.GoogleDriveAPI
+namespace ApplicationCore.Services.GoogleDriveAPI
 {
     using ApplicationCore.Config;
     using ApplicationCore.ServiceModels.GoogleDriveAPI;
     using global::Google.Apis.Drive.v3;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Options;
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -26,6 +27,12 @@
 
         public async Task<string> CreateFolder(string folderName)
         {
+            if (string.IsNullOrWhiteSpace(this._mainFolderId))
+            {
+                throw new InvalidOperationException(
+                    "Google Drive main folder is not configured. Set ApplicationCore:GoogleDriveMainFolderId in appsettings.json to a valid Google Drive folder ID. For local development without Drive, ensure driver onboarding skips Google Drive when this value is missing.");
+            }
+
             // Create a new folder object
             var folder = new global::Google.Apis.Drive.v3.Data.File
             {

@@ -1,4 +1,4 @@
-﻿namespace Web.Controllers
+namespace Web.Controllers
 {
     using ApplicationCore.ServiceModels.WorkingDay;
     using ApplicationCore.Services.WorkingDay;
@@ -33,7 +33,7 @@
                 await this._workingDayService.AddWorkingDay(model);
                 return RedirectToAction("Profile", "Drivers");
             }
-            return View(model);
+            return View("AddWorkingDay", model);
         }
 
         [HttpGet]

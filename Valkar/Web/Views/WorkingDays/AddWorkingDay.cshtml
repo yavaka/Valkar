@@ -1,4 +1,4 @@
-﻿@model ApplicationCore.ServiceModels.WorkingDay.WorkingDayServiceModel
+@model ApplicationCore.ServiceModels.WorkingDay.WorkingDayServiceModel
 @{
     TempData["Title"] = "Add Working Day";
 }
@@ -12,7 +12,7 @@
                     <div class="card-header bg-light d-flex justify-content-between">
                         <h5 class="mb-0">Add Working Day</h5>
                     </div>
-                    <form asp-action="AddWorkingDay" method="post">
+                    <form asp-controller="WorkingDays" asp-action="AddWorkingDayAsync" method="post">
                         <input type="hidden" asp-for="DriverId" />
                         <div class="card-body fs--1">
                             <div class="row g-2">

@@ -1,7 +1,8 @@
-﻿namespace ApplicationCore.Services.Admin
+namespace ApplicationCore.Services.Admin
 {
     using ApplicationCore.ServiceModels.Admin;
     using ApplicationCore.ServiceModels.Driver;
+    using ApplicationCore.ServiceModels.GoogleDriveAPI;
     using ApplicationCore.Services.Driver;
     using ApplicationCore.Services.GoogleDriveAPI;
     using ApplicationCore.Services.Identity;
@@ -78,7 +79,9 @@
                 EmergencyContact = this._mapper.Map<EmergencyContact, EmergencyContactServiceModel>(user.Driver.EmergencyContact),
                 WorkingDays = await this._workingDayService.GetWorkingDaysByDriverId(user.Driver.Id.ToString()),
                 GoogleDriveFolderId = user.Driver.GoogleDriveFolderId,
-                Documents = await this._googleDriveAPIService.GetFilesByFolderIdAsync(user.Driver.GoogleDriveFolderId)
+                Documents = string.IsNullOrWhiteSpace(user.Driver.GoogleDriveFolderId)
+                    ? new List<GoogleDriveFileServiceModel>()
+                    : (await this._googleDriveAPIService.GetFilesByFolderIdAsync(user.Driver.GoogleDriveFolderId)).ToList()
             };
             driver.ConvertDrivingLicenceEntitiesToCategoriesName(user.Driver.LicenceCategories);
             driver.WorkingDays = driver.WorkingDays.Count > 0

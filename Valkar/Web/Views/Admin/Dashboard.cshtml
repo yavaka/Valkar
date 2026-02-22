@@ -1,4 +1,4 @@
-﻿@model ApplicationCore.ServiceModels.Admin.DashboardServiceModel
+@model ApplicationCore.ServiceModels.Admin.DashboardServiceModel
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -15,8 +15,8 @@
                         <h5 class="mb-0">Drivers</h5>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Invite Driver</span></button>
-                        <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
+                        <a class="btn btn-falcon-default btn-sm" href="@Url.Action("Register", "Identity")"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Invite Driver</span></a>
+                        <button class="btn btn-falcon-default btn-sm mx-2" type="button" data-bs-toggle="modal" data-bs-target="#dashboard-drivers-filter"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         <tbody>
                             @foreach (var driver in Model.Drivers)
                             {
-                                <tr class="align-middle">
+                                <tr class="align-middle driver-row" data-driver-name="@driver.FullName" data-driver-email="@driver.Email" data-driver-phone="@(driver.PhoneNumber ?? "")">
                                     <td class="text-nowrap">
                                         <div class="d-flex align-items-center">
                                             <div class="ms-2">@driver.FullName</div>
@@ -61,7 +61,7 @@
                             {
                                 for (int i = 0; i < (10 - Model.Drivers.Count()); i++)
                                 {
-                                    <tr class="align-middle">
+                                    <tr class="align-middle driver-row-placeholder">
                                         <td><br /></td>
                                         <td><br /></td>
                                         <td><br /></td>
@@ -86,6 +86,29 @@
 
 <div id="deleteUserConfirmationDialog"></div>
 
+@* Dashboard drivers filter modal *@
+<div class="modal fade" id="dashboard-drivers-filter" tabindex="-1" aria-labelledby="dashboard-drivers-filter-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dashboard-drivers-filter-label">Filter drivers</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="dashboard-filter-search">Search (name, email or phone)</label>
+                    <input type="text" class="form-control" id="dashboard-filter-search" placeholder="Type to filter..." />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="dashboard-filter-apply">Apply</button>
+                <button type="button" class="btn btn-falcon-default" id="dashboard-filter-clear">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
 <script src="@Url.Content("~/js/Views/Identity/Identity.js")"></script>
 
@@ -94,6 +117,7 @@
         Identity.onInit({
             deleteConfirmationUrl: '@Url.Action("ConfirmDeletion", "Identity")'
         });
+        Identity.initDashboardFilter();
     });
 </script>
 }

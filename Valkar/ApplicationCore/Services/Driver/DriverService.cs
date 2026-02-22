@@ -1,10 +1,11 @@
-﻿namespace ApplicationCore.Services.Driver
+namespace ApplicationCore.Services.Driver
 {
     using ApplicationCore.Helpers.CheckBox;
     using ApplicationCore.ServiceModels.Document;
     using ApplicationCore.ServiceModels.Driver;
     using ApplicationCore.ServiceModels.WorkingDay;
     using ApplicationCore.Services.File;
+    using ApplicationCore.Config;
     using ApplicationCore.Services.GoogleDriveAPI;
     using ApplicationCore.Services.Mapper;
     using Infrastructure;
@@ -12,6 +13,7 @@
     using Infrastructure.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+    using Microsoft.Extensions.Options;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -23,17 +25,20 @@
         private readonly IMapperService _mapper;
         private readonly IFileService _fileService;
         private readonly IGoogleDriveAPIService _driveAPIService;
+        private readonly ApplicationCoreOptions _applicationCoreOptions;
 
         public DriverService(
             ValkarDbContext data,
             IMapperService mapper,
             IFileService fileService,
-            IGoogleDriveAPIService driveAPIService)
+            IGoogleDriveAPIService driveAPIService,
+            IOptions<ApplicationCoreOptions> applicationCoreOptions)
         {
             this._data = data;
             this._mapper = mapper;
             this._fileService = fileService;
             this._driveAPIService = driveAPIService;
+            this._applicationCoreOptions = applicationCoreOptions?.Value ?? new ApplicationCoreOptions();
         }
 
         public async Task AddDriver(DriverDetailsServiceModel model, string userId)
@@ -48,8 +53,15 @@
             driver.PersonalDocuments = await this._fileService
                 .ProcessEmployeeUploadedDocuments(model.Documents);
 
-            // Employee folder and documents
-            driver.GoogleDriveFolderId = await ProcessGoogleDrive(model.Documents, $"{driver.FirstNames} {driver.Surname}");
+            // Employee folder and documents (only when Google Drive is configured)
+            if (!string.IsNullOrWhiteSpace(this._applicationCoreOptions.GoogleDriveMainFolderId))
+            {
+                driver.GoogleDriveFolderId = await ProcessGoogleDrive(model.Documents, $"{driver.FirstNames} {driver.Surname}");
+            }
+            else
+            {
+                driver.GoogleDriveFolderId = null;
+            }
 
             // set user id to this driver
             driver.UserId = userId;

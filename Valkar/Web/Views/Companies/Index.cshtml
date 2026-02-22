@@ -1,4 +1,4 @@
-﻿@model List<ApplicationCore.ServiceModels.Company.CompanyServiceModel>
+@model List<ApplicationCore.ServiceModels.Company.CompanyServiceModel>
 @{
     ViewData["Title"] = "Companies List";
 }
@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-auto">
                         <a class="btn btn-falcon-default btn-sm" type="button" asp-controller="Companies" asp-action="Add"><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Add Company</span></a>
-                        <a class="btn btn-falcon-default btn-sm mx-2" type="button" asp-controller="Companies"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></a>
+                        <button class="btn btn-falcon-default btn-sm mx-2" type="button" data-bs-toggle="modal" data-bs-target="#companies-filter"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                         <tbody>
                             @foreach (var company in Model)
                             {
-                                <tr class="align-middle">
+                                <tr class="align-middle company-row" data-company-name="@company.Name" data-company-email="@(company.EmailAddress ?? "")" data-company-phone="@(company.PhoneNumber ?? "")">
                                     <td class="text-nowrap">
                                         <div class="d-flex align-items-center">
                                             <div class="ms-2">@company.Name</div>
@@ -62,7 +62,7 @@
                             {
                                 for (int i = 0; i < (10 - Model.Count()); i++)
                                 {
-                                    <tr class="align-middle">
+                                    <tr class="align-middle company-row-placeholder">
                                         <td><br /></td>
                                         <td><br /></td>
                                         <td><br /></td>
@@ -87,6 +87,29 @@
 
 <div id="deleteConfirmationDialog"></div>
 
+@* Companies filter modal *@
+<div class="modal fade" id="companies-filter" tabindex="-1" aria-labelledby="companies-filter-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="companies-filter-label">Filter companies</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="companies-filter-search">Search (name, email or phone)</label>
+                    <input type="text" class="form-control" id="companies-filter-search" placeholder="Type to filter..." />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="companies-filter-apply">Apply</button>
+                <button type="button" class="btn btn-falcon-default" id="companies-filter-clear">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script src="@Url.Content("~/js/Views/Companies/Companies.js")"></script>
 
@@ -95,6 +118,7 @@
             Companies.onInit({
                 deleteConfirmationUrl: '@Url.Action("DeleteConfirmation", "Companies")'
             });
+            Companies.initFilter();
         });
     </script>
 }

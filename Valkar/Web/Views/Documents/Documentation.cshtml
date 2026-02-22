@@ -1,4 +1,4 @@
-﻿@using Infrastructure.Common.Global
+@using Infrastructure.Common.Global
 @model ApplicationCore.ServiceModels.Document.DocumentationGridServiceModel
 
 @{
@@ -17,8 +17,11 @@
                         <h4 class="mb-0">Documents</h4>
                     </div>
                     <div class="col-auto">
-                        <a class="btn btn-falcon-default btn-sm" type="button" asp-controller="Documents" asp-action="SendDocument"><span class="fas fa-paper-plane" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Send Document</span></a>
-                        <a class="btn btn-falcon-default btn-sm mx-2" type="button" data-bs-toggle="modal" data-bs-target="#documents-filter" asp-controller="Documents"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></a>
+                        @if (User.IsInRole(Role.Admin))
+                        {
+                            <a class="btn btn-falcon-default btn-sm" type="button" asp-controller="Documents" asp-action="SendDocument"><span class="fas fa-paper-plane" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Send Document</span></a>
+                        }
+                        <button class="btn btn-falcon-default btn-sm @(User.IsInRole(Role.Admin) ? "mx-2" : "")" type="button" data-bs-toggle="modal" data-bs-target="#documents-filter"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Filter</span></button>
                     </div>
                 </div>
             </div>
@@ -28,7 +31,7 @@
                 <div class="row">
                     @foreach (var doc in Model.Documents)
                     {
-                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 document-card" data-doc-name="@doc.Name" data-doc-signed="@doc.IsSigned.ToString().ToLower()" data-doc-employee="@(doc.SentTo != null ? $"{doc.SentTo.FirstNames} {doc.SentTo.Surname}" : "")">
                             <div class="card mb-3" style="padding-left: 1%; padding-right: 1%;">
                                 <div class="card-body">
                                     @if (doc.IsSigned)
@@ -51,9 +54,9 @@
                                         @*-- delete btn --*@
                                         <a class="btn btn-danger btn-sm" onclick="Documents.deleteConfirmation('@doc.Id')" style='cursor: pointer'><span class="fas fa-trash" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Delete</span></a>
                                     }
-                                    else
+                                    else if (!doc.IsSigned)
                                     {
-                                        @*-- upload btn --*@
+                                        @*-- upload btn: only when driver has not yet uploaded the signed document --*@
                                         <a class="btn btn-secondary btn-sm" asp-action="UploadSignedDocument" asp-route-docId="@doc.Id" style='cursor: pointer'><span class="fas fa-upload" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ms-1">Upload</span></a>
                                     }
                                 </div>
@@ -74,6 +77,37 @@
 
 <div id="deleteConfirmationDialog"></div>
 
+@* Documents filter modal - must exist for Filter button to work *@
+<div class="modal fade" id="documents-filter" tabindex="-1" aria-labelledby="documents-filter-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="documents-filter-label">Filter documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="filter-signed">Status</label>
+                    <select class="form-select" id="filter-signed">
+                        <option value="">All</option>
+                        <option value="signed">Signed only</option>
+                        <option value="unsigned">Unsigned only</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="filter-search">Search (document or employee name)</label>
+                    <input type="text" class="form-control" id="filter-search" placeholder="Type to filter..." />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="documents-filter-apply">Apply</button>
+                <button type="button" class="btn btn-falcon-default" id="documents-filter-clear">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
 
     <script src="@Url.Content("~/js/Views/Documents/Documents.js")"></script>
@@ -83,6 +117,7 @@
             Documents.onInit({
                 deleteConfirmationUrl: '@Url.Action("ConfirmDeletion", "Documents")'
             });
+            Documents.initFilter();
         });
     </script>
 }

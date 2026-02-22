@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Http.Features
 
 @{
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
@@ -20,7 +20,7 @@
 
     <div id="cookieConsent" class="alert alert-info alert-dismissible fade show" role="alert">
         We use necessary cookies to make our site work. We'd also like to set analytics cookies that help us make improvements by measuring how you use the site. 
-        These will be set only if you accept. <a asp-action="CookiePolicy">Learn More</a>.
+        These will be set only if you accept. <a asp-controller="Home" asp-action="CookiePolicy">Learn More</a>.
         <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
             <span aria-hidden="true">Accept</span>
         </button>
