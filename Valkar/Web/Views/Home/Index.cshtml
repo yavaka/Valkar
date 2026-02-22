@@ -1,4 +1,4 @@
-﻿@model ApplicationCore.ServiceModels.ContactUsForm.ContactUs
+@model ApplicationCore.ServiceModels.ContactUsForm.ContactUs
 
 @using Microsoft.Extensions.Options
 @using ApplicationCore.Config;
@@ -172,14 +172,12 @@
 </div>
 
 @section Scripts{
-
+    @* reCAPTCHA is loaded dynamically in ContactUs.js after Permissions API patch in layout *@
     <script src="@Url.Content("~/js/Views/Contact/ContactUs.js")" type="module"></script>
-    <script src="https://www.google.com/recaptcha/enterprise.js?render=@_applicationCoreOptions.Value.GoogleCaptchaKeyId"></script>
-
     <script>
         $(document).ready(function () {
             ContactUs.onInit({
-                googleCaptchaKeyId: '@_applicationCoreOptions.Value.GoogleCaptchaKeyId',
+                googleCaptchaKeyId: '@(_applicationCoreOptions.Value.GoogleCaptchaKeyId ?? "")',
                 invokedFrom: '@ApplicationCore.Enums.InvokedFrom.HomePage'
             });
         });

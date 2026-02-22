@@ -1,7 +1,12 @@
-﻿window.Identity = (function () {
+window.Identity = (function () {
     var defaults = {
         deleteConfirmationUrl: '',
     };
+
+    function initDeleteUserConfirmationModal() {
+        // Modal content is loaded dynamically in deleteConfirmation(); no setup needed.
+        // Use this to attach delegated handlers to #deleteUserConfirmationDialog if needed.
+    }
 
     return {
         onInit: function (obj) {

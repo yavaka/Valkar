@@ -1,11 +1,13 @@
-﻿namespace Web.Controllers
+namespace Web.Controllers
 {
+    using ApplicationCore.Config;
     using ApplicationCore.Enums;
     using ApplicationCore.Helpers;
     using ApplicationCore.ServiceModels.ContactUsForm;
     using ApplicationCore.Services.Email;
     using ApplicationCore.Services.Google.ReCaptcha;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Web.ViewModels;
@@ -15,11 +17,16 @@
     {
         private readonly IEmailService _emailService;
         private readonly IGoogleReCaptchaService _googleReCaptchaService;
+        private readonly ApplicationCoreOptions _applicationCoreOptions;
 
-        public HomeController(IEmailService emailService, IGoogleReCaptchaService googleReCaptchaService)
+        public HomeController(
+            IEmailService emailService,
+            IGoogleReCaptchaService googleReCaptchaService,
+            IOptions<ApplicationCoreOptions> applicationCoreOptions)
         {
             this._emailService = emailService;
             this._googleReCaptchaService = googleReCaptchaService;
+            this._applicationCoreOptions = applicationCoreOptions.Value;
         }
 
         public IActionResult Index() => View(new ContactUs());
@@ -36,9 +43,11 @@
 
         public async Task<IActionResult> SendContactFormAsync(ContactUs model, InvokedFrom invokedFrom)
         {
-            // recaptcha
-            var riskScore = _googleReCaptchaService.CreateAssessment(model.Token, "SendContactForm");
-            if (riskScore >= 0.7m)
+            // Skip reCAPTCHA when key is not configured (e.g. local development)
+            var recaptchaPassed = string.IsNullOrWhiteSpace(_applicationCoreOptions.GoogleCaptchaKeyId)
+                || _googleReCaptchaService.CreateAssessment(model.Token, "SendContactForm") >= 0.7m;
+
+            if (recaptchaPassed)
             {
                 Validate(model);
                 if (ModelState.IsValid)

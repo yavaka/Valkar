@@ -1,31 +1,46 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <title>@ViewData["Title"] - Valkar</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    @* Must run before any other script: patch Permissions API to avoid "Illegal invocation" from reCAPTCHA/AdSense/other scripts *@
+    <script>
+        (function () {
+            if (typeof navigator === 'undefined' || !navigator.permissions || typeof navigator.permissions.query !== 'function') return;
+            var perm = navigator.permissions;
+            var originalQuery = perm.query;
+            var boundQuery = function () { return originalQuery.apply(perm, arguments); };
+            try {
+                Object.defineProperty(perm, 'query', { get: function () { return boundQuery; }, configurable: true, enumerable: true });
+            } catch (e) {
+                try { perm.query = boundQuery; } catch (e2) {}
+            }
+            // Suppress same error from third-party iframes (AdSense/reCAPTCHA) which we cannot patch
+            window.addEventListener('error', function (ev) {
+                if (ev.message && ev.message.indexOf('Permissions') !== -1 && ev.message.indexOf('Illegal invocation') !== -1) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    return true;
+                }
+            }, true);
+        })();
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9356643471085995"
-            crossorigin="anonymous"></script>
+    @* AdSense removed: its script throws "Illegal invocation" on Permissions API (pagead2.googlesyndication.com). Re-add when Google fixes it. *@
+    @* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9356643471085995" crossorigin="anonymous"></script> *@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,700,900|Display+Playfair:200,300,400,700">
     <link rel="stylesheet" href="~/static/fonts/icomoon/style.css">
-
     <link rel="stylesheet" href="~/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/static/css/magnific-popup.css">
     <link rel="stylesheet" href="~/static/css/jquery-ui.css">
     <link rel="stylesheet" href="~/static/css/owl.carousel.min.css">
     <link rel="stylesheet" href="~/static/css/owl.theme.default.min.css">
-
     <link rel="stylesheet" href="~/static/css/bootstrap-datepicker.css">
-
     <link rel="stylesheet" href="~/static/fonts/flaticon/font/flaticon.css">
-
-
-
     <link rel="stylesheet" href="~/static/css/aos.css">
-
     <link rel="stylesheet" href="~/static/css/style.css">
 
 </head>

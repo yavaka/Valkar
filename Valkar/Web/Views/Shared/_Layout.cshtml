@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,9 +8,32 @@
     <title>@ViewData["Title"] - Valkar</title>
 
     <meta name="theme-color" content="#ffffff">
+    @* Must run before any other script: patch Permissions API to avoid "Illegal invocation" from AdSense/other scripts *@
+    <script>
+        (function () {
+            if (typeof navigator === 'undefined' || !navigator.permissions || typeof navigator.permissions.query !== 'function') return;
+            var perm = navigator.permissions;
+            var originalQuery = perm.query;
+            var boundQuery = function () { return originalQuery.apply(perm, arguments); };
+            try {
+                Object.defineProperty(perm, 'query', { get: function () { return boundQuery; }, configurable: true, enumerable: true });
+            } catch (e) {
+                try { perm.query = boundQuery; } catch (e2) {}
+            }
+            // Suppress same error from third-party iframes (AdSense/reCAPTCHA) which we cannot patch
+            window.addEventListener('error', function (ev) {
+                if (ev.message && ev.message.indexOf('Permissions') !== -1 && ev.message.indexOf('Illegal invocation') !== -1) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    return true;
+                }
+            }, true);
+        })();
+    </script>
     <script src="~/js/config.js"></script>
     <script src="~/vendors/overlayscrollbars/OverlayScrollbars.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9356643471085995" crossorigin="anonymous"></script>
+    @* AdSense removed: its script throws "Illegal invocation" on Permissions API (pagead2.googlesyndication.com). Re-add when Google fixes it. *@
+    @* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9356643471085995" crossorigin="anonymous"></script> *@
     <link href="../../vendors/choices/choices.min.css" rel="stylesheet">
     <link href="../../vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
     <link href="../../vendors/dropzone/dropzone.min.css" rel="stylesheet">
@@ -48,7 +71,7 @@
     <script src="~/vendors/prism/prism.js"></script>
     <script src="~/vendors/fontawesome/all.min.js"></script>
     <script src="~/vendors/lodash/lodash.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    @* polyfill.io removed: often unreachable (ERR_NAME_NOT_RESOLVED). window.scroll is supported in all modern browsers. *@
     <script src="~/vendors/list.js/list.min.js"></script>
     <script src="~/vendors/choices/choices.min.js"></script>
     <script src="~/js/theme.js"></script>
